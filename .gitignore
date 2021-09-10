@@ -1,27 +1,33 @@
+.DS_Store
+.thumbs.db
+node_modules
 
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
+# Quasar core related directories
+.quasar
+/dist
 
-### VisualStudioCode ###
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-*.code-workspace
+# Cordova related directories and files
+/src-cordova/node_modules
+/src-cordova/platforms
+/src-cordova/plugins
+/src-cordova/www
 
-# Local History for Visual Studio Code
-.history/
+# Capacitor related directories and files
+/src-capacitor/www
+/src-capacitor/node_modules
 
-### VisualStudioCode Patch ###
-# Ignore all local history of files
-.history
-.ionide
+# BEX related directories and files
+/src-bex/www
+/src-bex/js/core
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-### USER ###
-node_modules/
-
-# End of USER
-
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
