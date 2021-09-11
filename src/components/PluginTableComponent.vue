@@ -36,6 +36,7 @@ table{
   width: 100%;
   height: 100%;
 }
+
 td{
   border:black solid 1px
 }

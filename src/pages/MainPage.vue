@@ -7,7 +7,6 @@
       </div>
       <div class="right">
         <KeyValueTableComponent />
-        <ExecuteComponent />
       </div>
     </div>
   </q-page>
@@ -17,14 +16,12 @@
 import { defineComponent } from "vue";
 import KeyValueTableComponent from "../components/KeyValueTableComponent.vue";
 import PluginTableComponent from "../components/PluginTableComponent.vue";
-import ExecuteComponent from "../components/ExecuteComponent.vue";
 
 export default defineComponent({
   name: "MainPage",
   components: {
     KeyValueTableComponent,
-    PluginTableComponent,
-    ExecuteComponent,
+    PluginTableComponent
   },
 });
 </script>
@@ -54,12 +51,12 @@ PluginTableComponent{
 
 KeyValueTableComponent{
   width: 100%;
-  height : 80%;
+  height : 60%;
 }
 
 ExecuteComponent{
   width: 100%;
-  height: 20%;
+  height: 40%;
 }
 
 </style>

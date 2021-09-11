@@ -16,6 +16,12 @@
       <td>값</td>
     </tr>
   </table>
+
+<div>
+  <input/>
+  <button>실행</button>
+</div>
+
 </template>
 
 <script>
@@ -36,5 +42,20 @@ table{
 }
 td{
   border:black solid 1px
+}
+
+input{
+  display: inline-block;
+  height:100%;
+  width: 100%;
+}
+  button{
+    display: block;
+    height : 100%;
+    width:100%;
+  }
+div{
+  width: 100%;
+  height: 100%;
 }
 </style>
