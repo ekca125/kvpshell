@@ -1,11 +1,16 @@
 <template>
   <q-page class="flex flex-center">
-    <p>Hello World Main Page</p>
-    <!--컴포넌트들을 불러와서 설정 -->
-    
-    <KeyValueTableComponent/>
-    <PluginTableComponent/>
-    <ExecuteComponent/>
+    <div id="maindiv1">
+      <div id="left-div">
+        <KeyValueTableComponent/>
+      </div>
+      <div class="right-div">
+        <PluginTableComponent/>
+      </div>
+    </div>
+    <div class="maindiv2">
+       <ExecuteComponent/> 
+    </div>  
   </q-page>
 </template>
 
@@ -24,3 +29,29 @@ export default defineComponent({
   }
 })
 </script>
+
+<style scoped>
+div#left-div{
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+}
+
+div#right-div{
+  display: inline-block;
+  width: 50%;
+  height: 100%;
+}
+
+div#maindiv1{
+  display: block;
+}
+
+div#maindiv2{
+  display: block;
+}
+
+div#right-down-div{
+
+}
+</style>
