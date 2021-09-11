@@ -36,13 +36,11 @@ div.left {
   width: 30%;
   float: left;
   box-sizing: border-box;
-  background: #8977ad;
 }
 div.right {
   width: 70%;
   float: right;
   box-sizing: border-box;
-  background: #ece6cc;
 }
 PluginTableComponent{
   width: 100%;
