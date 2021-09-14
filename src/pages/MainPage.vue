@@ -14,15 +14,9 @@
 
 <script>
 import { defineComponent } from "vue";
-import KeyValueTableComponent from "../components/KeyValueTableComponent.vue";
-import PluginTableComponent from "../components/PluginTableComponent.vue";
 
 export default defineComponent({
-  name: "MainPage",
-  components: {
-    KeyValueTableComponent,
-    PluginTableComponent
-  },
+  name: "MainPage"
 });
 </script>
 
@@ -42,19 +36,4 @@ div.right {
   float: right;
   box-sizing: border-box;
 }
-PluginTableComponent{
-  width: 100%;
-  height : 100%;
-}
-
-KeyValueTableComponent{
-  width: 100%;
-  height : 60%;
-}
-
-ExecuteComponent{
-  width: 100%;
-  height: 40%;
-}
-
 </style>
