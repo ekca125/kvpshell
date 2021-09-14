@@ -26,7 +26,12 @@
         </q-table>
       </div>
       <div class="plugin_data">
-
+        <q-table
+          title="Treats"
+          :rows="current_plugin_key_value"
+          :columns="plugin_data_table_columns"
+          row-key="name"
+        />
       </div>
     </div>
   </q-page>
@@ -36,19 +41,19 @@
 import { ref } from "vue";
 import { defineComponent } from "vue";
 
-const stub_plugin_datas = [
+const plugin_datas = [
   {
     index: 0,
     plugin_name: "plugin_preset",
     plugin_exec: "plugin_exe",
     plugin_key_value: [
       {
-        key: "default key1",
-        value: "default key value1",
+        plugin_key: "default key1",
+        plugin_value: "default key value1",
       },
       {
-        key: "default key2",
-        value: "default key value2",
+        plugin_key: "default key2",
+        plugin_value: "default key value2",
       },
     ],
   },
@@ -58,12 +63,12 @@ const stub_plugin_datas = [
     plugin_exec: "plugin_exe",
     plugin_key_value: [
       {
-        key: "default key4",
-        value: "default key value1",
+        plugin_key: "default key4",
+        plugin_value: "default key value1",
       },
       {
-        key: "default key5",
-        value: "default key value2",
+        plugin_key: "default key5",
+        plugin_value: "default key value2",
       },
     ],
   },
@@ -80,21 +85,43 @@ const plugin_table_columns = [
   },
 ];
 
+const plugin_data_table_columns = [
+  {
+    name: "plugin_key",
+    align: "left",
+    label: "plugin_key",
+    field: "plugin_key",
+  },
+  {
+    name: "plugin_value",
+    align: "left",
+    label: "plugin_value",
+    field: "plugin_value",
+  }
+];
+
 export default defineComponent({
   name: "MainPage",
   setup() {
     return {
       filter: ref(""),
-      plugin_datas: stub_plugin_datas,
+      plugin_datas: plugin_datas,
       plugin_pos: stub_plugin_pos,
       plugin_table_columns,
+      plugin_data_table_columns
     };
   },
-  methods:{
-    onRowClickPluginTable:function(evt,row,index){
-      console.log("test")
+  computed:{
+    current_plugin_key_value:function(){
+      return plugin_datas[plugin_pos].plugin_key_value
     }
-  }
+  },
+  methods: {
+    onRowClickPluginTable: function (evt, row, index) {
+      //console.log(index);
+      this.plugin_pos=index
+    },
+  },
 });
 </script>
 
