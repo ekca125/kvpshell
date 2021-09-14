@@ -1,19 +1,39 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <q-table
-        title="Plugin"
-        :rows="plugin_datas"
-        :columns="plugin_table_columns"
-        row-key="name"
-      >
-      
-      </q-table>
+      <div class="plugins">
+        <q-table
+          title="Plugin"
+          :rows="plugin_datas"
+          :columns="plugin_table_columns"
+          :filter="filter"
+          row-key="plugin_name"
+          
+        >
+          <template v-slot:top-right>
+            <q-input
+              borderless
+              dense
+              debounce="300"
+              v-model="filter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
+      </div>
+      <div class="plugin_data">
+
+      </div>
     </div>
   </q-page>
 </template>
 
 <script>
+import { ref } from "vue";
 import { defineComponent } from "vue";
 
 const stub_plugin_datas = [
@@ -52,16 +72,22 @@ const stub_plugin_datas = [
 const stub_plugin_pos = 0;
 
 const plugin_table_columns = [
-  { name: "plugin_name", label: "plugin_name", field: "plugin_name"},
+  {
+    name: "plugin_name",
+    align: "left",
+    label: "plugin_name",
+    field: "plugin_name",
+  },
 ];
 
 export default defineComponent({
   name: "MainPage",
   setup() {
     return {
-      plugin_datas:stub_plugin_datas,
-      plugin_pos:stub_plugin_pos,
-      plugin_table_columns
+      filter: ref(""),
+      plugin_datas: stub_plugin_datas,
+      plugin_pos: stub_plugin_pos,
+      plugin_table_columns,
     };
   },
 });
