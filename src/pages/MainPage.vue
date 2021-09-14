@@ -31,7 +31,31 @@
           :rows="plugin_datas[current_plugin_pos].plugin_key_value"
           :columns="plugin_data_table_columns"
           row-key="name"
-        />
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="plugin_key" :props="props">
+                {{ props.row.plugin_key }}
+              </q-td>
+              <q-td key="plugin_value" :props="props">
+                {{ props.row.plugin_value }}
+                <q-popup-edit
+                  v-model="props.row.plugin_value"
+                  title="Update plugin value"
+                  buttons
+                >
+                  <q-input
+                    type="text"
+                    v-model="props.row.plugin_value"
+                    dense
+                    autofocus
+                  />
+                </q-popup-edit>
+              </q-td>
+              
+            </q-tr>
+          </template>
+        </q-table>
       </div>
     </div>
   </q-page>
@@ -99,7 +123,7 @@ const plugin_data_table_columns = [
     align: "left",
     label: "plugin_value",
     field: "plugin_value",
-  }
+  },
 ];
 
 export default defineComponent({
@@ -113,13 +137,13 @@ export default defineComponent({
       plugin_data_table_columns,
       //datas
       plugin_datas: ref(stub_plugin_datas),
-      current_plugin_pos: ref(stub_plugin_pos),  
+      current_plugin_pos: ref(stub_plugin_pos),
     };
   },
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
       //console.log(index);
-      this.current_plugin_pos=index
+      this.current_plugin_pos = index;
     },
   },
 });
