@@ -57,6 +57,10 @@
           </template>
         </q-table>
       </div>
+      <div class="execute">
+        <q-input outlined v-model="execute_text" label="execute cli" />
+        <q-btn color="white" text-color="black" label="Run" @click="executeCli"/>
+      </div>
     </div>
   </q-page>
 </template>
@@ -135,6 +139,8 @@ export default defineComponent({
       plugin_table_columns,
       //plugin key value ui
       plugin_data_table_columns,
+      //execute ui
+      execute_text:ref(''),
       //datas
       plugin_datas: ref(stub_plugin_datas),
       current_plugin_pos: ref(stub_plugin_pos),
@@ -145,6 +151,9 @@ export default defineComponent({
       //console.log(index);
       this.current_plugin_pos = index;
     },
+    executeCli:function(evt,navigateFn){
+      console.log("test")
+    }
   },
 });
 </script>
