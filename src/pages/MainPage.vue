@@ -8,7 +8,7 @@
           :columns="plugin_table_columns"
           :filter="filter"
           row-key="plugin_name"
-          
+          @row-click="onRowClickPluginTable"
         >
           <template v-slot:top-right>
             <q-input
@@ -90,6 +90,11 @@ export default defineComponent({
       plugin_table_columns,
     };
   },
+  methods:{
+    onRowClickPluginTable:function(evt,row,index){
+      console.log("test")
+    }
+  }
 });
 </script>
 
