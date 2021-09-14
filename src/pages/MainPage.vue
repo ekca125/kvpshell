@@ -28,7 +28,7 @@
       <div class="plugin_data">
         <q-table
           title="Treats"
-          :rows="current_plugin_key_value"
+          :rows="plugin_datas[current_plugin_pos].plugin_key_value"
           :columns="plugin_data_table_columns"
           row-key="name"
         />
@@ -41,8 +41,10 @@
 import { ref } from "vue";
 import { defineComponent } from "vue";
 
-const plugin_datas = [
+const stub_plugin_datas = [
   {
+    //플러그인을 가져올때 생성
+    //CLI 실행 명령의 대체 GUI
     index: 0,
     plugin_name: "plugin_preset",
     plugin_exec: "plugin_exe",
@@ -74,7 +76,7 @@ const plugin_datas = [
   },
 ];
 
-const stub_plugin_pos = 0;
+const stub_plugin_pos = 1;
 
 const plugin_table_columns = [
   {
@@ -104,22 +106,20 @@ export default defineComponent({
   name: "MainPage",
   setup() {
     return {
+      //plugin ui
       filter: ref(""),
-      plugin_datas: plugin_datas,
-      plugin_pos: stub_plugin_pos,
       plugin_table_columns,
-      plugin_data_table_columns
+      //plugin key value ui
+      plugin_data_table_columns,
+      //datas
+      plugin_datas: ref(stub_plugin_datas),
+      current_plugin_pos: ref(stub_plugin_pos),  
     };
-  },
-  computed:{
-    current_plugin_key_value:function(){
-      return plugin_datas[plugin_pos].plugin_key_value
-    }
   },
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
       //console.log(index);
-      this.plugin_pos=index
+      this.current_plugin_pos=index
     },
   },
 });
