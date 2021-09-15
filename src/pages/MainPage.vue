@@ -146,7 +146,6 @@ const plugin_data_table_columns = [
   },
 ];
 
-const spawn = require("child_process").spawn;
 
 export default defineComponent({
   name: "MainPage",
@@ -186,18 +185,7 @@ export default defineComponent({
       }
     },
     executeCli: function (evt, navigateFn) {
-      //var process = spawn("python", ["main.py"]);
-      var process = spawn("mkdir C:\\data\\temp");
 
-      process.stdout.on("data", function (data) {
-        console.log(data.toString());
-      }); // 실행 결과
-
-      process.stderr.on("data", function (data) {
-        console.error(data.toString());
-      }); // 실행 >에러
-
-      console.log(execute_text());
     },
   },
 });
