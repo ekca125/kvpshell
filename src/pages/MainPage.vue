@@ -52,14 +52,24 @@
                   />
                 </q-popup-edit>
               </q-td>
-              
             </q-tr>
           </template>
         </q-table>
       </div>
       <div class="execute">
-        <q-input outlined v-model="execute_text" label="execute cli" />
-        <q-btn color="white" text-color="black" label="Run" @click="executeCli"/>
+        <q-field label="Standard" stack-label>
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">
+              {{ execute_text() }}
+            </div>
+          </template>
+        </q-field>
+        <q-btn
+          color="white"
+          text-color="black"
+          label="Run"
+          @click="executeCli"
+        />
       </div>
     </div>
   </q-page>
@@ -75,7 +85,7 @@ const stub_plugin_datas = [
     //CLI 실행 명령의 대체 GUI
     index: 0,
     plugin_name: "plugin_preset",
-    plugin_exec: "plugin_exe",
+    plugin_exec: "plugin1_exe",
     plugin_key_value: [
       {
         plugin_key: "default key1",
@@ -90,7 +100,7 @@ const stub_plugin_datas = [
   {
     index: 1,
     plugin_name: "plugin_preset",
-    plugin_exec: "plugin_exe",
+    plugin_exec: "plugin2_exe",
     plugin_key_value: [
       {
         plugin_key: "default key4",
@@ -139,21 +149,32 @@ export default defineComponent({
       plugin_table_columns,
       //plugin key value ui
       plugin_data_table_columns,
-      //execute ui
-      execute_text:ref(''),
       //datas
       plugin_datas: ref(stub_plugin_datas),
       current_plugin_pos: ref(stub_plugin_pos),
     };
   },
+  computed: {},
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
-      //console.log(index);
       this.current_plugin_pos = index;
     },
-    executeCli:function(evt,navigateFn){
-      console.log("test")
-    }
+    execute_text() {
+      try {
+        // 여기에다가 replace 문으로 넣기
+        return this.plugin_datas[this.current_plugin_pos].plugin_exec;
+      } catch (e) {
+        return "none";
+      }
+    },
+    executeCli: function (evt, navigateFn) {
+      /*
+        input에서 받아서 cmd로 던진다.
+        참고: https://stackoverflow.com/questions/57054359/run-cmd-exe-and-make-some-command-with-electron-js
+      */
+      console.log(execute_text());
+      //전체적으로 다듬고 c드라이브에 폴더를 만드는 mkdir 명령어로 테스트한후에 electron으로 생성하여 실행
+    },
   },
 });
 </script>
