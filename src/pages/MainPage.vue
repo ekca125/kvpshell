@@ -89,40 +89,38 @@ import { defineComponent } from "vue";
 
 const stub_plugin_datas = [
   {
-    //플러그인을 가져올때 생성
-    //CLI 실행 명령의 대체 GUI
     index: 0,
     plugin_name: "plugin_preset",
-    plugin_exec: "plugin1_exe",
+    plugin_exec: "plugin1_exe --a $KEY1$ --b $KEY2$",
     plugin_key_value: [
       {
-        plugin_key: "default key1",
-        plugin_value: "default key value1",
+        plugin_key: "KEY1",
+        plugin_value: "defaultkey",
       },
       {
-        plugin_key: "default key2",
-        plugin_value: "default key value2",
+        plugin_key: "KEY2",
+        plugin_value: "defaultkey2",
       },
     ],
   },
   {
     index: 1,
     plugin_name: "plugin_preset",
-    plugin_exec: "plugin2_exe",
+    plugin_exec: "plugin2_exe $key3$ $key4$",
     plugin_key_value: [
       {
-        plugin_key: "default key4",
-        plugin_value: "default key value1",
+        plugin_key: "key3",
+        plugin_value: "defaultkey3",
       },
       {
-        plugin_key: "default key5",
-        plugin_value: "default key value2",
+        plugin_key: "key4",
+        plugin_value: "defaultkey4",
       },
     ],
   },
 ];
 
-const stub_plugin_pos = 1;
+const stub_plugin_pos = 0;
 
 const plugin_table_columns = [
   {
@@ -169,10 +167,18 @@ export default defineComponent({
     },
     execute_text() {
       try {
-        // 여기에다가 replace 문으로 넣기
-        //$구조$
-        return this.plugin_datas[this.current_plugin_pos].plugin_exec;
-      } catch (e) {
+        let plugin_exec = this.plugin_datas[this.current_plugin_pos].plugin_exec;
+        let plugin_key_value = this.plugin_datas[this.current_plugin_pos].plugin_key_value
+        for(let i=0;i<plugin_key_value.length;i++){
+          let plugin_key = plugin_key_value[i].plugin_key
+          let plugin_value = plugin_key_value[i].plugin_value
+
+          plugin_key = '$'+plugin_key+'$'
+          plugin_exec = plugin_exec.replace(plugin_key,plugin_value)
+        }
+        return plugin_exec
+      } 
+      catch (e) {
         return "none";
       }
     },
