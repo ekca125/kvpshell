@@ -1,37 +1,202 @@
 <template>
   <q-page class="flex flex-center">
-    <div>
+    <div class="q-pa-md">
       <div class="left">
-        <PluginTableComponent />
-        
+        <div class="plugins">
+          <q-table
+            title="Plugin"
+            :rows="plugin_datas"
+            :columns="plugin_table_columns"
+            :filter="filter"
+            row-key="plugin_name"
+            @row-click="onRowClickPluginTable"
+          >
+            <template v-slot:top-right>
+              <q-input
+                borderless
+                dense
+                debounce="300"
+                v-model="filter"
+                placeholder="Search"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+          </q-table>
+        </div>
       </div>
       <div class="right">
-        <KeyValueTableComponent />
+        <div class="plugin_data">
+          <q-table
+            title="Treats"
+            :rows="plugin_datas[current_plugin_pos].plugin_key_value"
+            :columns="plugin_data_table_columns"
+            row-key="name"
+          >
+            <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td key="plugin_key" :props="props">
+                  {{ props.row.plugin_key }}
+                </q-td>
+                <q-td key="plugin_value" :props="props">
+                  {{ props.row.plugin_value }}
+                  <q-popup-edit
+                    v-model="props.row.plugin_value"
+                    title="Update plugin value"
+                    buttons
+                  >
+                    <q-input
+                      type="text"
+                      v-model="props.row.plugin_value"
+                      dense
+                      autofocus
+                    />
+                  </q-popup-edit>
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+        </div>
+        <div class="execute">
+          <div id="executeinput">
+            <q-field label="Standard" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ execute_text() }}
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div id="executebutton">
+            <q-btn
+              color="white"
+              text-color="black"
+              label="Run"
+              @click="executeCli"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
 </template>
 
 <script>
+import { ref } from "vue";
 import { defineComponent } from "vue";
-import KeyValueTableComponent from "../components/KeyValueTableComponent.vue";
-import PluginTableComponent from "../components/PluginTableComponent.vue";
+
+const stub_plugin_datas = [
+  {
+    index: 0,
+    plugin_name: "plugin_preset",
+    plugin_exec: "plugin1_exe --a $KEY1$ --b $KEY2$",
+    plugin_key_value: [
+      {
+        plugin_key: "KEY1",
+        plugin_value: "defaultkey",
+      },
+      {
+        plugin_key: "KEY2",
+        plugin_value: "defaultkey2",
+      },
+    ],
+  },
+  {
+    index: 1,
+    plugin_name: "plugin_preset",
+    plugin_exec: "plugin2_exe $key3$ $key4$",
+    plugin_key_value: [
+      {
+        plugin_key: "key3",
+        plugin_value: "defaultkey3",
+      },
+      {
+        plugin_key: "key4",
+        plugin_value: "defaultkey4",
+      },
+    ],
+  },
+];
+
+const stub_plugin_pos = 0;
+
+const plugin_table_columns = [
+  {
+    name: "plugin_name",
+    align: "left",
+    label: "plugin_name",
+    field: "plugin_name",
+  },
+];
+
+const plugin_data_table_columns = [
+  {
+    name: "plugin_key",
+    align: "left",
+    label: "plugin_key",
+    field: "plugin_key",
+  },
+  {
+    name: "plugin_value",
+    align: "left",
+    label: "plugin_value",
+    field: "plugin_value",
+  },
+];
+
 
 export default defineComponent({
   name: "MainPage",
-  components: {
-    KeyValueTableComponent,
-    PluginTableComponent
+  setup() {
+    return {
+      // table columns 정의
+      plugin_table_columns,
+      plugin_data_table_columns,
+      // plugin name filter
+      filter: ref(""),
+      // datas
+      plugin_datas: ref(stub_plugin_datas),
+      current_plugin_pos: ref(stub_plugin_pos),
+    };
+  },
+  computed: {},
+  methods: {
+    onRowClickPluginTable: function (evt, row, index) {
+      this.current_plugin_pos = index;
+    },
+    execute_text() {
+      try {
+        let plugin_exec =
+          this.plugin_datas[this.current_plugin_pos].plugin_exec;
+        let plugin_key_value =
+          this.plugin_datas[this.current_plugin_pos].plugin_key_value;
+        for (let i = 0; i < plugin_key_value.length; i++) {
+          let plugin_key = plugin_key_value[i].plugin_key;
+          let plugin_value = plugin_key_value[i].plugin_value;
+
+          plugin_key = "$" + plugin_key + "$";
+          plugin_exec = plugin_exec.replace(plugin_key, plugin_value);
+        }
+        return plugin_exec;
+      } catch (e) {
+        return "none";
+      }
+    },
+    executeCli: function (evt, navigateFn) {
+
+    },
   },
 });
 </script>
 
 <style scoped>
-div {
+div.q-pa-md {
   width: 100%;
-  height: 500px;
-  border: 1px solid #003458;
+  height: 100%;
 }
+
 div.left {
   width: 30%;
   float: left;
@@ -42,19 +207,14 @@ div.right {
   float: right;
   box-sizing: border-box;
 }
-PluginTableComponent{
-  width: 100%;
-  height : 100%;
+
+div#executeinput {
+  display: inline-block;
+  width: 70%;
 }
 
-KeyValueTableComponent{
-  width: 100%;
-  height : 60%;
+div#executebutton {
+  display: inline-block;
+  width: 30%;
 }
-
-ExecuteComponent{
-  width: 100%;
-  height: 40%;
-}
-
 </style>

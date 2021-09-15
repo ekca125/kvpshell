@@ -11,12 +11,14 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "child_process": "^1.0.2",
     "core-js": "^3.6.5",
     "quasar": "^2.0.0"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
+    "electron": "^14.0.1",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",
@@ -37,5 +39,8 @@
     "node": ">= 12.22.1",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
   }
 }
