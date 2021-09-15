@@ -60,22 +60,22 @@
           </q-table>
         </div>
         <div class="execute">
-          <div id = "executeinput">
-          <q-field label="Standard" stack-label>
-            <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">
-                {{ execute_text() }}
-              </div>
-            </template>
-          </q-field>
+          <div id="executeinput">
+            <q-field label="Standard" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ execute_text() }}
+                </div>
+              </template>
+            </q-field>
           </div>
-          <div id = "executebutton">
-          <q-btn
-            color="white"
-            text-color="black"
-            label="Run"
-            @click="executeCli"
-          />
+          <div id="executebutton">
+            <q-btn
+              color="white"
+              text-color="black"
+              label="Run"
+              @click="executeCli"
+            />
           </div>
         </div>
       </div>
@@ -146,6 +146,8 @@ const plugin_data_table_columns = [
   },
 ];
 
+const spawn = require("child_process").spawn;
+
 export default defineComponent({
   name: "MainPage",
   setup() {
@@ -167,28 +169,35 @@ export default defineComponent({
     },
     execute_text() {
       try {
-        let plugin_exec = this.plugin_datas[this.current_plugin_pos].plugin_exec;
-        let plugin_key_value = this.plugin_datas[this.current_plugin_pos].plugin_key_value
-        for(let i=0;i<plugin_key_value.length;i++){
-          let plugin_key = plugin_key_value[i].plugin_key
-          let plugin_value = plugin_key_value[i].plugin_value
+        let plugin_exec =
+          this.plugin_datas[this.current_plugin_pos].plugin_exec;
+        let plugin_key_value =
+          this.plugin_datas[this.current_plugin_pos].plugin_key_value;
+        for (let i = 0; i < plugin_key_value.length; i++) {
+          let plugin_key = plugin_key_value[i].plugin_key;
+          let plugin_value = plugin_key_value[i].plugin_value;
 
-          plugin_key = '$'+plugin_key+'$'
-          plugin_exec = plugin_exec.replace(plugin_key,plugin_value)
+          plugin_key = "$" + plugin_key + "$";
+          plugin_exec = plugin_exec.replace(plugin_key, plugin_value);
         }
-        return plugin_exec
-      } 
-      catch (e) {
+        return plugin_exec;
+      } catch (e) {
         return "none";
       }
     },
     executeCli: function (evt, navigateFn) {
-      /*
-        input에서 받아서 cmd로 던진다.
-        참고: https://stackoverflow.com/questions/57054359/run-cmd-exe-and-make-some-command-with-electron-js
-      */
+      //var process = spawn("python", ["main.py"]);
+      var process = spawn("mkdir C:\\data\\temp");
+
+      process.stdout.on("data", function (data) {
+        console.log(data.toString());
+      }); // 실행 결과
+
+      process.stderr.on("data", function (data) {
+        console.error(data.toString());
+      }); // 실행 >에러
+
       console.log(execute_text());
-      //전체적으로 다듬고 c드라이브에 폴더를 만드는 mkdir 명령어로 테스트한후에 electron으로 생성하여 실행
     },
   },
 });
@@ -211,14 +220,13 @@ div.right {
   box-sizing: border-box;
 }
 
-div#executeinput{
+div#executeinput {
   display: inline-block;
   width: 70%;
 }
 
-div#executebutton{
+div#executebutton {
   display: inline-block;
   width: 30%;
 }
-
 </style>
