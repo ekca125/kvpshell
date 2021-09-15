@@ -69,12 +69,12 @@
               </template>
             </q-field>
           </div>
-          <div id="executebutton">
+          <div id="copydiv">
             <q-btn
               color="white"
               text-color="black"
-              label="Run"
-              @click="executeCli"
+              label="Copy"
+              @click="copyCommand"
             />
           </div>
         </div>
@@ -86,6 +86,8 @@
 <script>
 import { ref } from "vue";
 import { defineComponent } from "vue";
+import { copyToClipboard } from "quasar";
+
 
 const stub_plugin_datas = [
   {
@@ -146,10 +148,12 @@ const plugin_data_table_columns = [
   },
 ];
 
+import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: "MainPage",
   setup() {
+    const $q = useQuasar()
     return {
       // table columns 정의
       plugin_table_columns,
@@ -184,8 +188,14 @@ export default defineComponent({
         return "none";
       }
     },
-    executeCli: function (evt, navigateFn) {
-
+    copyCommand: function (evt, navigateFn) {
+      copyToClipboard(this.execute_text())
+        .then(() => {
+          this.$q.notify('Success')
+        })
+        .catch(() => {
+          this.$q.notify('Fail')
+        });
     },
   },
 });
