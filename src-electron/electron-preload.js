@@ -50,6 +50,9 @@ const stubPluginDatas = [
   },
 ];
 
+//파일 불러오기
+
+
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
     return stubPluginDatas;
