@@ -22,7 +22,7 @@ const fs = require('fs');
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
     const pluginDatas = fs.readFileSync('.//plugins.json', 'utf8')
-    console.log(pluginDatas)
+    //console.log(pluginDatas)
     return JSON.parse(pluginDatas)
   },
 });
