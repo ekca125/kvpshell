@@ -15,3 +15,14 @@
  *     doAThing: () => {}
  *   })
  */
+const { contextBridge } = require("electron");
+
+const fs = require('fs');
+
+contextBridge.exposeInMainWorld("apiPluginData", {
+  getPluginData: (channel, data) => {
+    const pluginDatas = fs.readFileSync('.//plugins.json', 'utf8')
+    //console.log(pluginDatas)
+    return JSON.parse(pluginDatas)
+  },
+});

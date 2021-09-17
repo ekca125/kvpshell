@@ -1,8 +1,8 @@
 {
   "name": "kvpshell",
-  "version": "0.0.1",
+  "version": "0.1",
   "description": "kvpshell",
-  "productName": "kvpshell app",
+  "productName": "kvpshell",
   "author": "ekca125 <63381869+ekca125@users.noreply.github.com>",
   "private": true,
   "scripts": {
@@ -19,6 +19,7 @@
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
     "electron": "^14.0.1",
+    "electron-packager": "^15.4.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^7.0.0",

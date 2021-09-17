@@ -84,6 +84,9 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 
+const pluginDatas = window.apiPluginData.getPluginData("", {});
+
+/*
 const stubPluginDatas = [
   {
     index: 0,
@@ -116,8 +119,8 @@ const stubPluginDatas = [
     ],
   },
 ];
-
-const stubPluginPos = 0;
+*/
+const PluginPos = 0;
 
 const pluginDataTableColumns = [
   {
@@ -156,8 +159,8 @@ export default defineComponent({
       // plugin name filter
       filter: ref(""),
       // datas
-      pluginDatas: ref(stubPluginDatas),
-      currentPluginPos: ref(stubPluginPos),
+      pluginDatas: ref(pluginDatas),
+      currentPluginPos: ref(PluginPos),
     };
   },
   computed: {
