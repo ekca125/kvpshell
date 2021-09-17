@@ -1,8 +1,8 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <div class="left">
-        <div class="plugins">
+      <div class="left-screen">
+        <div id="plugin-container">
           <q-table
             title="Plugin"
             :rows="plugin_datas"
@@ -27,10 +27,10 @@
           </q-table>
         </div>
       </div>
-      <div class="right">
-        <div class="plugin_data">
+      <div class="right-screen">
+        <div id="plugin-info-container">
           <q-table
-            title="Treats"
+            title="Plugin Key Value"
             :rows="plugin_datas[current_plugin_pos].plugin_key_value"
             :columns="plugin_data_table_columns"
             row-key="name"
@@ -59,8 +59,8 @@
             </template>
           </q-table>
         </div>
-        <div class="execute">
-          <div id="executeinput">
+        <div class="plugin-execute-container">
+          <div id="plugin-execute-input">
             <q-field label="Standard" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
@@ -68,14 +68,14 @@
                 </div>
               </template>
             </q-field>
-          </div>
-          <div id="copydiv">
-            <q-btn
-              color="white"
-              text-color="black"
-              label="Copy"
-              @click="copyCommand"
-            />
+            <div id="plugin-execute-btn">
+              <q-btn
+                color="white"
+                text-color="black"
+                label="Copy"
+                @click="copyCommand"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -87,7 +87,6 @@
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
-
 
 const stub_plugin_datas = [
   {
@@ -148,12 +147,12 @@ const plugin_data_table_columns = [
   },
 ];
 
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "MainPage",
   setup() {
-    const $q = useQuasar()
+    const $q = useQuasar();
     return {
       // table columns 정의
       plugin_table_columns,
@@ -191,10 +190,10 @@ export default defineComponent({
     copyCommand: function (evt, navigateFn) {
       copyToClipboard(this.execute_text())
         .then(() => {
-          this.$q.notify('Success')
+          this.$q.notify("Success");
         })
         .catch(() => {
-          this.$q.notify('Fail')
+          this.$q.notify("Fail");
         });
     },
   },
@@ -207,24 +206,19 @@ div.q-pa-md {
   height: 100%;
 }
 
-div.left {
+div.left-screen {
   width: 30%;
   float: left;
   box-sizing: border-box;
 }
-div.right {
+div.right-screen {
   width: 70%;
   float: right;
   box-sizing: border-box;
 }
 
-div#executeinput {
+div#plugin-execute-container {
   display: inline-block;
   width: 70%;
-}
-
-div#executebutton {
-  display: inline-block;
-  width: 30%;
 }
 </style>
