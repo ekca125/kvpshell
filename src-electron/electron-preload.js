@@ -17,40 +17,6 @@
  */
 const { contextBridge } = require("electron");
 
-const stubPluginDatas = [
-  {
-    index: 0,
-    pluginName: "plugin_preset",
-    pluginExec: "plugin1_exe --a $KEY1$ --b $KEY2$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY1",
-        pluginValue: "defaultkey",
-      },
-      {
-        pluginKey: "KEY2",
-        pluginValue: "defaultkey2",
-      },
-    ],
-  },
-  {
-    index: 1,
-    pluginName: "plugin_preset2",
-    pluginExec: "plugin2_exe --ab $KEY3$ --bb $KEY4$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY3",
-        pluginValue: "defaultkey3",
-      },
-      {
-        pluginKey: "KEY4",
-        pluginValue: "defaultkey4",
-      },
-    ],
-  },
-];
-
-//파일 불러오기
 const fs = require('fs');
 
 contextBridge.exposeInMainWorld("apiPluginData", {
