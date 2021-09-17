@@ -51,10 +51,11 @@ const stubPluginDatas = [
 ];
 
 //파일 불러오기
-
+const fs = require('fs');
 
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
-    return stubPluginDatas;
+    const pluginData = fs.readFileSync('C:\\data\\plugins.json', 'utf8')
+    return JSON.parse(pluginData)
   },
 });
