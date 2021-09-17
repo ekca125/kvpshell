@@ -84,6 +84,9 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 
+a=window.api.request("넘긴값", {value:1234, key:'key', calback :(result)=>{
+            console.log('요청 후 결과 값 : ',result);
+        }});
 const stubPluginDatas = [
   {
     index: 0,
