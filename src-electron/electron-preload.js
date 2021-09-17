@@ -15,13 +15,43 @@
  *     doAThing: () => {}
  *   })
  */
- const { contextBridge } = require("electron");
+const { contextBridge } = require("electron");
 
- contextBridge.exposeInMainWorld(
-     "api", {  //이름은 api입니닷
-         request : (channel, data) => {
-             console.log(channel, data);//html에서 넘기는 값, channel로 구분하면 된다.
-             data.calback({result:'Hello Relpy'});
-         }
-     }
- );
+const stubPluginDatas = [
+  {
+    index: 0,
+    pluginName: "plugin_preset",
+    pluginExec: "plugin1_exe --a $KEY1$ --b $KEY2$",
+    pluginKeyValue: [
+      {
+        pluginKey: "KEY1",
+        pluginValue: "defaultkey",
+      },
+      {
+        pluginKey: "KEY2",
+        pluginValue: "defaultkey2",
+      },
+    ],
+  },
+  {
+    index: 1,
+    pluginName: "plugin_preset2",
+    pluginExec: "plugin2_exe --ab $KEY3$ --bb $KEY4$",
+    pluginKeyValue: [
+      {
+        pluginKey: "KEY3",
+        pluginValue: "defaultkey3",
+      },
+      {
+        pluginKey: "KEY4",
+        pluginValue: "defaultkey4",
+      },
+    ],
+  },
+];
+
+contextBridge.exposeInMainWorld("apiPluginData", {
+  getPluginData: (channel, data) => {
+    return stubPluginDatas;
+  },
+});

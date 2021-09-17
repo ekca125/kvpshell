@@ -84,9 +84,9 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 
-a=window.api.request("넘긴값", {value:1234, key:'key', calback :(result)=>{
-            console.log('요청 후 결과 값 : ',result);
-        }});
+const pluginDatas = window.apiPluginData.getPluginData("", {});
+
+/*
 const stubPluginDatas = [
   {
     index: 0,
@@ -119,8 +119,8 @@ const stubPluginDatas = [
     ],
   },
 ];
-
-const stubPluginPos = 0;
+*/
+const PluginPos = 0;
 
 const pluginDataTableColumns = [
   {
@@ -159,8 +159,8 @@ export default defineComponent({
       // plugin name filter
       filter: ref(""),
       // datas
-      pluginDatas: ref(stubPluginDatas),
-      currentPluginPos: ref(stubPluginPos),
+      pluginDatas: ref(pluginDatas),
+      currentPluginPos: ref(PluginPos),
     };
   },
   computed: {
