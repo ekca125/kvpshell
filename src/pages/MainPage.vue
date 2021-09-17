@@ -1,14 +1,13 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <div class="left">
-        <div class="plugins">
+      <div class="left-screen">
           <q-table
             title="Plugin"
-            :rows="plugin_datas"
-            :columns="plugin_table_columns"
+            :rows="pluginDatas"
+            :columns="pluginDataTableColumns"
             :filter="filter"
-            row-key="plugin_name"
+            row-key="pluginName"
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
@@ -25,31 +24,30 @@
               </q-input>
             </template>
           </q-table>
-        </div>
       </div>
-      <div class="right">
-        <div class="plugin_data">
+      <div class="right-screen">
           <q-table
-            title="Treats"
-            :rows="plugin_datas[current_plugin_pos].plugin_key_value"
-            :columns="plugin_data_table_columns"
+            id = "kv-table"
+            title="Plugin Key Value"
+            :rows="pluginDatas[currentPluginPos].pluginKeyValue"
+            :columns="pluginKeyValueTableColums"
             row-key="name"
           >
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="plugin_key" :props="props">
-                  {{ props.row.plugin_key }}
+                <q-td key="pluginKey" :props="props">
+                  {{ props.row.pluginKey }}
                 </q-td>
-                <q-td key="plugin_value" :props="props">
-                  {{ props.row.plugin_value }}
+                <q-td key="pluginValue" :props="props">
+                  {{ props.row.pluginValue }}
                   <q-popup-edit
-                    v-model="props.row.plugin_value"
+                    v-model="props.row.pluginValue"
                     title="Update plugin value"
                     buttons
                   >
                     <q-input
                       type="text"
-                      v-model="props.row.plugin_value"
+                      v-model="props.row.pluginValue"
                       dense
                       autofocus
                     />
@@ -58,26 +56,24 @@
               </q-tr>
             </template>
           </q-table>
-        </div>
-        <div class="execute">
-          <div id="executeinput">
-            <q-field label="Standard" stack-label>
-              <template v-slot:control>
-                <div class="self-center full-width no-outline" tabindex="0">
-                  {{ execute_text() }}
-                </div>
-              </template>
-            </q-field>
-          </div>
-          <div id="copydiv">
-            <q-btn
-              color="white"
-              text-color="black"
-              label="Copy"
-              @click="copyCommand"
-            />
-          </div>
-        </div>
+
+          <q-field 
+            id = "kv-exec-field"
+            label="Standard" 
+            stack-label>
+            <template v-slot:control>
+              <div class="self-center full-width no-outline" tabindex="0">
+                {{ getExecuteCommand() }}
+              </div>
+            </template>
+          </q-field>
+          <q-btn
+            id = "kv-exec-btn"
+            color="white"
+            text-color="black"
+            label="Copy"
+            @click="copyCommand"
+          />
       </div>
     </div>
   </q-page>
@@ -88,113 +84,116 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 
-
-const stub_plugin_datas = [
+const stubPluginDatas = [
   {
     index: 0,
-    plugin_name: "plugin_preset",
-    plugin_exec: "plugin1_exe --a $KEY1$ --b $KEY2$",
-    plugin_key_value: [
+    pluginName: "plugin_preset",
+    pluginExec: "plugin1_exe --a $KEY1$ --b $KEY2$",
+    pluginKeyValue: [
       {
-        plugin_key: "KEY1",
-        plugin_value: "defaultkey",
+        pluginKey: "KEY1",
+        pluginValue: "defaultkey",
       },
       {
-        plugin_key: "KEY2",
-        plugin_value: "defaultkey2",
+        pluginKey: "KEY2",
+        pluginValue: "defaultkey2",
       },
     ],
   },
   {
     index: 1,
-    plugin_name: "plugin_preset",
-    plugin_exec: "plugin2_exe $key3$ $key4$",
-    plugin_key_value: [
+    pluginName: "plugin_preset2",
+    pluginExec: "plugin2_exe --ab $KEY1$ --bb $KEY2$",
+    pluginKeyValue: [
       {
-        plugin_key: "key3",
-        plugin_value: "defaultkey3",
+        pluginKey: "KEY3",
+        pluginValue: "defaultkey3",
       },
       {
-        plugin_key: "key4",
-        plugin_value: "defaultkey4",
+        pluginKey: "KEY4",
+        pluginValue: "defaultkey4",
       },
     ],
   },
 ];
 
-const stub_plugin_pos = 0;
+const stubPluginPos = 0;
 
-const plugin_table_columns = [
+const pluginDataTableColumns = [
   {
     name: "plugin_name",
     align: "left",
     label: "plugin_name",
-    field: "plugin_name",
+    field: "pluginName",
   },
 ];
 
-const plugin_data_table_columns = [
+const pluginKeyValueTableColums = [
   {
-    name: "plugin_key",
+    name: "pluginKey",
     align: "left",
-    label: "plugin_key",
-    field: "plugin_key",
+    label: "pluginKey",
+    field: "pluginKey",
   },
   {
-    name: "plugin_value",
+    name: "pluginValue",
     align: "left",
-    label: "plugin_value",
-    field: "plugin_value",
+    label: "pluginValue",
+    field: "pluginValue",
   },
 ];
 
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "MainPage",
   setup() {
-    const $q = useQuasar()
+    const $q = useQuasar();
     return {
       // table columns 정의
-      plugin_table_columns,
-      plugin_data_table_columns,
+      pluginDataTableColumns,
+      pluginKeyValueTableColums,
       // plugin name filter
       filter: ref(""),
       // datas
-      plugin_datas: ref(stub_plugin_datas),
-      current_plugin_pos: ref(stub_plugin_pos),
+      pluginDatas: ref(stubPluginDatas),
+      currentPluginPos: ref(stubPluginPos),
     };
   },
-  computed: {},
+  computed: {
+
+  },
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
-      this.current_plugin_pos = index;
+      this.currentPluginPos = index;
     },
-    execute_text() {
+    getExecuteCommand() {
       try {
-        let plugin_exec =
-          this.plugin_datas[this.current_plugin_pos].plugin_exec;
-        let plugin_key_value =
-          this.plugin_datas[this.current_plugin_pos].plugin_key_value;
-        for (let i = 0; i < plugin_key_value.length; i++) {
-          let plugin_key = plugin_key_value[i].plugin_key;
-          let plugin_value = plugin_key_value[i].plugin_value;
+        let pluginExec =
+          this.pluginDatas[this.currentPluginPos].pluginExec;
+        let pluginKeyValue =
+          this.pluginDatas[this.currentPluginPos].pluginKeyValue;
 
-          plugin_key = "$" + plugin_key + "$";
-          plugin_exec = plugin_exec.replace(plugin_key, plugin_value);
+        for (let i = 0; i < pluginKeyValue.length; i++) {
+          let pluginKey = pluginKeyValue[i].pluginKey;
+          let pluginValue = pluginKeyValue[i].pluginValue;
+
+          pluginKey = "$" + pluginKey + "$";
+          pluginExec = pluginExec.replace(pluginKey, pluginValue);
         }
-        return plugin_exec;
+        return pluginExec;
       } catch (e) {
+        console.log(e)
         return "none";
       }
     },
     copyCommand: function (evt, navigateFn) {
-      copyToClipboard(this.execute_text())
+      copyToClipboard(this.getExecuteCommand())
         .then(() => {
-          this.$q.notify('Success')
+          this.$q.notify("Success");
         })
         .catch(() => {
-          this.$q.notify('Fail')
+          this.$q.notify("Fail");
         });
     },
   },
@@ -207,24 +206,28 @@ div.q-pa-md {
   height: 100%;
 }
 
-div.left {
-  width: 30%;
+div.left-screen {
+  width: 40%;
   float: left;
   box-sizing: border-box;
 }
-div.right {
-  width: 70%;
+div.right-screen {
+  width: 55%;
   float: right;
   box-sizing: border-box;
 }
 
-div#executeinput {
-  display: inline-block;
-  width: 70%;
+q-table#kv-table{
+  display: block;
 }
 
-div#executebutton {
-  display: inline-block;
-  width: 30%;
+q-field#kv-exec-field{
+  display: block;
 }
+
+q-btn#kv-exec-btn{
+  display: block;
+  float: right;
+}
+
 </style>
