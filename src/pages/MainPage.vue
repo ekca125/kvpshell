@@ -85,41 +85,6 @@ import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 
 const pluginDatas = window.apiPluginData.getPluginData("", {});
-
-/*
-const stubPluginDatas = [
-  {
-    index: 0,
-    pluginName: "plugin_preset",
-    pluginExec: "plugin1_exe --a $KEY1$ --b $KEY2$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY1",
-        pluginValue: "defaultkey",
-      },
-      {
-        pluginKey: "KEY2",
-        pluginValue: "defaultkey2",
-      },
-    ],
-  },
-  {
-    index: 1,
-    pluginName: "plugin_preset2",
-    pluginExec: "plugin2_exe --ab $KEY1$ --bb $KEY2$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY3",
-        pluginValue: "defaultkey3",
-      },
-      {
-        pluginKey: "KEY4",
-        pluginValue: "defaultkey4",
-      },
-    ],
-  },
-];
-*/
 const PluginPos = 0;
 
 const pluginDataTableColumns = [
