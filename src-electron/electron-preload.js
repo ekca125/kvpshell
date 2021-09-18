@@ -23,7 +23,19 @@ contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
     //const pluginDatas = fs.readFileSync('.//plugins.json', 'utf8')
     //console.log(pluginDatas)
-    const pluginDatas = fs.readFileSync('C://data//plugins.json', 'utf8')
-    return JSON.parse(pluginDatas)
+    let pluginFolder = "C://data//plugins//"
+    let pluginDatas = []
+    let i = 0;
+    fs.readdirSync(pluginFolder).forEach(
+      fileName => {
+        filePath = pluginFolder + fileName
+        fileData = fs.readFileSync(filePath, 'utf8')
+        fileJson = JSON.parse(fileData)
+        fileJson["index"] = i;
+        pluginDatas[i]=fileJson
+        i++;
+      }
+    )
+    return pluginDatas
   },
 });
