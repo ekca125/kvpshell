@@ -72,14 +72,15 @@
               color="white"
               text-color="black"
               label="Copy"
-              @click="copyCommand"
+              @click="onCopyCommand"
             />
           </div>
           <div
             class="kv-js"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
           >
-          <!--kv-js 연결 -->
+            <!--kv-js 연결 -->
+            <q-btn label="Prompt" color="primary" @click="prompt"></q-btn>
           </div>
         </div>
       </div>
@@ -91,69 +92,79 @@
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
-
-const pluginDatas = window.apiPluginData.getPluginData("", {});
-const PluginPos = 0;
-
-const pluginDataTableColumns = [
-  {
-    name: "pluginName",
-    align: "left",
-    label: "pluginName",
-    field: "pluginName",
-  },
-  {
-    name: "pluginMode",
-    align: "left",
-    label: "pluginMode",
-    field: "pluginMode",
-  },
-  {
-    name: "pluginDesc",
-    align: "left",
-    label: "pluginDesc",
-    field: "pluginDesc",
-  },
-];
-
-const pluginKeyValueTableColums = [
-  {
-    name: "pluginKey",
-    align: "left",
-    label: "pluginKey",
-    field: "pluginKey",
-  },
-  {
-    name: "pluginValue",
-    align: "left",
-    label: "pluginValue",
-    field: "pluginValue",
-  },
-];
-
 import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "MainPage",
   setup() {
+    // quasar function
     const $q = useQuasar();
+
+    // ui 정의
+    const pluginDataTableColumns = [
+      {
+        name: "pluginName",
+        align: "left",
+        label: "pluginName",
+        field: "pluginName",
+      },
+      {
+        name: "pluginMode",
+        align: "left",
+        label: "pluginMode",
+        field: "pluginMode",
+      },
+      {
+        name: "pluginDesc",
+        align: "left",
+        label: "pluginDesc",
+        field: "pluginDesc",
+      },
+    ];
+
+    const pluginKeyValueTableColums = [
+      {
+        name: "pluginKey",
+        align: "left",
+        label: "pluginKey",
+        field: "pluginKey",
+      },
+      {
+        name: "pluginValue",
+        align: "left",
+        label: "pluginValue",
+        field: "pluginValue",
+      },
+    ];
+
+    // 반환
     return {
-      // table columns 정의
+      // table columns
       pluginDataTableColumns,
       pluginKeyValueTableColums,
-      // plugin name filter
+      // data
       filter: ref(""),
-      // datas
-      pluginDatas: ref(pluginDatas),
-      currentPluginPos: ref(PluginPos),
-      confirm: ref(false),
+      pluginDatas: ref(window.apiPluginData.getPluginData("", {})),
+      currentPluginPos: ref(0),
+      confirm: ref(false)
     };
   },
   computed: {},
   methods: {
+    // events
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
     },
+    onCopyCommand: function(evt, navigateFn) {
+      copyToClipboard(this.getExecuteCommand())
+        .then(() => {
+          this.$q.notify("Success");
+        })
+        .catch(() => {
+          this.$q.notify("Fail");
+        });
+    },
+
     getExecuteCommand() {
       try {
         let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
@@ -173,18 +184,29 @@ export default defineComponent({
         return "none";
       }
     },
-    copyCommand: function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
-        .then(() => {
-          this.$q.notify("Success");
-        })
-        .catch(() => {
-          this.$q.notify("Fail");
-        });
+    
+    prompt: function () {
+      this.$q.dialog({
+        title: 'Prompt',
+        message: 'What is your name?',
+        prompt: {
+          model: '',
+          type: 'textarea' // optional
+        },
+        cancel: true,
+        persistent: true
+      }).onOk(data => {
+        // console.log('>>>> OK, received', data)
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
     },
+
     confirmAndRun: function (evt, navigateFn) {
       console.log("confirmAndRun");
-    },
+    }
   },
 });
 </script>
@@ -205,7 +227,4 @@ div.right-screen {
   float: right;
   box-sizing: border-box;
 }
-
-
-
 </style>
