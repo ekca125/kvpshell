@@ -79,8 +79,7 @@
             class="kv-js"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
           >
-            <!--kv-js 연결 -->
-            <q-btn label="Prompt" color="primary" @click="prompt"></q-btn>
+            <q-btn label="Execute" color="primary" @click="prompt"></q-btn>
           </div>
         </div>
       </div>
@@ -197,6 +196,7 @@ export default defineComponent({
         persistent: true
       }).onOk(data => {
          console.log('>>>> OK, received', data)
+         window.apiEval.runEval("",{"script":this.getExecuteCommand()})
       }).onCancel(() => {
          console.log('>>>> Cancel')
       }).onDismiss(() => {

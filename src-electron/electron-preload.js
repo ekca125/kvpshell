@@ -47,9 +47,13 @@ contextBridge.exposeInMainWorld("apiPluginData", {
         pluginIndex++;
       }
     )
-
-    
-
     return pluginDatas
   },
 });
+
+contextBridge.exposeInMainWorld("apiEval", {
+  runEval: (channel, data) => {
+    eval(data["script"])
+  },
+});
+
