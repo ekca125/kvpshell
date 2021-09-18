@@ -145,7 +145,7 @@ export default defineComponent({
       filter: ref(""),
       pluginDatas: ref(window.apiPluginData.getPluginData("", {})),
       currentPluginPos: ref(0),
-      confirm: ref(false)
+      confirm: ref(false),
     };
   },
   computed: {},
@@ -154,7 +154,7 @@ export default defineComponent({
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
     },
-    onCopyCommand: function(evt, navigateFn) {
+    onCopyCommand: function (evt, navigateFn) {
       copyToClipboard(this.getExecuteCommand())
         .then(() => {
           this.$q.notify("Success");
@@ -183,26 +183,30 @@ export default defineComponent({
         return "none";
       }
     },
-    
+
     prompt: function () {
-      this.$q.dialog({
-        title: 'Check',
-        message: 'Confirm Execution',
-        prompt: {
-          model: this.getExecuteCommand(),
-          type: 'textarea' // optional
-        },
-        cancel: true,
-        persistent: true
-      }).onOk(data => {
-         console.log('>>>> OK, received', data)
-         window.apiEval.runEval("",{"script":this.getExecuteCommand()})
-      }).onCancel(() => {
-         console.log('>>>> Cancel')
-      }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
-      })
-    }
+      this.$q
+        .dialog({
+          title: "Check",
+          message: "Confirm Execution",
+          prompt: {
+            model: this.getExecuteCommand(),
+            type: "textarea", // optional
+          },
+          cancel: true,
+          persistent: true,
+        })
+        .onOk((data) => {
+          window.apiEval.runEval("", { script: this.getExecuteCommand() });
+          this.$q.notify("run script");
+        })
+        .onCancel(() => {
+          this.$q.notify("cancel");
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    },
   },
 });
 </script>

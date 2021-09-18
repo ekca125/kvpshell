@@ -39,9 +39,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
         //if exec js
         if(pluginInfoJson["pluginMode"]==="js"){
           let pluginExecPath = path.join(pluginFolderPath,pluginInfoJson["pluginExec"])
-          console.log(pluginExecPath)
           pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, 'utf8')
-          console.log(pluginInfoJson["pluginExec"])
         }
         pluginDatas[pluginIndex]=pluginInfoJson
         pluginIndex++;
