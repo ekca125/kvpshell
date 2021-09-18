@@ -27,7 +27,6 @@
       </div>
       <div class="right-screen">
         <q-table
-          id="kv-table"
           title="Plugin Key Value"
           :rows="pluginDatas[currentPluginPos].pluginKeyValue"
           :columns="pluginKeyValueTableColums"
@@ -61,7 +60,7 @@
             class="kv-exec"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'exec'"
           >
-            <q-field id="kv-exec-field" label="Standard" stack-label>
+            <q-field id="kv-exec-field" label="CLI Command" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
                   {{ getExecuteCommand() }}
@@ -80,28 +79,9 @@
             class="kv-js"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
           >
-            <q-btn
-              id="kv-js-btn"
-              color="white"
-              text-color="black"
-              label="Confirm And Run"
-              @click="confirm = true"
-            />
+          <!--kv-js 연결 -->
           </div>
         </div>
-
-        <q-dialog v-model="confirm" persistent>
-          <q-card>
-            <q-card-section class="row items-center">
-              {{ getExecuteCommand() }}
-            </q-card-section>
-
-            <q-card-actions align="right">
-              <q-btn flat label="Cancel" color="primary" v-close-popup></q-btn>
-              <q-btn flat label="Run" color="primary" v-close-popup></q-btn>
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
       </div>
     </div>
   </q-page>
@@ -226,18 +206,6 @@ div.right-screen {
   box-sizing: border-box;
 }
 
-q-table#kv-table {
-  display: block;
-}
-
-q-field#kv-exec-field {
-  display: block;
-}
-
-q-btn#kv-exec-btn {
-  display: block;
-  float: right;
-}
 
 
 </style>
