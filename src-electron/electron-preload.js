@@ -18,24 +18,38 @@
 const { contextBridge } = require("electron");
 
 const fs = require('fs');
+const path = require("path");
 
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
-    //const pluginDatas = fs.readFileSync('.//plugins.json', 'utf8')
-    //console.log(pluginDatas)
-    let pluginFolder = "C://data//plugins//"
+    // datas
     let pluginDatas = []
-    let i = 0;
-    fs.readdirSync(pluginFolder).forEach(
-      fileName => {
-        filePath = pluginFolder + fileName
-        fileData = fs.readFileSync(filePath, 'utf8')
-        fileJson = JSON.parse(fileData)
-        fileJson["index"] = i;
-        pluginDatas[i]=fileJson
-        i++;
+    let pluginIndex = 0
+    //path
+    let pluginSpacePathStub = path.join("C://","data","plugins")
+    let pluginSpacePath = pluginSpacePathStub
+
+    fs.readdirSync(pluginSpacePath).forEach(
+      pluginFolderName =>{
+        let pluginFolderPath = path.join(pluginSpacePath,pluginFolderName)
+        let pluginInfoPath = path.join(pluginFolderPath,"info.json")
+        //
+        pluginInfo = fs.readFileSync(pluginInfoPath, 'utf8')
+        pluginInfoJson = JSON.parse(pluginInfo)
+        //if exec js
+        if(pluginInfoJson["pluginMode"]==="js"){
+          let pluginExecPath = path.join(pluginFolderPath,pluginInfoJson["pluginExec"])
+          console.log(pluginExecPath)
+          pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, 'utf8')
+          console.log(pluginInfoJson["pluginExec"])
+        }
+        pluginDatas[pluginIndex]=pluginInfoJson
+        pluginIndex++;
       }
     )
+
+    
+
     return pluginDatas
   },
 });
