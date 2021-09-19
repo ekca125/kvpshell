@@ -86,7 +86,7 @@
             class="kv-js"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
           >
-            <q-btn label="Execute" color="primary" @click="prompt"></q-btn>
+            <q-btn label="Execute" color="primary" @click="showConfirmDialog"></q-btn>
           </div>
         </div>
       </div>
@@ -172,7 +172,8 @@ export default defineComponent({
     },
 
     onStartRun: function (evt, navigateFn) {
-      window.apiChildProcess.runChildProcess("",{ script: this.getExecuteCommand() })
+      let result = window.apiChildProcess.runChildProcess("",{ script: this.getExecuteCommand() })
+      this.showResultDialog(result)
     },
 
     getExecuteCommand() {
@@ -195,7 +196,7 @@ export default defineComponent({
       }
     },
 
-    prompt: function () {
+    showConfirmDialog: function () {
       this.$q
         .dialog({
           title: "Check",
@@ -208,8 +209,7 @@ export default defineComponent({
           persistent: true,
         })
         .onOk((data) => {
-          window.apiEval.runEval("", { script: this.getExecuteCommand() });
-          this.$q.notify("run script");
+          let result = window.apiEval.runEval("", { script: this.getExecuteCommand() });
         })
         .onCancel(() => {
           this.$q.notify("cancel");
@@ -218,6 +218,19 @@ export default defineComponent({
           // console.log('I am triggered on both OK and Cancel')
         });
     },
+
+    showResultDialog : function (selectMessage) {
+      this.$q.dialog({
+        title: 'Result',
+        message: selectMessage
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
   },
 });
 </script>
