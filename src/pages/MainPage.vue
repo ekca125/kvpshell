@@ -37,6 +37,9 @@
               <q-td key="pluginKey" :props="props">
                 {{ props.row.pluginKey }}
               </q-td>
+              <q-td key="pluginKeyDesc" :props="props">
+                {{ props.row.pluginKeyDesc }}
+              </q-td>
               <q-td key="pluginValue" :props="props">
                 {{ props.row.pluginValue }}
                 <q-popup-edit
@@ -134,6 +137,12 @@ export default defineComponent({
         align: "left",
         label: "pluginKey",
         field: "pluginKey",
+      },
+      {
+        name: "pluginKeyDesc",
+        align: "left",
+        label: "pluginKeyDesc",
+        field: "pluginKeyDesc",
       },
       {
         name: "pluginValue",
