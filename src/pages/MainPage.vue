@@ -68,11 +68,18 @@
               </template>
             </q-field>
             <q-btn
-              id="kv-exec-btn"
+              id="kv-cli-copy-btn"
               color="white"
               text-color="black"
               label="Copy"
               @click="onCopyCommand"
+            />
+            <q-btn
+              id="kv-run-btn"
+              color="white"
+              text-color="black"
+              label="Run"
+              @click="onStartRun"
             />
           </div>
           <div
@@ -162,6 +169,10 @@ export default defineComponent({
         .catch(() => {
           this.$q.notify("Fail");
         });
+    },
+
+    onStartRun: function (evt, navigateFn) {
+      window.apiChildProcess.runChildProcess("",{ script: this.getExecuteCommand() })
     },
 
     getExecuteCommand() {

@@ -19,6 +19,7 @@ const { contextBridge } = require("electron");
 
 const fs = require('fs');
 const path = require("path");
+const execSync = require('child_process').execSync;
 
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
@@ -54,4 +55,12 @@ contextBridge.exposeInMainWorld("apiEval", {
     eval(data["script"])
   },
 });
+
+contextBridge.exposeInMainWorld("apiChildProcess", {
+  runChildProcess: (channel, data) => {
+    let cmd = data["script"]
+    let result = execSync(cmd).toString()
+  },
+});
+
 
