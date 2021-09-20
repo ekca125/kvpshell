@@ -29,7 +29,7 @@
         <q-table
           title="Plugin Key Value"
           :rows="pluginDatas[currentPluginPos].pluginKeyValue"
-          :columns="pluginKeyValueTableColums"
+          :columns="pluginKeyValueTableColumns"
           row-key="name"
         >
           <template v-slot:body="props">
@@ -89,7 +89,11 @@
             class="kv-js"
             v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
           >
-            <q-btn label="Execute" color="primary" @click="showConfirmDialog"></q-btn>
+            <q-btn
+              label="Execute"
+              color="primary"
+              @click="showConfirmDialog"
+            ></q-btn>
           </div>
         </div>
       </div>
@@ -102,6 +106,7 @@ import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
 import { useQuasar } from "quasar";
+import { computed, reactive } from "vue";
 
 export default defineComponent({
   name: "MainPage",
@@ -131,7 +136,7 @@ export default defineComponent({
       },
     ];
 
-    const pluginKeyValueTableColums = [
+    const pluginKeyValueTableColumns = [
       {
         name: "pluginKey",
         align: "left",
@@ -153,21 +158,48 @@ export default defineComponent({
     ];
 
     // 함수 정의
-    let showResultDialog = function (selectMessage) {
-      this.$q.dialog({
-        title: 'Result',
-        message: selectMessage
-      }).onOk(() => {
-        // console.log('OK')
-      }).onCancel(() => {
-        // console.log('Cancel')
-      }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
-      })
-    }
+    const showResultDialog = function (selectMessage) {
+      $q
+        .dialog({
+          title: "Result",
+          message: selectMessage,
+        })
+        .onOk(() => {
+          // console.log('OK')
+        })
+        .onCancel(() => {
+          // console.log('Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    };
+
+    // events
+    const onRowClickPluginTable = function (evt, row, index) {
+      currentPluginPos = index;
+      this.$forceUpdate();
+    };
+
+    const onCliCopy = function (evt, navigateFn) {
+      copyToClipboard(this.getExecuteCommand())
+        .then(() => {
+          $q.notify("Success");
+        })
+        .catch(() => {
+          $q.notify("Fail");
+        });
+    };
+
+    const onCliRun = function (evt, navigateFn) {
+      let result = window.apiChildProcess.runChildProcess("", {
+        script: getExecuteCommand(),
+      });
+      showResultDialog(result);
+    };
 
     // 데이터
-    let pluginDatas = ref(window.apiPluginData.getPluginData("", {}));
+    let pluginDatas = reactive(window.apiPluginData.getPluginData("", {}));
     let pluginNameFilter = ref("");
     let currentPluginPos = ref(0);
     let confirm = ref(false);
@@ -176,34 +208,23 @@ export default defineComponent({
     return {
       // data
       pluginDataTableColumns,
-      pluginKeyValueTableColums,
+      pluginKeyValueTableColumns,
       pluginNameFilter,
       pluginDatas,
       currentPluginPos,
       confirm,
       //function
-      showResultDialog
+      showResultDialog,
+      //events
+      onRowClickPluginTable,
+      onCliCopy,
+      onCliRun
     };
   },
   computed: {},
   methods: {
-    // events
-    onRowClickPluginTable: function (evt, row, index) {
-      this.currentPluginPos = index;
-    },
-    onCliCopy: function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
-        .then(() => {
-          this.$q.notify("Success");
-        })
-        .catch(() => {
-          this.$q.notify("Fail");
-        });
-    },
-
-    onCliRun: function (evt, navigateFn) {
-      let result = window.apiChildProcess.runChildProcess("",{ script: this.getExecuteCommand() })
-      this.showResultDialog(result)
+    forceUpdate2(){
+      this.$forceUpdate()
     },
 
     getExecuteCommand() {
@@ -240,8 +261,10 @@ export default defineComponent({
         })
         .onOk((data) => {
           let result = "";
-          if(this.pluginDatas[this.currentPluginPos].pluginMode=='js'){
-            result = window.apiEval.runEval("", { script: this.getExecuteCommand() });
+          if (this.pluginDatas[this.currentPluginPos].pluginMode == "js") {
+            result = window.apiEval.runEval("", {
+              script: this.getExecuteCommand(),
+            });
             this.showResultDialog(result);
           }
         })
@@ -251,7 +274,7 @@ export default defineComponent({
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         });
-    }
+    },
   },
 });
 </script>
