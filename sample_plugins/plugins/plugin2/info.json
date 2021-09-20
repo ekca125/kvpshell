@@ -2,7 +2,7 @@
   "pluginName": "plugin_preset2",
   "pluginMode": "exec",
   "pluginDesc": "desc",
-  "pluginExec": "plugin2_exe --ab $KEY3$ --bb $KEY4$",
+  "pluginExec": "plugin2.exe --ab $KEY3$ --bb $KEY4$",
   "pluginKeyValue": [
     {
       "pluginKey": "KEY3",
