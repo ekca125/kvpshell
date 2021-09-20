@@ -47,6 +47,13 @@ contextBridge.exposeInMainWorld("apiPluginData", {
         );
         pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
       }
+      else if (pluginInfoJson["pluginMode"] === "external_exec") {
+        let pluginExecPath = path.join(
+          pluginFolderPath,
+          pluginInfoJson["pluginExec"]
+        );
+        pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
+      }
       pluginDatas[pluginIndex] = pluginInfoJson;
       pluginIndex++;
     });

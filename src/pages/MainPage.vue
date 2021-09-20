@@ -86,8 +86,8 @@
             />
           </div>
           <div
-            class="kv-js"
-            v-if="pluginDatas[currentPluginPos].pluginMode == 'js'"
+            class="kv-script"
+            v-if="pluginDatas[currentPluginPos].pluginMode != 'exec'"
           >
             <q-btn
               label="Execute"
@@ -194,10 +194,7 @@ export default defineComponent({
     },
 
     onCliRun: function (evt, navigateFn) {
-      let result = window.apiChildProcess.runChildProcess("", {
-        script: this.getExecuteCommand(),
-      });
-      this.showResultDialog(result);
+      this.runCli(this.getExecuteCommand())
     },
     // ui
     showResultDialog: function (selectMessage) {
@@ -230,13 +227,7 @@ export default defineComponent({
           persistent: true,
         })
         .onOk((data) => {
-          let result = "";
-          if (this.pluginDatas[this.currentPluginPos].pluginMode == "js") {
-            result = window.apiEval.runEval("", {
-              script: this.getExecuteCommand(),
-            });
-            this.showResultDialog(result);
-          }
+          this.runScript(this.getExecuteCommand());
         })
         .onCancel(() => {
           this.$q.notify("cancel");
@@ -265,6 +256,22 @@ export default defineComponent({
         console.log(e);
         return "none";
       }
+    },
+
+    runCli(cliCommand){
+      let result = window.apiChildProcess.runChildProcess("", {script: cliCommand});
+      this.showResultDialog(result);
+    },
+
+    runScript(script) {
+      let result = "";
+      if (this.pluginDatas[this.currentPluginPos].pluginMode == "js") {
+        result = window.apiEval.runEval("", { script });
+      }
+      else if(this.pluginDatas[this.currentPluginPos].pluginMode == "external_exec"){
+        result = window.apiChildProcess.runChildProcess("", {script,});
+      }
+      this.showResultDialog(result);
     },
   },
 });
