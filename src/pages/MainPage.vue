@@ -165,6 +165,8 @@ export default defineComponent({
 
     // 반환
     return {
+      //
+      $q,
       // data
       pluginDataTableColumns,
       pluginKeyValueTableColumns,
@@ -176,10 +178,29 @@ export default defineComponent({
   },
   computed: {},
   methods: {
-    onRowClickPluginTable:function (evt, row, index) {
+    // events
+    onCliCopy: function (evt, navigateFn) {
+      copyToClipboard(this.getExecuteCommand())
+        .then(() => {
+          this.$q.notify("Success");
+        })
+        .catch(() => {
+          this.$q.notify("Fail");
+        });
+    },
+
+    onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
     },
-    showResultDialog : function (selectMessage) {
+
+    onCliRun: function (evt, navigateFn) {
+      let result = window.apiChildProcess.runChildProcess("", {
+        script: this.getExecuteCommand(),
+      });
+      this.showResultDialog(result);
+    },
+    // ui
+    showResultDialog: function (selectMessage) {
       this.$q
         .dialog({
           title: "Result",
@@ -194,43 +215,6 @@ export default defineComponent({
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         });
-    },
-
-    // events
-    onCliCopy : function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
-        .then(() => {
-          this.$q.notify("Success");
-        })
-        .catch(() => {
-          this.$q.notify("Fail");
-        });
-    },
-
-    onCliRun : function (evt, navigateFn) {
-      let result = window.apiChildProcess.runChildProcess("", {
-        script: this.getExecuteCommand(),
-      });
-      this.showResultDialog(result);
-    },
-    getExecuteCommand() {
-      try {
-        let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
-        let pluginKeyValue =
-          this.pluginDatas[this.currentPluginPos].pluginKeyValue;
-
-        for (let i = 0; i < pluginKeyValue.length; i++) {
-          let pluginKey = pluginKeyValue[i].pluginKey;
-          let pluginValue = pluginKeyValue[i].pluginValue;
-
-          pluginKey = "$" + pluginKey + "$";
-          pluginExec = pluginExec.replace(pluginKey, pluginValue);
-        }
-        return pluginExec;
-      } catch (e) {
-        console.log(e);
-        return "none";
-      }
     },
 
     showConfirmDialog: function () {
@@ -260,6 +244,27 @@ export default defineComponent({
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         });
+    },
+
+    // function
+    getExecuteCommand() {
+      try {
+        let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
+        let pluginKeyValue =
+          this.pluginDatas[this.currentPluginPos].pluginKeyValue;
+
+        for (let i = 0; i < pluginKeyValue.length; i++) {
+          let pluginKey = pluginKeyValue[i].pluginKey;
+          let pluginValue = pluginKeyValue[i].pluginValue;
+
+          pluginKey = "$" + pluginKey + "$";
+          pluginExec = pluginExec.replace(pluginKey, pluginValue);
+        }
+        return pluginExec;
+      } catch (e) {
+        console.log(e);
+        return "none";
+      }
     },
   },
 });
