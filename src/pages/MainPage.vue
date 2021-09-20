@@ -6,7 +6,7 @@
           title="Plugin"
           :rows="pluginDatas"
           :columns="pluginDataTableColumns"
-          :filter="filter"
+          :filter="pluginNameFilter"
           row-key="pluginName"
           @row-click="onRowClickPluginTable"
         >
@@ -15,7 +15,7 @@
               borderless
               dense
               debounce="300"
-              v-model="filter"
+              v-model="pluginNameFilter"
               placeholder="Search"
             >
               <template v-slot:append>
@@ -106,10 +106,10 @@ import { useQuasar } from "quasar";
 export default defineComponent({
   name: "MainPage",
   setup() {
-    // quasar function
+    // Quasar Function
     const $q = useQuasar();
 
-    // ui 정의
+    // Table Columns
     const pluginDataTableColumns = [
       {
         name: "pluginName",
@@ -152,16 +152,37 @@ export default defineComponent({
       },
     ];
 
+    // 함수 정의
+    let showResultDialog = function (selectMessage) {
+      this.$q.dialog({
+        title: 'Result',
+        message: selectMessage
+      }).onOk(() => {
+        // console.log('OK')
+      }).onCancel(() => {
+        // console.log('Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
+    }
+
+    // 데이터
+    let pluginDatas = ref(window.apiPluginData.getPluginData("", {}));
+    let pluginNameFilter = ref("");
+    let currentPluginPos = ref(0);
+    let confirm = ref(false);
+
     // 반환
     return {
-      // table columns
+      // data
       pluginDataTableColumns,
       pluginKeyValueTableColums,
-      // data
-      filter: ref(""),
-      pluginDatas: ref(window.apiPluginData.getPluginData("", {})),
-      currentPluginPos: ref(0),
-      confirm: ref(false),
+      pluginNameFilter,
+      pluginDatas,
+      currentPluginPos,
+      confirm,
+      //function
+      showResultDialog
     };
   },
   computed: {},
@@ -230,19 +251,6 @@ export default defineComponent({
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
         });
-    },
-
-    showResultDialog : function (selectMessage) {
-      this.$q.dialog({
-        title: 'Result',
-        message: selectMessage
-      }).onOk(() => {
-        // console.log('OK')
-      }).onCancel(() => {
-        // console.log('Cancel')
-      }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
-      })
     }
   },
 });
