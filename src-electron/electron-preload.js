@@ -52,15 +52,15 @@ contextBridge.exposeInMainWorld("apiPluginData", {
 
 contextBridge.exposeInMainWorld("apiEval", {
   runEval: (channel, data) => {
-    let result = eval(data["script"])
+    var result = eval(data["script"])
     return result;
   },
 });
 
 contextBridge.exposeInMainWorld("apiChildProcess", {
   runChildProcess: (channel, data) => {
-    let cmd = data["script"]
-    let result = execSync(cmd).toString()
+    var cmd = data["script"]
+    var result = execSync(cmd).toString()
     return result;
   },
 });
