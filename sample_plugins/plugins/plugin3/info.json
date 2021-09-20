@@ -1,0 +1,7 @@
+{
+  "pluginName": "plugin_preset4",
+  "pluginMode": "external_exec",
+  "pluginDesc": "desc",
+  "pluginExec": "test.bat",
+  "pluginKeyValue": []
+}

@@ -1,0 +1,18 @@
+{
+  "pluginName": "plugin_preset3",
+  "pluginMode": "js",
+  "pluginDesc": "desc",
+  "pluginExec": "test.js",
+  "pluginKeyValue": [
+    {
+      "pluginKey": "numberA",
+      "pluginKeyDesc":"numberA Desc",
+      "pluginValue": "12"
+    },
+    {
+      "pluginKey": "numberB",
+      "pluginKeyDesc":"numberB Desc",
+      "pluginValue": "15"
+    }
+  ]
+}

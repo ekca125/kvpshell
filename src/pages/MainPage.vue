@@ -1,79 +1,101 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <div class="left-screen">
-          <q-table
-            title="Plugin"
-            :rows="pluginDatas"
-            :columns="pluginDataTableColumns"
-            :filter="filter"
-            row-key="pluginName"
-            @row-click="onRowClickPluginTable"
-          >
-            <template v-slot:top-right>
-              <q-input
-                borderless
-                dense
-                debounce="300"
-                v-model="filter"
-                placeholder="Search"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
-            </template>
-          </q-table>
+      <div id="left-screen">
+        <q-table
+          title="Plugin"
+          :rows="pluginDatas"
+          :columns="pluginDataTableColumns"
+          :filter="pluginNameFilter"
+          row-key="pluginName"
+          @row-click="onRowClickPluginTable"
+        >
+          <template v-slot:top-right>
+            <q-input
+              borderless
+              dense
+              debounce="300"
+              v-model="pluginNameFilter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
       </div>
-      <div class="right-screen">
-          <q-table
-            id = "kv-table"
-            title="Plugin Key Value"
-            :rows="pluginDatas[currentPluginPos].pluginKeyValue"
-            :columns="pluginKeyValueTableColums"
-            row-key="name"
-          >
-            <template v-slot:body="props">
-              <q-tr :props="props">
-                <q-td key="pluginKey" :props="props">
-                  {{ props.row.pluginKey }}
-                </q-td>
-                <q-td key="pluginValue" :props="props">
-                  {{ props.row.pluginValue }}
-                  <q-popup-edit
+      <div id="right-screen">
+        <q-table
+          title="Plugin Key Value"
+          :rows="pluginDatas[currentPluginPos].pluginKeyValue"
+          :columns="pluginKeyValueTableColumns"
+          row-key="name"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="pluginKey" :props="props">
+                {{ props.row.pluginKey }}
+              </q-td>
+              <q-td key="pluginKeyDesc" :props="props">
+                {{ props.row.pluginKeyDesc }}
+              </q-td>
+              <q-td key="pluginValue" :props="props">
+                {{ props.row.pluginValue }}
+                <q-popup-edit
+                  v-model="props.row.pluginValue"
+                  title="Update plugin value"
+                  buttons
+                >
+                  <q-input
+                    type="text"
                     v-model="props.row.pluginValue"
-                    title="Update plugin value"
-                    buttons
-                  >
-                    <q-input
-                      type="text"
-                      v-model="props.row.pluginValue"
-                      dense
-                      autofocus
-                    />
-                  </q-popup-edit>
-                </q-td>
-              </q-tr>
-            </template>
-          </q-table>
-
-          <q-field 
-            id = "kv-exec-field"
-            label="Standard" 
-            stack-label>
-            <template v-slot:control>
-              <div class="self-center full-width no-outline" tabindex="0">
-                {{ getExecuteCommand() }}
-              </div>
-            </template>
-          </q-field>
-          <q-btn
-            id = "kv-exec-btn"
-            color="white"
-            text-color="black"
-            label="Copy"
-            @click="copyCommand"
-          />
+                    dense
+                    autofocus
+                  />
+                </q-popup-edit>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+        <div class="kv-function">
+          <div
+            class="kv-exec"
+            v-if="pluginDatas[currentPluginPos].pluginMode == 'exec'"
+          >
+            <q-field id="kv-exec-field" label="CLI Command" stack-label>
+              <template v-slot:control>
+                <div class="self-center full-width no-outline" tabindex="0">
+                  {{ getExecuteCommand() }}
+                </div>
+              </template>
+            </q-field>
+            <q-btn
+              id="kv-cli-copy-btn"
+              color="white"
+              text-color="black"
+              label="Copy"
+              @click="onCliCopy"
+            />
+            <q-btn
+              id="kv-cli-run-btn"
+              color="white"
+              text-color="black"
+              label="Run"
+              @click="onCliRun"
+            />
+          </div>
+          <div
+            class="kv-script"
+            v-if="pluginDatas[currentPluginPos].pluginMode != 'exec'"
+          >
+            <q-btn
+              label="Execute"
+              color="primary"
+              @click="showConfirmDialog"
+            ></q-btn>
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
@@ -83,97 +105,142 @@
 import { ref } from "vue";
 import { defineComponent } from "vue";
 import { copyToClipboard } from "quasar";
-
-const pluginDatas = window.apiPluginData.getPluginData("", {});
-
-/*
-const stubPluginDatas = [
-  {
-    index: 0,
-    pluginName: "plugin_preset",
-    pluginExec: "plugin1_exe --a $KEY1$ --b $KEY2$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY1",
-        pluginValue: "defaultkey",
-      },
-      {
-        pluginKey: "KEY2",
-        pluginValue: "defaultkey2",
-      },
-    ],
-  },
-  {
-    index: 1,
-    pluginName: "plugin_preset2",
-    pluginExec: "plugin2_exe --ab $KEY1$ --bb $KEY2$",
-    pluginKeyValue: [
-      {
-        pluginKey: "KEY3",
-        pluginValue: "defaultkey3",
-      },
-      {
-        pluginKey: "KEY4",
-        pluginValue: "defaultkey4",
-      },
-    ],
-  },
-];
-*/
-const PluginPos = 0;
-
-const pluginDataTableColumns = [
-  {
-    name: "plugin_name",
-    align: "left",
-    label: "plugin_name",
-    field: "pluginName",
-  },
-];
-
-const pluginKeyValueTableColums = [
-  {
-    name: "pluginKey",
-    align: "left",
-    label: "pluginKey",
-    field: "pluginKey",
-  },
-  {
-    name: "pluginValue",
-    align: "left",
-    label: "pluginValue",
-    field: "pluginValue",
-  },
-];
-
 import { useQuasar } from "quasar";
+import { computed, reactive } from "vue";
 
 export default defineComponent({
   name: "MainPage",
   setup() {
-    const $q = useQuasar();
+    // Quasar Function
+    const quasarFunction = useQuasar();
+
+    // Table Columns
+    const pluginDataTableColumns = [
+      {
+        name: "pluginName",
+        align: "left",
+        label: "pluginName",
+        field: "pluginName",
+      },
+      {
+        name: "pluginMode",
+        align: "left",
+        label: "pluginMode",
+        field: "pluginMode",
+      },
+      {
+        name: "pluginDesc",
+        align: "left",
+        label: "pluginDesc",
+        field: "pluginDesc",
+      },
+    ];
+
+    const pluginKeyValueTableColumns = [
+      {
+        name: "pluginKey",
+        align: "left",
+        label: "pluginKey",
+        field: "pluginKey",
+      },
+      {
+        name: "pluginKeyDesc",
+        align: "left",
+        label: "pluginKeyDesc",
+        field: "pluginKeyDesc",
+      },
+      {
+        name: "pluginValue",
+        align: "left",
+        label: "pluginValue",
+        field: "pluginValue",
+      },
+    ];
+
+    // 데이터
+    let pluginDatas = reactive(window.apiPluginData.getPluginData("", {}));
+    let pluginNameFilter = ref("");
+    let currentPluginPos = ref(0);
+    let confirm = ref(false);
+
+    // 반환
     return {
-      // table columns 정의
+      //
+      quasarFunction,
+      // data
       pluginDataTableColumns,
-      pluginKeyValueTableColums,
-      // plugin name filter
-      filter: ref(""),
-      // datas
-      pluginDatas: ref(pluginDatas),
-      currentPluginPos: ref(PluginPos),
+      pluginKeyValueTableColumns,
+      pluginNameFilter,
+      pluginDatas,
+      currentPluginPos,
+      confirm,
     };
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
+    // events
+    onCliCopy: function (evt, navigateFn) {
+      copyToClipboard(this.getExecuteCommand())
+        .then(() => {
+          this.quasarFunction.notify("Success");
+        })
+        .catch(() => {
+          this.quasarFunction.notify("Fail");
+        });
+    },
+
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
     },
+
+    onCliRun: function (evt, navigateFn) {
+      this.runCli(this.getExecuteCommand())
+    },
+    // ui
+    showResultDialog: function (selectMessage) {
+      this.quasarFunction
+        .dialog({
+          title: "Result",
+          message: selectMessage,
+        })
+        .onOk(() => {
+          // console.log('OK')
+        })
+        .onCancel(() => {
+          // console.log('Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    },
+
+    showConfirmDialog: function () {
+      this.quasarFunction
+        .dialog({
+          title: "Check",
+          message: "Confirm Execution",
+          prompt: {
+            model: this.getExecuteCommand(),
+            type: "textarea", // optional
+          },
+          cancel: true,
+          persistent: true,
+        })
+        .onOk((data) => {
+          this.runScript(this.getExecuteCommand());
+        })
+        .onCancel(() => {
+          this.quasarFunction.notify("cancel");
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
+    },
+
+    // function
     getExecuteCommand() {
       try {
-        let pluginExec =
-          this.pluginDatas[this.currentPluginPos].pluginExec;
+        let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
         let pluginKeyValue =
           this.pluginDatas[this.currentPluginPos].pluginKeyValue;
 
@@ -186,18 +253,25 @@ export default defineComponent({
         }
         return pluginExec;
       } catch (e) {
-        console.log(e)
+        console.log(e);
         return "none";
       }
     },
-    copyCommand: function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
-        .then(() => {
-          this.$q.notify("Success");
-        })
-        .catch(() => {
-          this.$q.notify("Fail");
-        });
+
+    runCli(cliCommand){
+      let result = window.apiChildProcess.runChildProcess("", {script: cliCommand});
+      this.showResultDialog(result);
+    },
+
+    runScript(script) {
+      let result = "";
+      if (this.pluginDatas[this.currentPluginPos].pluginMode == "js") {
+        result = window.apiEval.runEval("", { script });
+      }
+      else if(this.pluginDatas[this.currentPluginPos].pluginMode == "external_exec"){
+        result = window.apiChildProcess.runChildProcess("", {script,});
+      }
+      this.showResultDialog(result);
     },
   },
 });
@@ -209,28 +283,19 @@ div.q-pa-md {
   height: 100%;
 }
 
-div.left-screen {
+div#left-screen {
   width: 40%;
   float: left;
   box-sizing: border-box;
 }
-div.right-screen {
+div#right-screen {
   width: 55%;
   float: right;
   box-sizing: border-box;
 }
 
-q-table#kv-table{
-  display: block;
-}
-
-q-field#kv-exec-field{
-  display: block;
-}
-
-q-btn#kv-exec-btn{
-  display: block;
-  float: right;
+div.kv-function{
+  margin-top: 10px;
 }
 
 </style>
