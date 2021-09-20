@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div class="q-pa-md">
-      <div class="left-screen">
+      <div id="left-screen">
         <q-table
           title="Plugin"
           :rows="pluginDatas"
@@ -25,7 +25,7 @@
           </template>
         </q-table>
       </div>
-      <div class="right-screen">
+      <div id="right-screen">
         <q-table
           title="Plugin Key Value"
           :rows="pluginDatas[currentPluginPos].pluginKeyValue"
@@ -250,12 +250,12 @@ div.q-pa-md {
   height: 100%;
 }
 
-div.left-screen {
+div#left-screen {
   width: 40%;
   float: left;
   box-sizing: border-box;
 }
-div.right-screen {
+div#right-screen {
   width: 55%;
   float: right;
   box-sizing: border-box;
