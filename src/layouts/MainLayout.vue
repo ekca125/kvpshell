@@ -12,10 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          KvpShell
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div>KvpShell 0.2</div>
       </q-toolbar>
     </q-header>
 

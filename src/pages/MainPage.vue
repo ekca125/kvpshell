@@ -112,7 +112,7 @@ export default defineComponent({
   name: "MainPage",
   setup() {
     // Quasar Function
-    const $q = useQuasar();
+    const quasarFunction = useQuasar();
 
     // Table Columns
     const pluginDataTableColumns = [
@@ -166,7 +166,7 @@ export default defineComponent({
     // 반환
     return {
       //
-      $q,
+      quasarFunction,
       // data
       pluginDataTableColumns,
       pluginKeyValueTableColumns,
@@ -182,10 +182,10 @@ export default defineComponent({
     onCliCopy: function (evt, navigateFn) {
       copyToClipboard(this.getExecuteCommand())
         .then(() => {
-          this.$q.notify("Success");
+          this.quasarFunction.notify("Success");
         })
         .catch(() => {
-          this.$q.notify("Fail");
+          this.quasarFunction.notify("Fail");
         });
     },
 
@@ -198,7 +198,7 @@ export default defineComponent({
     },
     // ui
     showResultDialog: function (selectMessage) {
-      this.$q
+      this.quasarFunction
         .dialog({
           title: "Result",
           message: selectMessage,
@@ -215,7 +215,7 @@ export default defineComponent({
     },
 
     showConfirmDialog: function () {
-      this.$q
+      this.quasarFunction
         .dialog({
           title: "Check",
           message: "Confirm Execution",
@@ -230,7 +230,7 @@ export default defineComponent({
           this.runScript(this.getExecuteCommand());
         })
         .onCancel(() => {
-          this.$q.notify("cancel");
+          this.quasarFunction.notify("cancel");
         })
         .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
@@ -293,4 +293,9 @@ div#right-screen {
   float: right;
   box-sizing: border-box;
 }
+
+div.kv-function{
+  margin-top: 10px;
+}
+
 </style>
