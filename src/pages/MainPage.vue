@@ -75,14 +75,14 @@
               color="white"
               text-color="black"
               label="Copy"
-              @click="onCopyCommand"
+              @click="onCliCopy"
             />
             <q-btn
-              id="kv-run-btn"
+              id="kv-cli-run-btn"
               color="white"
               text-color="black"
               label="Run"
-              @click="onStartRun"
+              @click="onCliRun"
             />
           </div>
           <div
@@ -170,7 +170,7 @@ export default defineComponent({
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
     },
-    onCopyCommand: function (evt, navigateFn) {
+    onCliCopy: function (evt, navigateFn) {
       copyToClipboard(this.getExecuteCommand())
         .then(() => {
           this.$q.notify("Success");
@@ -180,7 +180,7 @@ export default defineComponent({
         });
     },
 
-    onStartRun: function (evt, navigateFn) {
+    onCliRun: function (evt, navigateFn) {
       let result = window.apiChildProcess.runChildProcess("",{ script: this.getExecuteCommand() })
       this.showResultDialog(result)
     },
@@ -218,7 +218,11 @@ export default defineComponent({
           persistent: true,
         })
         .onOk((data) => {
-          let result = window.apiEval.runEval("", { script: this.getExecuteCommand() });
+          let result = "";
+          if(this.pluginDatas[this.currentPluginPos].pluginMode=='js'){
+            result = window.apiEval.runEval("", { script: this.getExecuteCommand() });
+            this.showResultDialog(result);
+          }
         })
         .onCancel(() => {
           this.$q.notify("cancel");
