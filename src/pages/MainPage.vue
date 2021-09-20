@@ -157,47 +157,6 @@ export default defineComponent({
       },
     ];
 
-    // 함수 정의
-    const showResultDialog = function (selectMessage) {
-      $q
-        .dialog({
-          title: "Result",
-          message: selectMessage,
-        })
-        .onOk(() => {
-          // console.log('OK')
-        })
-        .onCancel(() => {
-          // console.log('Cancel')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        });
-    };
-
-    // events
-    const onRowClickPluginTable = function (evt, row, index) {
-      currentPluginPos = index;
-      this.$forceUpdate();
-    };
-
-    const onCliCopy = function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
-        .then(() => {
-          $q.notify("Success");
-        })
-        .catch(() => {
-          $q.notify("Fail");
-        });
-    };
-
-    const onCliRun = function (evt, navigateFn) {
-      let result = window.apiChildProcess.runChildProcess("", {
-        script: getExecuteCommand(),
-      });
-      showResultDialog(result);
-    };
-
     // 데이터
     let pluginDatas = reactive(window.apiPluginData.getPluginData("", {}));
     let pluginNameFilter = ref("");
@@ -213,20 +172,47 @@ export default defineComponent({
       pluginDatas,
       currentPluginPos,
       confirm,
-      //function
-      showResultDialog,
-      //events
-      onRowClickPluginTable,
-      onCliCopy,
-      onCliRun
     };
   },
   computed: {},
   methods: {
-    forceUpdate2(){
-      this.$forceUpdate()
+    onRowClickPluginTable:function (evt, row, index) {
+      this.currentPluginPos = index;
+    },
+    showResultDialog : function (selectMessage) {
+      this.$q
+        .dialog({
+          title: "Result",
+          message: selectMessage,
+        })
+        .onOk(() => {
+          // console.log('OK')
+        })
+        .onCancel(() => {
+          // console.log('Cancel')
+        })
+        .onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        });
     },
 
+    // events
+    onCliCopy : function (evt, navigateFn) {
+      copyToClipboard(this.getExecuteCommand())
+        .then(() => {
+          this.$q.notify("Success");
+        })
+        .catch(() => {
+          this.$q.notify("Fail");
+        });
+    },
+
+    onCliRun : function (evt, navigateFn) {
+      let result = window.apiChildProcess.runChildProcess("", {
+        script: this.getExecuteCommand(),
+      });
+      this.showResultDialog(result);
+    },
     getExecuteCommand() {
       try {
         let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
