@@ -1,0 +1,7 @@
+{
+  "pluginName": "plugin_preset",
+  "pluginMode": "exec",
+  "pluginDesc": "desc",
+  "pluginExec": "dir",
+  "pluginKeyValue": []
+}

@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
     let pluginDatas = [];
     let pluginIndex = 0;
     //path
-    let debug = false;
+    let debug = true;
     let pluginSpacePath = path.join(".", "plugins");
     if (debug == true) {
       let pluginSpacePathStub = path.join("C://", "data", "plugins");
