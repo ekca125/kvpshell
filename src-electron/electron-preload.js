@@ -20,6 +20,7 @@ const { contextBridge } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const execSync = require("child_process").execSync;
+const temp = require("temp").track();
 
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
@@ -46,7 +47,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
           pluginInfoJson["pluginExec"]
         );
         pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
-      } else if (pluginInfoJson["pluginMode"] === "external_exec") {
+      } else if (pluginInfoJson["pluginMode"] === "bat") {
         let pluginExecPath = path.join(
           pluginFolderPath,
           pluginInfoJson["pluginExec"]
@@ -60,11 +61,24 @@ contextBridge.exposeInMainWorld("apiPluginData", {
   },
 });
 
-contextBridge.exposeInMainWorld("apiEval", {
-  runEval: (channel, data) => {
+contextBridge.exposeInMainWorld("apiCommandCode", {
+  run: (channel, data) => {
     var result = "";
     try {
-      result = eval(data["script"]);
+      if (data["pluginMode"] === "exec") {
+        //console.log("exec")
+        result = execSync(data["commandCode"]).toString()
+      } else if (data["pluginMode"] === "js") {
+        //console.log("js")
+        result = eval(data["commandCode"]);
+      } else if (data["pluginMode"] === "bat") {
+        //console.log("bat")
+        let openFile = temp.openSync({ suffix: ".bat" });
+        fs.writeSync(openFile.fd, data["commandCode"]);
+        fs.closeSync(openFile.fd);
+        result = execSync(openFile.path).toString();
+        temp.cleanupSync();
+      }
     } catch (e) {
       result = e.toString();
     }
@@ -72,32 +86,5 @@ contextBridge.exposeInMainWorld("apiEval", {
   },
 });
 
-const temp = require("temp").track();
 
-contextBridge.exposeInMainWorld("apiChildProcess", {
-  runChildProcess: (channel, data) => {
-    var cmd = data["script"];
-    try {
-      var result = execSync(cmd).toString();
-    } catch (e) {
-      result = e.toString();
-    }
-    return result;
-  },
 
-  runChildProcessBatch: (channel, data) => {
-    var cmd = data["script"];
-    let openFile = temp.openSync({suffix: '.bat'})
-    fs.writeSync(openFile.fd, cmd);
-    fs.closeSync(openFile.fd);
-    var result = "";
-    try{
-      result = execSync(openFile.path).toString();
-    }
-    catch(e){
-      result = e.toString();
-    }
-    temp.cleanupSync();
-    return result;
-  },
-});
