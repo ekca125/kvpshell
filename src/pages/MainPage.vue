@@ -194,7 +194,7 @@ export default defineComponent({
     },
 
     onCliRun: function (evt, navigateFn) {
-      this.runScript(this.getCommandCode())
+      this.runScript(this.getCommandCode());
     },
     // ui
     showResultDialog: function (selectMessage) {
@@ -259,7 +259,10 @@ export default defineComponent({
     },
 
     runScript(commandCode) {
-      let result = window.apiCommandCode.run("", {commandCode,pluginMode:this.pluginDatas[this.currentPluginPos].pluginMode});
+      let result = window.apiCommandCode.run("", {
+        commandCode,
+        pluginMode: this.pluginDatas[this.currentPluginPos].pluginMode,
+      });
       this.showResultDialog(result);
     },
   },
@@ -283,8 +286,7 @@ div#right-screen {
   box-sizing: border-box;
 }
 
-div.kv-function{
+div.kv-function {
   margin-top: 10px;
 }
-
 </style>

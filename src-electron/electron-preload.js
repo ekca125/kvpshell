@@ -61,7 +61,7 @@ contextBridge.exposeInMainWorld("apiCommandCode", {
     try {
       if (data["pluginMode"] === "exec") {
         //console.log("exec")
-        result = execSync(data["commandCode"]).toString()
+        result = execSync(data["commandCode"]).toString();
       } else if (data["pluginMode"] === "js") {
         //console.log("js")
         result = eval(data["commandCode"]);
@@ -79,6 +79,3 @@ contextBridge.exposeInMainWorld("apiCommandCode", {
     return result;
   },
 });
-
-
-
