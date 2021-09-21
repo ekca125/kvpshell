@@ -1,7 +1,7 @@
 {
   "pluginName": "plugin_preset4",
-  "pluginMode": "bat",
+  "pluginMode": "sh",
   "pluginDesc": "desc",
-  "pluginExec": "test.bat",
+  "pluginExec": "test.sh",
   "pluginKeyValue": []
 }

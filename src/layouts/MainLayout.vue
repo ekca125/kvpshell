@@ -15,7 +15,7 @@
           KvpShell
         </q-toolbar-title>
 
-        <div>KvpShell 1.0.0</div>
+        <div>KvpShell 1.1.0</div>
       </q-toolbar>
     </q-header>
 

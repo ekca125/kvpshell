@@ -66,7 +66,7 @@
             <q-field id="kv-exec-field" label="CLI Command" stack-label>
               <template v-slot:control>
                 <div class="self-center full-width no-outline" tabindex="0">
-                  {{ getExecuteCommand() }}
+                  {{ getCommandCode() }}
                 </div>
               </template>
             </q-field>
@@ -180,7 +180,7 @@ export default defineComponent({
   methods: {
     // events
     onCliCopy: function (evt, navigateFn) {
-      copyToClipboard(this.getExecuteCommand())
+      copyToClipboard(this.getCommandCode())
         .then(() => {
           this.quasarFunction.notify("Success");
         })
@@ -194,7 +194,7 @@ export default defineComponent({
     },
 
     onCliRun: function (evt, navigateFn) {
-      this.runCli(this.getExecuteCommand())
+      this.runScript(this.getCommandCode());
     },
     // ui
     showResultDialog: function (selectMessage) {
@@ -220,14 +220,14 @@ export default defineComponent({
           title: "Check",
           message: "Confirm Execution",
           prompt: {
-            model: this.getExecuteCommand(),
+            model: this.getCommandCode(),
             type: "textarea", // optional
           },
           cancel: true,
           persistent: true,
         })
         .onOk((data) => {
-          this.runScript(this.getExecuteCommand());
+          this.runScript(this.getCommandCode());
         })
         .onCancel(() => {
           this.quasarFunction.notify("cancel");
@@ -238,7 +238,7 @@ export default defineComponent({
     },
 
     // function
-    getExecuteCommand() {
+    getCommandCode() {
       try {
         let pluginExec = this.pluginDatas[this.currentPluginPos].pluginExec;
         let pluginKeyValue =
@@ -258,19 +258,11 @@ export default defineComponent({
       }
     },
 
-    runCli(cliCommand){
-      let result = window.apiChildProcess.runChildProcess("", {script: cliCommand});
-      this.showResultDialog(result);
-    },
-
-    runScript(script) {
-      let result = "";
-      if (this.pluginDatas[this.currentPluginPos].pluginMode == "js") {
-        result = window.apiEval.runEval("", { script });
-      }
-      else if(this.pluginDatas[this.currentPluginPos].pluginMode == "external_exec"){
-        result = window.apiChildProcess.runChildProcess("", {script,});
-      }
+    runScript(commandCode) {
+      let result = window.apiCommandCode.run("", {
+        commandCode,
+        pluginMode: this.pluginDatas[this.currentPluginPos].pluginMode,
+      });
       this.showResultDialog(result);
     },
   },
@@ -294,8 +286,7 @@ div#right-screen {
   box-sizing: border-box;
 }
 
-div.kv-function{
+div.kv-function {
   margin-top: 10px;
 }
-
 </style>
