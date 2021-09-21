@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
     let pluginDatas = [];
     let pluginIndex = 0;
     //path
-    let debug = false;
+    let debug = true;
     let pluginSpacePath = path.join(".", "plugins");
     if (debug == true) {
       let pluginSpacePathStub = path.join("C://", "data", "plugins");
@@ -46,8 +46,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
           pluginInfoJson["pluginExec"]
         );
         pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
-      }
-      else if (pluginInfoJson["pluginMode"] === "external_exec") {
+      } else if (pluginInfoJson["pluginMode"] === "external_exec") {
         let pluginExecPath = path.join(
           pluginFolderPath,
           pluginInfoJson["pluginExec"]
@@ -73,6 +72,8 @@ contextBridge.exposeInMainWorld("apiEval", {
   },
 });
 
+const temp = require("temp").track();
+
 contextBridge.exposeInMainWorld("apiChildProcess", {
   runChildProcess: (channel, data) => {
     var cmd = data["script"];
@@ -82,5 +83,27 @@ contextBridge.exposeInMainWorld("apiChildProcess", {
       result = e.toString();
     }
     return result;
+  },
+
+  runChildProcessBatch: (channel, data) => {
+    var cmd = data["script"];
+    temp.openSync({suffix: '.bat'}, function(err, info) {
+      if (err) throw err;
+      fs.write(info.fd, cmd, (err) => {
+        console.log(err)
+      });
+      fs.close(info.fd, function(err) {
+        if (err) throw err;
+        console.log(info.path)
+        try {
+          execSync(info.path).toString();
+          result = "Batch Success"
+        } catch (e) {
+          result = "Batch Fail";
+        }
+        return result;
+      });
+    });
+    temp.cleanupSync()
   },
 });

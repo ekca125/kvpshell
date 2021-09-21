@@ -13,7 +13,8 @@
     "@quasar/extras": "^1.0.0",
     "child_process": "^1.0.2",
     "core-js": "^3.6.5",
-    "quasar": "^2.0.0"
+    "quasar": "^2.0.0",
+    "temp": "^0.9.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",

@@ -269,7 +269,8 @@ export default defineComponent({
         result = window.apiEval.runEval("", { script });
       }
       else if(this.pluginDatas[this.currentPluginPos].pluginMode == "external_exec"){
-        result = window.apiChildProcess.runChildProcess("", {script,});
+        //runchildProcessBatch
+        result = window.apiChildProcess.runChildProcessBatch("", {script,});
       }
       this.showResultDialog(result);
     },
