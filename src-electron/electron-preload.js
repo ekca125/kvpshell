@@ -28,7 +28,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
     let pluginDatas = [];
     let pluginIndex = 0;
     //path
-    let debug = true;
+    let debug = false;
     let pluginSpacePath = path.join(".", "plugins");
     if (debug == true) {
       let pluginSpacePathStub = path.join("C://", "data", "plugins");
@@ -71,6 +71,13 @@ contextBridge.exposeInMainWorld("apiCommandCode", {
         fs.writeSync(openFile.fd, data["commandCode"]);
         fs.closeSync(openFile.fd);
         result = execSync(openFile.path).toString();
+        temp.cleanupSync();
+      } else if (data["pluginMode"] === "sh") {
+        //console.log("bat")
+        let openFile = temp.openSync({ suffix: ".sh" });
+        fs.writeSync(openFile.fd, data["commandCode"]);
+        fs.closeSync(openFile.fd);
+        result = execSync("sh "+openFile.path.toString()).toString();
         temp.cleanupSync();
       }
     } catch (e) {
