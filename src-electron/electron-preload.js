@@ -41,13 +41,7 @@ contextBridge.exposeInMainWorld("apiPluginData", {
       pluginInfo = fs.readFileSync(pluginInfoPath, "utf8");
       pluginInfoJson = JSON.parse(pluginInfo);
       //if exec js
-      if (pluginInfoJson["pluginMode"] === "js") {
-        let pluginExecPath = path.join(
-          pluginFolderPath,
-          pluginInfoJson["pluginExec"]
-        );
-        pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
-      } else if (pluginInfoJson["pluginMode"] === "bat") {
+      if (pluginInfoJson["pluginMode"] != "exec") {
         let pluginExecPath = path.join(
           pluginFolderPath,
           pluginInfoJson["pluginExec"]
