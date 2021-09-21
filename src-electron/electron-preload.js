@@ -87,23 +87,17 @@ contextBridge.exposeInMainWorld("apiChildProcess", {
 
   runChildProcessBatch: (channel, data) => {
     var cmd = data["script"];
-    temp.openSync({suffix: '.bat'}, function(err, info) {
-      if (err) throw err;
-      fs.write(info.fd, cmd, (err) => {
-        console.log(err)
-      });
-      fs.close(info.fd, function(err) {
-        if (err) throw err;
-        console.log(info.path)
-        try {
-          execSync(info.path).toString();
-          result = "Batch Success"
-        } catch (e) {
-          result = "Batch Fail";
-        }
-        return result;
-      });
-    });
-    temp.cleanupSync()
+    let openFile = temp.openSync({suffix: '.bat'})
+    fs.writeSync(openFile.fd, cmd);
+    fs.closeSync(openFile.fd);
+    var result = "";
+    try{
+      result = execSync(openFile.path).toString();
+    }
+    catch(e){
+      result = e.toString();
+    }
+    temp.cleanupSync();
+    return result;
   },
 });
