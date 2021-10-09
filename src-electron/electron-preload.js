@@ -20,7 +20,15 @@ const { contextBridge } = require("electron");
 const fs = require("fs");
 const path = require("path");
 
-function getPluginSpacePath() {
+contextBridge.exposeInMainWorld("apiKvpPlugin", {
+  getKvpPlugins: (channel, data) => {
+    let kvpPluginSpacePath = getKvpPluginSpacePath();
+    let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
+    return kvpPlugins;
+  },
+});
+
+function getKvpPluginSpacePath() {
   let debug = true;
   if (debug == true) {
     return path.join(".", "plugins");
@@ -29,7 +37,7 @@ function getPluginSpacePath() {
   }
 }
 
-function readPluginSpace(pluginSpacePath) {
+function readKvpPluginSpace(kvpPluginPath) {
   let kvpPlugins = [];
   fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
     let pluginInfoPath = path.join(pluginSpacePath, pluginFolderName, "plugin_info.json");
@@ -53,11 +61,3 @@ function readPluginSpace(pluginSpacePath) {
   });
   return kvpPlugins;
 }
-
-contextBridge.exposeInMainWorld("apiPluginData", {
-  getPluginData: (channel, data) => {
-    let pluginSpacePath = getPluginSpacePath();
-    let pluginSpace = readPluginSpace(pluginSpacePath);
-    return pluginSpace;
-  },
-});
