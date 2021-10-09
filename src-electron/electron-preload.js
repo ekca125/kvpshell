@@ -32,9 +32,8 @@ function getPluginSpacePath() {
 function readPluginSpace(pluginSpacePath) {
   let kvpPlugins = [];
   fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
-    let pluginFolderPath = path.join(pluginSpacePath, pluginFolderName);
-    let pluginInfoPath = path.join(pluginFolderPath, "plugin_info.json");
-    let pluginSourcePath = path.join(pluginFolderPath, "plugin_source.txt");
+    let pluginInfoPath = path.join(pluginSpacePath, pluginFolderName, "plugin_info.json");
+    let pluginSourcePath = path.join(pluginSpacePath, pluginFolderName, "plugin_source.txt");
     try {
       //info 읽기
       let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
@@ -43,7 +42,7 @@ function readPluginSpace(pluginSpacePath) {
       let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
 
       //kvpPlugin = info + source
-      let kvpPlugin = pluginInfoJson;
+      let kvpPlugin = pluginInfo;
       kvpPlugin["source"] = pluginSource;
 
       //리스트 삽입
