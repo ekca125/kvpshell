@@ -23,10 +23,8 @@ const path = require("path");
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
     console.log(content)
-    require('electron').showMessageBox(null);
   },
 });
-
 
 contextBridge.exposeInMainWorld("apiKvpPlugin", {
   getKvpPlugins: (channel, data) => {
