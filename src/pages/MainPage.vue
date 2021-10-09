@@ -68,8 +68,8 @@
 
       <div class="divide">
         <!-- 소스 텍스트 시작-->
-        <q-btn class = "result" color="primary" label="Copy"></q-btn>
-        <q-btn class = "result" color="primary" label="Save"></q-btn>
+        <q-btn class = "result" color="primary" @click="copyClipResult" label="Copy"></q-btn>
+        <q-btn class = "result" color="primary" @click="saveResultFile" label="Save"></q-btn>
         <q-btn class = "result" color="primary" label="Run"></q-btn>
         <q-input id = "result" v-model="currentResult" filled type="textarea" />
         
@@ -176,6 +176,20 @@ export default defineComponent({
       this.currentPluginPos = index;
       this.currentResult = this.getCurrentSourceResult();
     },
+
+    copyClipResult:function(){
+      copyToClipboard(this.currentResult)
+        .then(() => {
+          this.quasarFunction.notify("Success");
+        })
+        .catch(() => {
+          this.quasarFunction.notify("Fail");
+        });
+    },
+
+    saveResultFile:function(){
+      window.apiFile.saveFile("", {"data":this.currentResult})
+    }
   },
 });
 </script>
