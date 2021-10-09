@@ -1,67 +1,76 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="padding">
     <div class="q-pa-md">
-      <!-- 플러그인 테이블 시작 -->
-      <q-table
-        title="Plugin"
-        :rows="pluginDatas"
-        :columns="pluginDataTableColumns"
-        :filter="pluginNameFilter"
-        row-key="pluginName"
-        @row-click="onRowClickPluginTable"
-      >
-        <template v-slot:top-right>
-          <q-input
-            borderless
-            dense
-            debounce="300"
-            v-model="pluginNameFilter"
-            placeholder="Search"
-          >
-            <template v-slot:append>
-              <q-icon name="search" />
-            </template>
-          </q-input>
-        </template>
-      </q-table>
-      <!-- 플러그인 테이블 끝 -->
-      <!-- 키 값 테이블 시작 -->
-      <q-table
-        title="Plugin Key Value"
-        :rows="pluginDatas[currentPluginPos].pluginKeyValue"
-        :columns="pluginKeyValueTableColumns"
-        row-key="name"
-      >
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td key="pluginKey" :props="props">
-              {{ props.row.pluginKey }}
-            </q-td>
-            <q-td key="pluginKeyDesc" :props="props">
-              {{ props.row.pluginKeyDesc }}
-            </q-td>
-            <q-td key="pluginValue" :props="props">
-              {{ props.row.pluginValue }}
-              <q-popup-edit
-                v-model="props.row.pluginValue"
-                title="Update plugin value"
-                buttons
-              >
-                <q-input
-                  type="text"
+      <div class="divide">
+        <!-- 플러그인 테이블 시작 -->
+        <q-table
+          id = "plugin"
+          title="Plugin"
+          :rows="pluginDatas"
+          :columns="pluginDataTableColumns"
+          :filter="pluginNameFilter"
+          row-key="pluginName"
+          @row-click="onRowClickPluginTable"
+        >
+          <template v-slot:top-right>
+            <q-input
+              borderless
+              dense
+              debounce="300"
+              v-model="pluginNameFilter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
+        <!-- 플러그인 테이블 끝 -->
+      </div>
+      <div class="divide">
+        <!-- 키 값 테이블 시작 -->
+        <q-table
+          id = "pkv"
+          title="Plugin Key Value"
+          :rows="pluginDatas[currentPluginPos].pluginKeyValue"
+          :columns="pluginKeyValueTableColumns"
+          row-key="name"
+        >
+          <template v-slot:body="props">
+            <q-tr :props="props">
+              <q-td key="pluginKey" :props="props">
+                {{ props.row.pluginKey }}
+              </q-td>
+              <q-td key="pluginKeyDesc" :props="props">
+                {{ props.row.pluginKeyDesc }}
+              </q-td>
+              <q-td key="pluginValue" :props="props">
+                {{ props.row.pluginValue }}
+                <q-popup-edit
                   v-model="props.row.pluginValue"
-                  dense
-                  autofocus
-                />
-              </q-popup-edit>
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table>
-      <!-- 키 값 테이블 끝 -->
-      <!-- 소스 텍스트 시작-->
-      <q-input v-model="currentResult" filled type="textarea" />
-      <!-- 소스 텍스트 끝 -->
+                  title="Update plugin value"
+                  buttons
+                >
+                  <q-input
+                    type="text"
+                    v-model="props.row.pluginValue"
+                    dense
+                    autofocus
+                  />
+                </q-popup-edit>
+              </q-td>
+            </q-tr>
+          </template>
+        </q-table>
+        <!-- 키 값 테이블 끝 -->
+      </div>
+
+      <div class="divide">
+        <!-- 소스 텍스트 시작-->
+        <q-input id = "result" v-model="currentResult" filled type="textarea" />
+        <!-- 소스 텍스트 끝 -->
+      </div>
     </div>
   </q-page>
 </template>
@@ -136,11 +145,11 @@ export default defineComponent({
       // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos
+      currentPluginPos,
     };
   },
   computed: {
-    currentResult(){
+    currentResult() {
       try {
         let pluginSource = this.pluginDatas[this.currentPluginPos].pluginSource;
         let pluginKeyValue =
@@ -156,15 +165,34 @@ export default defineComponent({
         console.log(e);
         return "none";
       }
-    }
+    },
   },
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
-      this.currentResult = this.getCurrentSourceResult()
-    }
+      this.currentResult = this.getCurrentSourceResult();
+    },
   },
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+
+
+div.divide {
+  display: inline-block;
+  padding: 10px;
+  width: 30%;
+  height: 100%;
+}
+
+q-table#plugin{
+  
+}
+q-table#pkv{
+  
+}
+q-table#result{
+  
+}
+</style>
