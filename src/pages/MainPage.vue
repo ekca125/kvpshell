@@ -1,7 +1,6 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="q-pa-md">
-    </div>
+    <div class="q-pa-md"></div>
   </q-page>
 </template>
 
@@ -81,12 +80,8 @@ export default defineComponent({
     };
   },
   computed: {},
-  methods: {
-  }
-}
-);
+  methods: {},
+});
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
