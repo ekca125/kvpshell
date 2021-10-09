@@ -22,47 +22,43 @@ const path = require("path");
 
 function getPluginSpacePath() {
   let debug = true;
-  if(debug==true){
+  if (debug == true) {
     return path.join(".", "plugins");
-  }
-  else if(debug == false){
+  } else if (debug == false) {
     return path.join("C://", "data", "plugins");
   }
 }
 
-function readPluginSpace(pluginSpacePath){
+function readPluginSpace(pluginSpacePath) {
   let kvpPlugins = [];
   fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
     let pluginFolderPath = path.join(pluginSpacePath, pluginFolderName);
     let pluginInfoPath = path.join(pluginFolderPath, "plugin_info.json");
     let pluginSourcePath = path.join(pluginFolderPath, "plugin_source.txt");
-    try{
-    //info 읽기
-    let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
+    try {
+      //info 읽기
+      let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
 
-    //source 읽기
-    let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
+      //source 읽기
+      let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
 
-    //결합
-    let kvpPlugin = pluginInfoJson
-    kvpPlugin['source'] = pluginSource
-    
-    //리스트 삽입
-    kvpPlugins[kvpPlugins.length - 1] = kvpPlugin
-    }
-    catch(e){
+      //kvpPlugin = info + source
+      let kvpPlugin = pluginInfoJson;
+      kvpPlugin["source"] = pluginSource;
+
+      //리스트 삽입
+      kvpPlugins[kvpPlugins.length - 1] = kvpPlugin;
+    } catch (e) {
       console.log("error load: " + pluginFolderName);
     }
   });
   return kvpPlugins;
 }
 
-
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
     let pluginSpacePath = getPluginSpacePath();
     let pluginSpace = readPluginSpace(pluginSpacePath);
     return pluginSpace;
-  } 
+  },
 });
-
