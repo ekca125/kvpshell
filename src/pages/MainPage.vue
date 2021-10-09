@@ -4,7 +4,7 @@
       <div class="divide">
         <!-- 플러그인 테이블 시작 -->
         <q-table
-          id = "plugin"
+          id="plugin"
           title="Plugin"
           :rows="pluginDatas"
           :columns="pluginDataTableColumns"
@@ -31,7 +31,7 @@
       <div class="divide">
         <!-- 키 값 테이블 시작 -->
         <q-table
-          id = "pkv"
+          id="pkv"
           title="Plugin Key Value"
           :rows="pluginDatas[currentPluginPos].pluginKeyValue"
           :columns="pluginKeyValueTableColumns"
@@ -68,11 +68,26 @@
 
       <div class="divide">
         <!-- 소스 텍스트 시작-->
-        <q-btn class = "result" color="primary" @click="copyClipResult" label="Copy"></q-btn>
-        <q-btn class = "result" color="primary" @click="saveResultFile" label="Save"></q-btn>
+        <q-btn
+          class="result"
+          color="primary"
+          @click="copyClipResult"
+          label="Copy"
+        ></q-btn>
+        <q-btn
+          class="result"
+          color="primary"
+          @click="saveResultFile"
+          label="Save"
+        ></q-btn>
+        <q-input
+          outlined
+          v-model="resultFileName"
+          label="resultFileName"
+        ></q-input>
         <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
-        <q-input id = "result" v-model="currentResult" filled type="textarea" />
-        
+        <q-input id="result" v-model="currentResult" filled type="textarea" />
+
         <!-- 소스 텍스트 끝 -->
       </div>
     </div>
@@ -139,6 +154,7 @@ export default defineComponent({
     let pluginDatas = reactive(window.apiKvpPlugin.getKvpPlugins("", {}));
     let pluginNameFilter = ref("");
     let currentPluginPos = ref(0);
+    let resultFileName = ref("result.bat");
 
     return {
       //quasar
@@ -150,6 +166,7 @@ export default defineComponent({
       pluginNameFilter,
       pluginDatas,
       currentPluginPos,
+      resultFileName,
     };
   },
   computed: {
@@ -177,7 +194,7 @@ export default defineComponent({
       this.currentResult = this.getCurrentSourceResult();
     },
 
-    copyClipResult:function(){
+    copyClipResult: function () {
       copyToClipboard(this.currentResult)
         .then(() => {
           this.quasarFunction.notify("Success");
@@ -187,36 +204,35 @@ export default defineComponent({
         });
     },
 
-    saveResultFile:function(){
-      window.apiFile.saveFile("", {"data":this.currentResult})
-    }
+    saveResultFile: function () {
+      window.apiFile.saveFile("", {
+        currentResult: this.currentResult,
+        resultFileName: this.resultFileName,
+      });
+      this.quasarFunction.notify("File Save Success");
+    },
   },
 });
 </script>
 
 <style scoped>
-
-
 div.divide {
-  float:left;
+  float: left;
   padding: 10px;
-  margin : 10px;
+  margin: 10px;
   width: 30%;
   height: 100%;
 }
 
-q-table#plugin{
-  
+q-table#plugin {
 }
-q-table#pkv{
-  
+q-table#pkv {
 }
-q-input#result{
+q-input#result {
   display: block;
 }
 
-q-btn.result{
+q-btn.result {
   display: inline-block;
 }
-
 </style>

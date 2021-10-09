@@ -22,7 +22,16 @@ const path = require("path");
 
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
-    console.log(content)
+    currentResult = content["currentResult"]
+    resultFileName = content["resultFileName"]
+
+    resultDir = path.join(".","result")
+    if(!fs.existsSync(resultDir)){
+      fs.mkdirSync(resultDir)
+    }
+    resultFilePath = path.join(resultDir,resultFileName)
+    fs.writeFileSync(resultFilePath,currentResult,'utf8');
+    return true;
   },
 });
 
