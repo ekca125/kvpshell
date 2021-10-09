@@ -1,6 +1,33 @@
 <template>
   <q-page class="flex flex-center">
-    <div class="q-pa-md"></div>
+    <div class="q-pa-md">
+      <!-- 플러그인 테이블 시작 -->
+      <q-table
+          title="Plugin"
+          :rows="pluginDatas"
+          :columns="pluginDataTableColumns"
+          :filter="pluginNameFilter"
+          row-key="pluginName"
+          @row-click="onRowClickPluginTable"
+        >
+          <template v-slot:top-right>
+            <q-input
+              borderless
+              dense
+              debounce="300"
+              v-model="pluginNameFilter"
+              placeholder="Search"
+            >
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
+        <!-- 플러그인 테이블 끝 -->
+
+
+    </div>
   </q-page>
 </template>
 
@@ -61,26 +88,28 @@ export default defineComponent({
     ];
 
     // 데이터
-    let pluginDatas = reactive(window.apiPluginData.getPluginData("", {}));
+    let pluginDatas = reactive(window.apiKvpPlugin.getKvpPlugins("", {}));
     let pluginNameFilter = ref("");
     let currentPluginPos = ref(0);
-    let confirm = ref(false);
 
-    // 반환
     return {
-      //
+      //quasar
       quasarFunction,
-      // data
+      // ui
       pluginDataTableColumns,
       pluginKeyValueTableColumns,
+      // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos,
-      confirm,
+      currentPluginPos
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    onRowClickPluginTable: function (evt, row, index) {
+      this.currentPluginPos = index;
+    },
+  },
 });
 </script>
 
