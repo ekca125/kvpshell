@@ -19,70 +19,50 @@ const { contextBridge } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
-const execSync = require("child_process").execSync;
-const temp = require("temp").track();
+
+function getPluginSpacePath() {
+  let debug = true;
+  if(debug==true){
+    return path.join(".", "plugins");
+  }
+  else if(debug == false){
+    return path.join("C://", "data", "plugins");
+  }
+}
+
+function readPluginSpace(pluginSpacePath){
+  let kvpPlugins = [];
+  fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
+    let pluginFolderPath = path.join(pluginSpacePath, pluginFolderName);
+    let pluginInfoPath = path.join(pluginFolderPath, "plugin_info.json");
+    let pluginSourcePath = path.join(pluginFolderPath, "plugin_source.txt");
+    try{
+    //info 읽기
+    let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
+
+    //source 읽기
+    let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
+
+    //결합
+    let kvpPlugin = pluginInfoJson
+    kvpPlugin['source'] = pluginSource
+    
+    //리스트 삽입
+    kvpPlugins[kvpPlugins.length - 1] = kvpPlugin
+    }
+    catch(e){
+      console.log("error load: " + pluginFolderName);
+    }
+  });
+  return kvpPlugins;
+}
+
 
 contextBridge.exposeInMainWorld("apiPluginData", {
   getPluginData: (channel, data) => {
-    // datas
-    let pluginDatas = [];
-    let pluginIndex = 0;
-    //path
-    let debug = true;
-    let pluginSpacePath = path.join(".", "plugins");
-    if (debug == true) {
-      let pluginSpacePathStub = path.join("C://", "data", "plugins");
-      pluginSpacePath = pluginSpacePathStub;
-    }
-    fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
-      let pluginFolderPath = path.join(pluginSpacePath, pluginFolderName);
-      let pluginInfoPath = path.join(pluginFolderPath, "info.json");
-      //
-      pluginInfo = fs.readFileSync(pluginInfoPath, "utf8");
-      pluginInfoJson = JSON.parse(pluginInfo);
-      //if exec js
-      if (pluginInfoJson["pluginMode"] != "exec") {
-        let pluginExecPath = path.join(
-          pluginFolderPath,
-          pluginInfoJson["pluginExec"]
-        );
-        pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
-      }
-      pluginDatas[pluginIndex] = pluginInfoJson;
-      pluginIndex++;
-    });
-    return pluginDatas;
-  },
+    let pluginSpacePath = getPluginSpacePath();
+    let pluginSpace = readPluginSpace(pluginSpacePath);
+    return pluginSpace;
+  } 
 });
 
-contextBridge.exposeInMainWorld("apiCommandCode", {
-  run: (channel, data) => {
-    var result = "";
-    try {
-      if (data["pluginMode"] === "exec") {
-        //console.log("exec")
-        result = execSync(data["commandCode"]).toString();
-      } else if (data["pluginMode"] === "js") {
-        //console.log("js")
-        result = eval(data["commandCode"]);
-      } else if (data["pluginMode"] === "bat") {
-        //console.log("bat")
-        let openFile = temp.openSync({ suffix: ".bat" });
-        fs.writeSync(openFile.fd, data["commandCode"]);
-        fs.closeSync(openFile.fd);
-        result = execSync(openFile.path).toString();
-        temp.cleanupSync();
-      } else if (data["pluginMode"] === "sh") {
-        //console.log("bat")
-        let openFile = temp.openSync({ suffix: ".sh" });
-        fs.writeSync(openFile.fd, data["commandCode"]);
-        fs.closeSync(openFile.fd);
-        result = execSync("sh "+openFile.path.toString()).toString();
-        temp.cleanupSync();
-      }
-    } catch (e) {
-      result = e.toString();
-    }
-    return result;
-  },
-});
