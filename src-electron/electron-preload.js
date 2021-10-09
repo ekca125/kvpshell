@@ -52,7 +52,7 @@ function readKvpPluginSpace(kvpPluginSpacePath) {
 
       //kvpPlugin = info + source
       let kvpPlugin = pluginInfo;
-      kvpPlugin["source"] = pluginSource;
+      kvpPlugin["pluginSource"] = pluginSource;
 
       //리스트 삽입
       kvpPlugins[kvpPlugins.length] = kvpPlugin;
