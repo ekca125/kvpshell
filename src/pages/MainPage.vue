@@ -70,7 +70,7 @@
         <!-- 소스 텍스트 시작-->
         <q-btn class = "result" color="primary" @click="copyClipResult" label="Copy"></q-btn>
         <q-btn class = "result" color="primary" @click="saveResultFile" label="Save"></q-btn>
-        <q-btn class = "result" color="primary" label="Run"></q-btn>
+        <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
         <q-input id = "result" v-model="currentResult" filled type="textarea" />
         
         <!-- 소스 텍스트 끝 -->

@@ -22,20 +22,8 @@ const path = require("path");
 
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
-    dialog.showSaveDialog((fileName) => {
-      if (fileName === undefined){
-          console.log("You didn't save the file");
-          return;
-      }
-  
-      // fileName is a string that contains the path and filename created in the save file dialog.  
-      fs.writeFile(fileName, content["data"], (err) => {
-          if(err){
-              alert("An error ocurred creating the file "+ err.message)
-          }        
-          alert("The file has been succesfully saved");
-      });
-  }); 
+    console.log(content)
+    require('electron').showMessageBox(null);
   },
 });
 
