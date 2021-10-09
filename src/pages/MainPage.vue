@@ -68,7 +68,11 @@
 
       <div class="divide">
         <!-- 소스 텍스트 시작-->
+        <q-btn class = "result" color="primary" label="Copy"></q-btn>
+        <q-btn class = "result" color="primary" label="Save"></q-btn>
+        <q-btn class = "result" color="primary" label="Run"></q-btn>
         <q-input id = "result" v-model="currentResult" filled type="textarea" />
+        
         <!-- 소스 텍스트 끝 -->
       </div>
     </div>
@@ -180,8 +184,9 @@ export default defineComponent({
 
 
 div.divide {
-  display: inline-block;
+  float:left;
   padding: 10px;
+  margin : 10px;
   width: 30%;
   height: 100%;
 }
@@ -192,7 +197,12 @@ q-table#plugin{
 q-table#pkv{
   
 }
-q-table#result{
-  
+q-input#result{
+  display: block;
 }
+
+q-btn.result{
+  display: inline-block;
+}
+
 </style>
