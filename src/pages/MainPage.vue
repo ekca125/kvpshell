@@ -209,7 +209,7 @@ export default defineComponent({
         currentResult: this.currentResult,
         resultFileName: this.resultFileName,
       });
-      this.quasarFunction.notify("File Save Success");
+      this.quasarFunction.notify("File Save Success. (kvpshell/result)");
     },
   },
 });

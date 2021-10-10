@@ -15,7 +15,7 @@
  *     doAThing: () => {}
  *   })
  */
-const { contextBridge } = require("electron");
+const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
@@ -31,7 +31,6 @@ contextBridge.exposeInMainWorld("apiFile", {
     }
     resultFilePath = path.join(resultDir,resultFileName)
     fs.writeFileSync(resultFilePath,currentResult,'utf8');
-    return true;
   },
 });
 
@@ -39,7 +38,6 @@ contextBridge.exposeInMainWorld("apiKvpPlugin", {
   getKvpPlugins: (channel, data) => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
     let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
-    console.log(kvpPlugins)
     return kvpPlugins;
   },
 });
