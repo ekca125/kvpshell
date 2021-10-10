@@ -82,7 +82,7 @@
         ></q-btn>
         <q-input
           outlined
-          v-model="resultFileName"
+          v-model="pluginDatas[currentPluginPos].pluginResultFileName"
           label="resultFileName"
         ></q-input>
         <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
@@ -154,7 +154,6 @@ export default defineComponent({
     let pluginDatas = reactive(window.apiKvpPlugin.getKvpPlugins("", {}));
     let pluginNameFilter = ref("");
     let currentPluginPos = ref(0);
-    let resultFileName = ref("result.bat");
 
     return {
       //quasar
@@ -165,8 +164,7 @@ export default defineComponent({
       // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos,
-      resultFileName,
+      currentPluginPos
     };
   },
   computed: {
@@ -207,7 +205,7 @@ export default defineComponent({
     saveResultFile: function () {
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
-        resultFileName: this.resultFileName,
+        resultFileName: this.pluginDatas[this.currentPluginPos].pluginResultFileName
       });
       this.quasarFunction.notify("File Save Success. (kvpshell/result)");
     },
