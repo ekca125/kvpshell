@@ -1,94 +1,95 @@
 <template>
   <q-page class="padding">
     <div class="q-pa-md">
-      <div class="divide">
-        <!-- 플러그인 테이블 시작 -->
-        <q-table
-          id="plugin"
-          title="Plugin"
-          :rows="pluginDatas"
-          :columns="pluginDataTableColumns"
-          :filter="pluginNameFilter"
-          row-key="pluginName"
-          @row-click="onRowClickPluginTable"
-        >
-          <template v-slot:top-right>
-            <q-input
-              borderless
-              dense
-              debounce="300"
-              v-model="pluginNameFilter"
-              placeholder="Search"
-            >
-              <template v-slot:append>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-          </template>
-        </q-table>
-        <!-- 플러그인 테이블 끝 -->
-      </div>
-      <div class="divide">
-        <!-- 키 값 테이블 시작 -->
-        <q-table
-          id="pkv"
-          title="Plugin Key Value"
-          :rows="pluginDatas[currentPluginPos].pluginKeyValue"
-          :columns="pluginKeyValueTableColumns"
-          row-key="name"
-        >
-          <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="pluginKey" :props="props">
-                {{ props.row.pluginKey }}
-              </q-td>
-              <q-td key="pluginKeyDesc" :props="props">
-                {{ props.row.pluginKeyDesc }}
-              </q-td>
-              <q-td key="pluginValue" :props="props">
-                {{ props.row.pluginValue }}
-                <q-popup-edit
-                  v-model="props.row.pluginValue"
-                  title="Update plugin value"
-                  buttons
-                >
-                  <q-input
-                    type="text"
+      <div class="row">
+        <div class="col">
+          <!-- 플러그인 테이블 시작 -->
+          <q-table
+            id="plugin"
+            title="Plugin"
+            :rows="pluginDatas"
+            :columns="pluginDataTableColumns"
+            :filter="pluginNameFilter"
+            row-key="pluginName"
+            @row-click="onRowClickPluginTable"
+          >
+            <template v-slot:top-right>
+              <q-input
+                borderless
+                dense
+                debounce="300"
+                v-model="pluginNameFilter"
+                placeholder="Search"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
+            </template>
+          </q-table>
+          <!-- 플러그인 테이블 끝 -->
+        </div>
+        <div class="col">
+          <!-- 키 값 테이블 시작 -->
+          <q-table
+            id="pkv"
+            title="Plugin Key Value"
+            :rows="pluginDatas[currentPluginPos].pluginKeyValue"
+            :columns="pluginKeyValueTableColumns"
+            row-key="name"
+          >
+            <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td key="pluginKey" :props="props">
+                  {{ props.row.pluginKey }}
+                </q-td>
+                <q-td key="pluginKeyDesc" :props="props">
+                  {{ props.row.pluginKeyDesc }}
+                </q-td>
+                <q-td key="pluginValue" :props="props">
+                  {{ props.row.pluginValue }}
+                  <q-popup-edit
                     v-model="props.row.pluginValue"
-                    dense
-                    autofocus
-                  />
-                </q-popup-edit>
-              </q-td>
-            </q-tr>
-          </template>
-        </q-table>
-        <!-- 키 값 테이블 끝 -->
-      </div>
+                    title="Update plugin value"
+                    buttons
+                  >
+                    <q-input
+                      type="text"
+                      v-model="props.row.pluginValue"
+                      dense
+                      autofocus
+                    />
+                  </q-popup-edit>
+                </q-td>
+              </q-tr>
+            </template>
+          </q-table>
+          <!-- 키 값 테이블 끝 -->
+        </div>
+        <div class="col">
+          <!-- 소스 텍스트 시작-->
+          <q-btn
+            class="result"
+            color="primary"
+            @click="copyClipResult"
+            label="Copy"
+          ></q-btn>
+          <q-btn
+            class="result"
+            color="primary"
+            @click="saveResultFile"
+            label="Save"
+          ></q-btn>
+          <q-input
+            outlined
+            v-model="pluginDatas[currentPluginPos].pluginResultFileName"
+            label="resultFileName"
+          ></q-input>
+          <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
+          <q-input id="result" v-model="currentResult" filled type="textarea" />
 
-      <div class="divide">
-        <!-- 소스 텍스트 시작-->
-        <q-btn
-          class="result"
-          color="primary"
-          @click="copyClipResult"
-          label="Copy"
-        ></q-btn>
-        <q-btn
-          class="result"
-          color="primary"
-          @click="saveResultFile"
-          label="Save"
-        ></q-btn>
-        <q-input
-          outlined
-          v-model="pluginDatas[currentPluginPos].pluginResultFileName"
-          label="resultFileName"
-        ></q-input>
-        <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
-        <q-input id="result" v-model="currentResult" filled type="textarea" />
-
-        <!-- 소스 텍스트 끝 -->
+          <!-- 소스 텍스트 끝 -->
+        </div>
       </div>
     </div>
   </q-page>
@@ -164,7 +165,7 @@ export default defineComponent({
       // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos
+      currentPluginPos,
     };
   },
   computed: {
@@ -205,7 +206,8 @@ export default defineComponent({
     saveResultFile: function () {
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
-        resultFileName: this.pluginDatas[this.currentPluginPos].pluginResultFileName
+        resultFileName:
+          this.pluginDatas[this.currentPluginPos].pluginResultFileName,
       });
       this.quasarFunction.notify("File Save Success. (kvpshell/result)");
     },
@@ -214,23 +216,8 @@ export default defineComponent({
 </script>
 
 <style scoped>
-div.divide {
-  float: left;
-  padding: 10px;
-  margin: 10px;
-  width: 30%;
-  height: 100%;
+div.col{
+  padding-left: 10px;
 }
 
-q-table#plugin {
-}
-q-table#pkv {
-}
-q-input#result {
-  display: block;
-}
-
-q-btn.result {
-  display: inline-block;
-}
 </style>
