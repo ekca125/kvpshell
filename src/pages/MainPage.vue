@@ -80,6 +80,11 @@
             @click="saveResultFile"
             label="Save"
           ></q-btn>
+          <q-btn
+            class="result"
+            color="primary"
+            label="Open Result Folder"
+          ></q-btn>
           <q-input
             outlined
             v-model="pluginDatas[currentPluginPos].pluginResultFileName"
