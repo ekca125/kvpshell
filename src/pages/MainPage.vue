@@ -83,6 +83,7 @@
           <q-btn
             class="result"
             color="primary"
+            @click="openResultFolder"
             label="Open Result Folder"
           ></q-btn>
           <q-input
@@ -208,6 +209,7 @@ export default defineComponent({
         });
     },
 
+
     saveResultFile: function () {
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
@@ -216,6 +218,10 @@ export default defineComponent({
       });
       this.quasarFunction.notify("File Save Success. (kvpshell/result)");
     },
+
+    openResultFolder:function(){
+      window.apiOpenFolder.openFolder("", {});
+    }
   },
 });
 </script>

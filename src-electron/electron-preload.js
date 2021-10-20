@@ -19,6 +19,24 @@ const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
+var spawn = require('child_process').spawn;
+import { platform } from 'process';
+
+contextBridge.exposeInMainWorld("apiOpenFolder", {
+  openFolder: (channel, content) => {
+    var resultDir = path.join(".","result")
+    if(!fs.existsSync(resultDir)){
+      fs.mkdirSync(resultDir)
+    }
+    if(platform==='win32'){
+      spawn('explorer', [resultDir]);
+      
+    }
+    else if(platform==="linux"){
+      spawn('nautilus', [resultDir]);
+    }
+  },
+});
 
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
