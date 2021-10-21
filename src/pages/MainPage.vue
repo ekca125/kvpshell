@@ -6,7 +6,6 @@
           <!-- 플러그인 테이블 시작 -->
           <q-table
             id="plugin"
-            title="Plugin"
             :rows="pluginDatas"
             :columns="pluginDataTableColumns"
             :filter="pluginNameFilter"
@@ -14,17 +13,33 @@
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
-              <q-input
-                borderless
-                dense
-                debounce="300"
-                v-model="pluginNameFilter"
-                placeholder="Search"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+              <div class="row">
+                <div class="col"><p>Plugins</p></div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <q-btn
+                    class="result"
+                    color="white"
+                    text-color="black"
+                    @click="openPluginFolder"
+                    label="Open Plugin Folder"
+                  ></q-btn>
+                </div>
+                <div class="col">
+                  <q-input
+                    borderless
+                    dense
+                    debounce="300"
+                    v-model="pluginNameFilter"
+                    placeholder="Search"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->
@@ -86,12 +101,7 @@
             @click="openResultFolder"
             label="Open Result Folder"
           ></q-btn>
-          <q-btn
-            class="result"
-            color="primary"
-            @click="openPluginFolder"
-            label="Open Plugin Folder"
-          ></q-btn>
+
           <q-input
             outlined
             v-model="pluginDatas[currentPluginPos].pluginResultFileName"
@@ -215,7 +225,6 @@ export default defineComponent({
         });
     },
 
-
     saveResultFile: function () {
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
@@ -225,20 +234,24 @@ export default defineComponent({
       this.quasarFunction.notify("File Save Success. (kvpshell/result)");
     },
 
-    openResultFolder:function(){
+    openResultFolder: function () {
       window.apiOpenFolder.openResultFolder("", {});
     },
 
-    openPluginFolder:function(){
+    openPluginFolder: function () {
       window.apiOpenFolder.openPluginFolder("", {});
-    }
+    },
   },
 });
 </script>
 
 <style scoped>
-div.col{
+div.col {
   padding-left: 10px;
 }
 
+p{
+  font-size: large ;
+  font-weight: normal   ;
+}
 </style>
