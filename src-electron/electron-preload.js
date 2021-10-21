@@ -19,48 +19,43 @@ const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
-var spawn = require('child_process').spawn;
-import { platform } from 'process';
+var spawn = require("child_process").spawn;
+import { platform } from "process";
 
 contextBridge.exposeInMainWorld("apiOpenFolder", {
   openResultFolder: (channel, content) => {
-    var resultDir = path.join(".","result")
-    if(!fs.existsSync(resultDir)){
-      fs.mkdirSync(resultDir)
+    let resultDir = path.join(".", "result");
+    if (!fs.existsSync(resultDir)) {
+      fs.mkdirSync(resultDir);
     }
-    if(platform==='win32'){
-      spawn('explorer', [resultDir]);
-      
-    }
-    else if(platform==="linux"){
-      spawn('nautilus', [resultDir]);
+    if (platform === "win32") {
+      spawn("explorer", [resultDir]);
+    } else if (platform === "linux") {
+      spawn("nautilus", [resultDir]);
     }
   },
 
   openPluginFolder: (channel, content) => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
-    if(platform==='win32'){
-      spawn('explorer', [kvpPluginSpacePath]);
-      
-    }
-    else if(platform==="linux"){
-      spawn('nautilus', [kvpPluginSpacePath]);
+    if (platform === "win32") {
+      spawn("explorer", [kvpPluginSpacePath]);
+    } else if (platform === "linux") {
+      spawn("nautilus", [kvpPluginSpacePath]);
     }
   },
 });
 
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
-    console.log(content)
-    let currentResult = content["currentResult"]
-    let resultFileName = content["resultFileName"]
+    let currentResult = content["currentResult"];
+    let resultFileName = content["resultFileName"];
 
-    let resultDir = path.join(".","result")
-    if(!fs.existsSync(resultDir)){
-      fs.mkdirSync(resultDir)
+    let resultDir = path.join(".", "result");
+    if (!fs.existsSync(resultDir)) {
+      fs.mkdirSync(resultDir);
     }
-    let resultFilePath = path.join(resultDir,resultFileName)
-    fs.writeFileSync(resultFilePath,currentResult,'utf8');
+    let resultFilePath = path.join(resultDir, resultFileName);
+    fs.writeFileSync(resultFilePath, currentResult, "utf8");
   },
 });
 
@@ -84,8 +79,16 @@ function getKvpPluginSpacePath() {
 function readKvpPluginSpace(kvpPluginSpacePath) {
   let kvpPlugins = [];
   fs.readdirSync(kvpPluginSpacePath).forEach((pluginFolderName) => {
-    let pluginInfoPath = path.join(kvpPluginSpacePath, pluginFolderName, "plugin_info.json");
-    let pluginSourcePath = path.join(kvpPluginSpacePath, pluginFolderName, "plugin_source.txt");
+    let pluginInfoPath = path.join(
+      kvpPluginSpacePath,
+      pluginFolderName,
+      "plugin_info.json"
+    );
+    let pluginSourcePath = path.join(
+      kvpPluginSpacePath,
+      pluginFolderName,
+      "plugin_source.txt"
+    );
     try {
       //info 읽기
       let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
@@ -99,7 +102,6 @@ function readKvpPluginSpace(kvpPluginSpacePath) {
 
       //리스트 삽입
       kvpPlugins[kvpPlugins.length] = kvpPlugin;
-      
     } catch (e) {
       console.log("error load: " + pluginFolderName);
     }

@@ -220,7 +220,6 @@ export default defineComponent({
     },
 
     saveResultFile: function () {
-      console.log(this.currentResult)
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
         resultFileName:
