@@ -139,12 +139,6 @@ export default defineComponent({
         field: "pluginName",
       },
       {
-        name: "pluginTag",
-        align: "left",
-        label: "pluginTag",
-        field: "pluginTag",
-      },
-      {
         name: "pluginDesc",
         align: "left",
         label: "pluginDesc",
@@ -226,6 +220,7 @@ export default defineComponent({
     },
 
     saveResultFile: function () {
+      console.log(this.currentResult)
       window.apiFile.saveFile("", {
         currentResult: this.currentResult,
         resultFileName:

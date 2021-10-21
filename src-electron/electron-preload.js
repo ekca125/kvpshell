@@ -51,14 +51,15 @@ contextBridge.exposeInMainWorld("apiOpenFolder", {
 
 contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
-    currentResult = content["currentResult"]
-    resultFileName = content["resultFileName"]
+    console.log(content)
+    let currentResult = content["currentResult"]
+    let resultFileName = content["resultFileName"]
 
-    resultDir = path.join(".","result")
+    let resultDir = path.join(".","result")
     if(!fs.existsSync(resultDir)){
       fs.mkdirSync(resultDir)
     }
-    resultFilePath = path.join(resultDir,resultFileName)
+    let resultFilePath = path.join(resultDir,resultFileName)
     fs.writeFileSync(resultFilePath,currentResult,'utf8');
   },
 });
