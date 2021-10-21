@@ -86,6 +86,12 @@
             @click="openResultFolder"
             label="Open Result Folder"
           ></q-btn>
+          <q-btn
+            class="result"
+            color="primary"
+            @click="openPluginFolder"
+            label="Open Plugin Folder"
+          ></q-btn>
           <q-input
             outlined
             v-model="pluginDatas[currentPluginPos].pluginResultFileName"
@@ -220,7 +226,11 @@ export default defineComponent({
     },
 
     openResultFolder:function(){
-      window.apiOpenFolder.openFolder("", {});
+      window.apiOpenFolder.openResultFolder("", {});
+    },
+
+    openPluginFolder:function(){
+      window.apiOpenFolder.openPluginFolder("", {});
     }
   },
 });

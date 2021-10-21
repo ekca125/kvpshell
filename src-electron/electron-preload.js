@@ -23,7 +23,7 @@ var spawn = require('child_process').spawn;
 import { platform } from 'process';
 
 contextBridge.exposeInMainWorld("apiOpenFolder", {
-  openFolder: (channel, content) => {
+  openResultFolder: (channel, content) => {
     var resultDir = path.join(".","result")
     if(!fs.existsSync(resultDir)){
       fs.mkdirSync(resultDir)
@@ -34,6 +34,17 @@ contextBridge.exposeInMainWorld("apiOpenFolder", {
     }
     else if(platform==="linux"){
       spawn('nautilus', [resultDir]);
+    }
+  },
+
+  openPluginFolder: (channel, content) => {
+    let kvpPluginSpacePath = getKvpPluginSpacePath();
+    if(platform==='win32'){
+      spawn('explorer', [kvpPluginSpacePath]);
+      
+    }
+    else if(platform==="linux"){
+      spawn('nautilus', [kvpPluginSpacePath]);
     }
   },
 });
