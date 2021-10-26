@@ -6,6 +6,7 @@
           <!-- 플러그인 테이블 시작 -->
           <q-table
             id="plugin"
+            title="Plugins"
             :rows="pluginDatas"
             :columns="pluginDataTableColumns"
             :filter="pluginNameFilter"
@@ -13,33 +14,17 @@
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
-              <div class="row">
-                <div class="col"><p>Plugins</p></div>
-                <div class="col">
-                  <q-btn
-                    class="result"
-                    color="white"
-                    text-color="black"
-                    @click="openPluginFolder"
-                    label="Plugin Folder"
-                  ></q-btn>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <q-input
-                    borderless
-                    dense
-                    debounce="300"
-                    v-model="pluginNameFilter"
-                    placeholder="Search"
-                  >
-                    <template v-slot:append>
-                      <q-icon name="search" />
-                    </template>
-                  </q-input>
-                </div>
-              </div>
+              <q-input
+                borderless
+                dense
+                debounce="300"
+                v-model="pluginNameFilter"
+                placeholder="Search"
+              >
+                <template v-slot:append>
+                  <q-icon name="search" />
+                </template>
+              </q-input>
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->

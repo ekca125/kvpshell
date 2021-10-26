@@ -46,11 +46,6 @@ contextBridge.exposeInMainWorld("apiNode", {
     openFolder(resultDir)
   },
 
-  openPluginFolder: () => {
-    let kvpPluginSpacePath = getKvpPluginSpacePath();
-    openFolder(kvpPluginSpacePath);
-  },
-
   //File
   saveFile: (content) => {
     let currentResult = content["currentResult"];
