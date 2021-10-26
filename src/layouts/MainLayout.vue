@@ -50,9 +50,9 @@ import EssentialLink from "components/EssentialLink.vue";
 const linksList = [
   {
     title: "Github",
-    caption: "github.com/ekca125/kvpshell",
+    caption: "github.com/ekca125/MoldShell",
     icon: "code",
-    link: "https://github.com/ekca125/kvpshell",
+    link: "https://github.com/ekca125/MoldShell",
   },
   {
     title: "Search Plugin",
