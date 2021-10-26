@@ -25,9 +25,18 @@ import * as Mustache from 'mustache';
 
 
 contextBridge.exposeInMainWorld("apiMustache", {
-  getResult: (channel, content) => {
-    console.log(content)
-    return Mustache.render(content["pluginSource"],content["pluginKeyValue"]);
+  getResult: (pluginDataJsonString) => {
+    let pluginData = JSON.parse(pluginDataJsonString)
+    let pluginSource = pluginData["pluginSource"]
+    let pluginKeyValue = {}
+    for(let i=0;i<pluginData.pluginKeyValue.length;i++){
+      pluginKeyValue[pluginData.pluginKeyValue[i]["pluginKey"]]=pluginData.pluginKeyValue[i]["pluginValue"]
+    }
+
+    //String을 Json데이터로 바꾸고 추출 
+
+    console.log(pluginDataJsonString)
+    return Mustache.render(pluginSource,pluginKeyValue);
   },
 });
 

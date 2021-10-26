@@ -180,17 +180,8 @@ export default defineComponent({
   computed: {
     currentResult() {
       try {
-        let pluginSource = JSON.stringify(
-          this.pluginDatas[this.currentPluginPos].pluginSource
-        );
-        let pluginKeyValue = JSON.stringify(
-          this.pluginDatas[this.currentPluginPos].pluginKeyValue
-        );
-        this.pluginDatas[this.currentPluginPos].pluginKeyValue;
-        return window.apiMustache.getResult("", {
-          pluginSource: pluginSource,
-          pluginKeyValue: pluginKeyValue,
-        });
+        let pluginData =  JSON.stringify(this.pluginDatas[this.currentPluginPos])
+        return window.apiMustache.getResult(pluginData);
       } catch (e) {
         console.log(e);
         return "none";
