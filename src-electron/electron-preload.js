@@ -15,74 +15,103 @@
  *     doAThing: () => {}
  *   })
  */
-const { contextBridge } = require("electron");
+
+const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
-const execSync = require("child_process").execSync;
-const temp = require("temp").track();
+const spawn = require("child_process").spawn;
 
-contextBridge.exposeInMainWorld("apiPluginData", {
-  getPluginData: (channel, data) => {
-    // datas
-    let pluginDatas = [];
-    let pluginIndex = 0;
-    //path
-    let debug = false;
-    let pluginSpacePath = path.join(".", "plugins");
-    if (debug == true) {
-      let pluginSpacePathStub = path.join("C://", "data", "plugins");
-      pluginSpacePath = pluginSpacePathStub;
+import { platform } from "process";
+import Mustache from 'mustache';
+
+contextBridge.exposeInMainWorld("apiNode", {
+  renderPluginResult:(pluginJsonString) =>{
+    let pluginJson = JSON.parse(pluginJsonString)
+    let pluginSource = pluginJson["pluginSource"]
+    let pluginKeyValue = {}
+    for(let i=0;i<pluginJson.pluginKeyValue.length;i++){
+      let pkv = pluginJson.pluginKeyValue[i]
+      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"]
     }
-    fs.readdirSync(pluginSpacePath).forEach((pluginFolderName) => {
-      let pluginFolderPath = path.join(pluginSpacePath, pluginFolderName);
-      let pluginInfoPath = path.join(pluginFolderPath, "info.json");
-      //
-      pluginInfo = fs.readFileSync(pluginInfoPath, "utf8");
-      pluginInfoJson = JSON.parse(pluginInfo);
-      //if exec js
-      if (pluginInfoJson["pluginMode"] != "exec") {
-        let pluginExecPath = path.join(
-          pluginFolderPath,
-          pluginInfoJson["pluginExec"]
-        );
-        pluginInfoJson["pluginExec"] = fs.readFileSync(pluginExecPath, "utf8");
-      }
-      pluginDatas[pluginIndex] = pluginInfoJson;
-      pluginIndex++;
-    });
-    return pluginDatas;
+    return Mustache.render(pluginSource,pluginKeyValue)
+  },
+
+  //OpenFolder
+  openResultFolder: () => {
+    let resultDir = path.join(".", "result");
+    if (!fs.existsSync(resultDir)) {
+      fs.mkdirSync(resultDir);
+    }
+    openFolder(resultDir)
+  },
+
+  //File
+  saveFile: (content) => {
+    let currentResult = content["currentResult"];
+    let resultFileName = content["resultFileName"];
+    let resultDir = path.join(".", "result");
+    if (!fs.existsSync(resultDir)) {
+      fs.mkdirSync(resultDir);
+    }
+    let resultFilePath = path.join(resultDir, resultFileName);
+    fs.writeFileSync(resultFilePath, currentResult, "utf8");
+  },
+
+  getPlugins: () => {
+    let kvpPluginSpacePath = getKvpPluginSpacePath();
+    let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
+    return kvpPlugins;
   },
 });
 
-contextBridge.exposeInMainWorld("apiCommandCode", {
-  run: (channel, data) => {
-    var result = "";
+//Non API
+function openFolder(path){
+  if (platform === "win32") {
+    spawn("explorer", [path]);
+  } else if (platform === "linux") {
+    spawn("nautilus", [path]);
+  }
+}
+
+function getKvpPluginSpacePath() {
+  let debug = true;
+  if (debug == true) {
+    return path.join("C://", "data", "plugins");
+  } else if (debug == false) {
+    return path.join(".", "plugins");
+  }
+}
+
+function readKvpPluginSpace(kvpPluginSpacePath) {
+  let kvpPlugins = [];
+  fs.readdirSync(kvpPluginSpacePath).forEach((pluginFolderName) => {
+    let pluginInfoPath = path.join(
+      kvpPluginSpacePath,
+      pluginFolderName,
+      "plugin_info.json"
+    );
+    let pluginSourcePath = path.join(
+      kvpPluginSpacePath,
+      pluginFolderName,
+      "plugin_source.mustache"
+    );
     try {
-      if (data["pluginMode"] === "exec") {
-        //console.log("exec")
-        result = execSync(data["commandCode"]).toString();
-      } else if (data["pluginMode"] === "js") {
-        //console.log("js")
-        result = eval(data["commandCode"]);
-      } else if (data["pluginMode"] === "bat") {
-        //console.log("bat")
-        let openFile = temp.openSync({ suffix: ".bat" });
-        fs.writeSync(openFile.fd, data["commandCode"]);
-        fs.closeSync(openFile.fd);
-        result = execSync(openFile.path).toString();
-        temp.cleanupSync();
-      } else if (data["pluginMode"] === "sh") {
-        //console.log("bat")
-        let openFile = temp.openSync({ suffix: ".sh" });
-        fs.writeSync(openFile.fd, data["commandCode"]);
-        fs.closeSync(openFile.fd);
-        result = execSync("sh "+openFile.path.toString()).toString();
-        temp.cleanupSync();
-      }
+      //info 읽기
+      let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
+
+      //source 읽기
+      let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
+
+      //kvpPlugin = info + source
+      let kvpPlugin = pluginInfo;
+      kvpPlugin["pluginSource"] = pluginSource;
+
+      //리스트 삽입
+      kvpPlugins[kvpPlugins.length] = kvpPlugin;
     } catch (e) {
-      result = e.toString();
+      console.log("error load: " + pluginFolderName);
     }
-    return result;
-  },
-});
+  });
+  return kvpPlugins;
+}

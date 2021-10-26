@@ -1,6 +1,6 @@
 {
   "name": "kvpshell",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "description": "kvpshell",
   "productName": "kvpshell",
   "author": "ekca125 <63381869+ekca125@users.noreply.github.com>",
@@ -13,13 +13,14 @@
     "@quasar/extras": "^1.0.0",
     "child_process": "^1.0.2",
     "core-js": "^3.6.5",
+    "mustache": "^4.2.0",
     "quasar": "^2.0.0",
     "temp": "^0.9.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.13.14",
     "@quasar/app": "^3.0.0",
-    "electron": "^14.0.1",
+    "electron": "^14.1.1",
     "electron-packager": "^15.4.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^8.1.0",
