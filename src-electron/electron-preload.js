@@ -21,6 +21,15 @@ const fs = require("fs");
 const path = require("path");
 var spawn = require("child_process").spawn;
 import { platform } from "process";
+import * as Mustache from 'mustache';
+
+
+contextBridge.exposeInMainWorld("apiMustache", {
+  getResult: (channel, content) => {
+    print(content)
+    return Mustache.render(content["pluginSource"],content["pluginKeyValue"]);
+  },
+});
 
 contextBridge.exposeInMainWorld("apiOpenFolder", {
   openResultFolder: (channel, content) => {
@@ -49,7 +58,6 @@ contextBridge.exposeInMainWorld("apiFile", {
   saveFile: (channel, content) => {
     let currentResult = content["currentResult"];
     let resultFileName = content["resultFileName"];
-
     let resultDir = path.join(".", "result");
     if (!fs.existsSync(resultDir)) {
       fs.mkdirSync(resultDir);
@@ -87,7 +95,7 @@ function readKvpPluginSpace(kvpPluginSpacePath) {
     let pluginSourcePath = path.join(
       kvpPluginSpacePath,
       pluginFolderName,
-      "plugin_source.txt"
+      "plugin_source.mustache"
     );
     try {
       //info 읽기

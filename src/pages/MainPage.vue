@@ -190,13 +190,10 @@ export default defineComponent({
         let pluginSource = this.pluginDatas[this.currentPluginPos].pluginSource;
         let pluginKeyValue =
           this.pluginDatas[this.currentPluginPos].pluginKeyValue;
-        for (let i = 0; i < pluginKeyValue.length; i++) {
-          let pluginKey = pluginKeyValue[i].pluginKey;
-          let pluginValue = pluginKeyValue[i].pluginValue;
-          pluginKey = "$" + pluginKey + "$";
-          pluginSource = pluginSource.replace(pluginKey, pluginValue);
-        }
-        return pluginSource;
+        return window.apiMustache.getResult("", {
+          "pluginSource":pluginSource,
+          "pluginKeyValue":pluginKeyValue,
+        });
       } catch (e) {
         console.log(e);
         return "none";
@@ -244,8 +241,8 @@ div.col {
   padding-left: 10px;
 }
 
-p{
-  font-size: large ;
-  font-weight: normal   ;
+p {
+  font-size: large;
+  font-weight: normal;
 }
 </style>
