@@ -26,7 +26,7 @@ import * as Mustache from 'mustache';
 
 contextBridge.exposeInMainWorld("apiMustache", {
   getResult: (channel, content) => {
-    print(content)
+    console.log(content)
     return Mustache.render(content["pluginSource"],content["pluginKeyValue"]);
   },
 });

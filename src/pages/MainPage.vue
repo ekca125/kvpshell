@@ -187,8 +187,8 @@ export default defineComponent({
   computed: {
     currentResult() {
       try {
-        let pluginSource = this.pluginDatas[this.currentPluginPos].pluginSource;
-        let pluginKeyValue =
+        let pluginSource = JSON.stringify(this.pluginDatas[this.currentPluginPos].pluginSource);
+        let pluginKeyValue =JSON.stringify(this.pluginDatas[this.currentPluginPos].pluginKeyValue);
           this.pluginDatas[this.currentPluginPos].pluginKeyValue;
         return window.apiMustache.getResult("", {
           "pluginSource":pluginSource,
