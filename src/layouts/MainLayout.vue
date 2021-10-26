@@ -56,15 +56,15 @@ const linksList = [
   },
   {
     title: "Search Plugin",
-    caption: "caption",
+    caption: "Plugin Website",
     icon: "code",
-    link: "link",
+    link: "https://seatable.ekcapaper.net/dtable/external-links/5ee7d20d665c408ab11e/",
   },
   {
     title: "Share Plugin",
-    caption: "caption",
+    caption: "Share Plugin",
     icon: "code",
-    link: "link",
+    link: "https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/",
   },
 ];
 
