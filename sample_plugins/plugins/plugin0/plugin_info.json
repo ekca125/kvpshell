@@ -1,0 +1,12 @@
+{
+  "pluginName": "plugin_preset3",
+  "pluginDesc": "desc",
+  "pluginResultFileName":"swappiness.sh",
+  "pluginKeyValue": [
+    {
+      "pluginKey": "percent",
+      "pluginKeyDesc":"swappiness percent",
+      "pluginValue": "100"
+    }
+  ]
+}

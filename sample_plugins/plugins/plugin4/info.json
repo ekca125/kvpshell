@@ -1,7 +1,0 @@
-{
-  "pluginName": "plugin_preset4",
-  "pluginMode": "sh",
-  "pluginDesc": "desc",
-  "pluginExec": "test.sh",
-  "pluginKeyValue": []
-}

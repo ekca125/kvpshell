@@ -1,7 +1,0 @@
-{
-  "pluginName": "plugin_preset4",
-  "pluginMode": "bat",
-  "pluginDesc": "desc",
-  "pluginExec": "test.bat",
-  "pluginKeyValue": []
-}
