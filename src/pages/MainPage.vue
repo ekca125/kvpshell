@@ -15,17 +15,17 @@
             <template v-slot:top-right>
               <div class="row">
                 <div class="col"><p>Plugins</p></div>
-              </div>
-              <div class="row">
                 <div class="col">
                   <q-btn
                     class="result"
                     color="white"
                     text-color="black"
                     @click="openPluginFolder"
-                    label="Open Plugin Folder"
+                    label="Plugin Folder"
                   ></q-btn>
                 </div>
+              </div>
+              <div class="row">
                 <div class="col">
                   <q-input
                     borderless
@@ -161,7 +161,7 @@ export default defineComponent({
     ];
 
     // 데이터
-    let pluginDatas = reactive(window.apiKvpPlugin.getKvpPlugins("", {}));
+    let pluginDatas = reactive(window.apiNode.getPlugins("", {}));
     let pluginNameFilter = ref("");
     let currentPluginPos = ref(0);
 
@@ -180,8 +180,11 @@ export default defineComponent({
   computed: {
     currentResult() {
       try {
-        let pluginData =  JSON.stringify(this.pluginDatas[this.currentPluginPos])
-        return window.apiMustache.getResult(pluginData);
+        //
+        let pluginJsonString = JSON.stringify(
+          this.pluginDatas[this.currentPluginPos]
+        );
+        return window.apiNode.renderPluginResult(pluginJsonString);
       } catch (e) {
         console.log(e);
         return "none";
@@ -205,7 +208,7 @@ export default defineComponent({
     },
 
     saveResultFile: function () {
-      window.apiFile.saveFile("", {
+      window.apiNode.saveFile({
         currentResult: this.currentResult,
         resultFileName:
           this.pluginDatas[this.currentPluginPos].pluginResultFileName,
@@ -214,11 +217,11 @@ export default defineComponent({
     },
 
     openResultFolder: function () {
-      window.apiOpenFolder.openResultFolder("", {});
+      window.apiNode.openResultFolder("", {});
     },
 
     openPluginFolder: function () {
-      window.apiOpenFolder.openPluginFolder("", {});
+      window.apiNode.openPluginFolder("", {});
     },
   },
 });

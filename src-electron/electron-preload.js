@@ -15,56 +15,44 @@
  *     doAThing: () => {}
  *   })
  */
+
 const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
-var spawn = require("child_process").spawn;
+const spawn = require("child_process").spawn;
+
 import { platform } from "process";
-import * as Mustache from 'mustache';
+import Mustache from 'mustache';
 
-
-contextBridge.exposeInMainWorld("apiMustache", {
-  getResult: (pluginDataJsonString) => {
-    let pluginData = JSON.parse(pluginDataJsonString)
-    let pluginSource = pluginData["pluginSource"]
+contextBridge.exposeInMainWorld("apiNode", {
+  renderPluginResult:(pluginJsonString) =>{
+    let pluginJson = JSON.parse(pluginJsonString)
+    let pluginSource = pluginJson["pluginSource"]
     let pluginKeyValue = {}
-    for(let i=0;i<pluginData.pluginKeyValue.length;i++){
-      pluginKeyValue[pluginData.pluginKeyValue[i]["pluginKey"]]=pluginData.pluginKeyValue[i]["pluginValue"]
+    for(let i=0;i<pluginJson.pluginKeyValue.length;i++){
+      let pkv = pluginJson.pluginKeyValue[i]
+      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"]
     }
-
-    //String을 Json데이터로 바꾸고 추출 
-
-    console.log(pluginDataJsonString)
-    return Mustache.render(pluginSource,pluginKeyValue);
+    return Mustache.render(pluginSource,pluginKeyValue)
   },
-});
 
-contextBridge.exposeInMainWorld("apiOpenFolder", {
-  openResultFolder: (channel, content) => {
+  //OpenFolder
+  openResultFolder: () => {
     let resultDir = path.join(".", "result");
     if (!fs.existsSync(resultDir)) {
       fs.mkdirSync(resultDir);
     }
-    if (platform === "win32") {
-      spawn("explorer", [resultDir]);
-    } else if (platform === "linux") {
-      spawn("nautilus", [resultDir]);
-    }
+    openFolder(resultDir)
   },
 
-  openPluginFolder: (channel, content) => {
+  openPluginFolder: () => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
-    if (platform === "win32") {
-      spawn("explorer", [kvpPluginSpacePath]);
-    } else if (platform === "linux") {
-      spawn("nautilus", [kvpPluginSpacePath]);
-    }
+    openFolder(kvpPluginSpacePath);
   },
-});
 
-contextBridge.exposeInMainWorld("apiFile", {
-  saveFile: (channel, content) => {
+  //File
+  saveFile: (content) => {
     let currentResult = content["currentResult"];
     let resultFileName = content["resultFileName"];
     let resultDir = path.join(".", "result");
@@ -74,15 +62,22 @@ contextBridge.exposeInMainWorld("apiFile", {
     let resultFilePath = path.join(resultDir, resultFileName);
     fs.writeFileSync(resultFilePath, currentResult, "utf8");
   },
-});
 
-contextBridge.exposeInMainWorld("apiKvpPlugin", {
-  getKvpPlugins: (channel, data) => {
+  getPlugins: () => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
     let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
     return kvpPlugins;
   },
 });
+
+//Non API
+function openFolder(path){
+  if (platform === "win32") {
+    spawn("explorer", [path]);
+  } else if (platform === "linux") {
+    spawn("nautilus", [path]);
+  }
+}
 
 function getKvpPluginSpacePath() {
   let debug = true;
