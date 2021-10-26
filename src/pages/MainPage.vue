@@ -62,19 +62,12 @@
                   {{ props.row.pluginKeyDesc }}
                 </q-td>
                 <q-td key="pluginValue" :props="props">
-                  {{ props.row.pluginValue }}
-                  <q-popup-edit
+                  <q-input
+                    type="text"
                     v-model="props.row.pluginValue"
-                    title="Update plugin value"
-                    buttons
-                  >
-                    <q-input
-                      type="text"
-                      v-model="props.row.pluginValue"
-                      dense
-                      autofocus
-                    />
-                  </q-popup-edit>
+                    dense
+                    autofocus
+                  />
                 </q-td>
               </q-tr>
             </template>
@@ -187,12 +180,16 @@ export default defineComponent({
   computed: {
     currentResult() {
       try {
-        let pluginSource = JSON.stringify(this.pluginDatas[this.currentPluginPos].pluginSource);
-        let pluginKeyValue =JSON.stringify(this.pluginDatas[this.currentPluginPos].pluginKeyValue);
-          this.pluginDatas[this.currentPluginPos].pluginKeyValue;
+        let pluginSource = JSON.stringify(
+          this.pluginDatas[this.currentPluginPos].pluginSource
+        );
+        let pluginKeyValue = JSON.stringify(
+          this.pluginDatas[this.currentPluginPos].pluginKeyValue
+        );
+        this.pluginDatas[this.currentPluginPos].pluginKeyValue;
         return window.apiMustache.getResult("", {
-          "pluginSource":pluginSource,
-          "pluginKeyValue":pluginKeyValue,
+          pluginSource: pluginSource,
+          pluginKeyValue: pluginKeyValue,
         });
       } catch (e) {
         console.log(e);
