@@ -179,7 +179,6 @@ export default defineComponent({
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
       this.currentPluginPos = index;
-      this.currentResult = this.getCurrentSourceResult();
     },
 
     copyClipResult: function () {
