@@ -80,7 +80,7 @@ function openFolder(path){
 }
 
 function getKvpPluginSpacePath() {
-  let debug = true;
+  let debug = false;
   if (debug == true) {
     return path.join("C://", "data", "plugins");
   } else if (debug == false) {
