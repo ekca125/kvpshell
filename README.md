@@ -1,6 +1,9 @@
-# kvpshell app (kvpshell)
+# pkvboard app
 
-kvpshell
+pkvboard
+
+![캡처](https://user-images.githubusercontent.com/63381869/139162740-8bde8c4e-36ba-4a62-9e93-62e776282098.PNG)
+
 
 ## Install the dependencies
 ```bash
@@ -21,6 +24,3 @@ npm run lint
 ```bash
 quasar build
 ```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://v2.quasar.dev/quasar-cli/quasar-conf-js).
