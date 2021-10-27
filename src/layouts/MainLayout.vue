@@ -20,8 +20,8 @@
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
       <q-btn
         class="result"
-        color="white"
-        text-color="black"
+        color="black"
+        text-color="white"
         style="width:100%"
         @click="openPluginFolder"
         label="Open Plugin Folder"
