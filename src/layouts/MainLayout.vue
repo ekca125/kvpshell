@@ -58,7 +58,7 @@ const linksList = [
     title: "Search Plugin",
     caption: "Search Plugin",
     icon: "code",
-    link: "https://seatable.ekcapaper.net/dtable/external-links/5ee7d20d665c408ab11e/",
+    link: "https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/",
   },
   {
     title: "Share Plugin",
