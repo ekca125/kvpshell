@@ -11,9 +11,9 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> KvpShell </q-toolbar-title>
+        <q-toolbar-title> pkvboard </q-toolbar-title>
 
-        <div>KvpShell 2.0.0</div>
+        <div>pkvboard 2.1.0</div>
       </q-toolbar>
     </q-header>
 
@@ -50,13 +50,13 @@ import EssentialLink from "components/EssentialLink.vue";
 const linksList = [
   {
     title: "Github",
-    caption: "github.com/ekca125/MoldShell",
+    caption: "github.com/ekca125/pkvboard",
     icon: "code",
-    link: "https://github.com/ekca125/MoldShell",
+    link: "https://github.com/ekca125/pkvboard",
   },
   {
     title: "Search Plugin",
-    caption: "Plugin Website",
+    caption: "Search Plugin",
     icon: "code",
     link: "https://seatable.ekcapaper.net/dtable/external-links/5ee7d20d665c408ab11e/",
   },

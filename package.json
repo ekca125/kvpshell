@@ -1,8 +1,8 @@
 {
-  "name": "kvpshell",
-  "version": "2.0.0",
-  "description": "kvpshell",
-  "productName": "kvpshell",
+  "name": "pkvboard",
+  "version": "2.1.0",
+  "description": "pkvboard",
+  "productName": "pkvboard",
   "author": "ekca125 <63381869+ekca125@users.noreply.github.com>",
   "private": true,
   "scripts": {
