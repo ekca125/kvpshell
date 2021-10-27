@@ -4,7 +4,7 @@
 
 ![캡처](https://user-images.githubusercontent.com/63381869/139162740-8bde8c4e-36ba-4a62-9e93-62e776282098.PNG)
 
-## Getting Started / 어떻게 시작하나요?
+# Getting Started / 어떻게 시작하나요?
 
 ## 플러그인의 사용
 1. 변수의 값을 변경한다.
