@@ -3,7 +3,7 @@
     clickable
     tag="a"
     target="_blank"
-    :href="link"
+    @click="openChildWindow(link)"  
   >
     <q-item-section
       v-if="icon"
@@ -46,6 +46,11 @@ export default defineComponent({
       type: String,
       default: ''
     }
-  }
+  },
+  methods: {
+    openChildWindow: function (url) {
+      window.apiNode.openChildWindow(url);
+    },
+  },
 })
 </script>
