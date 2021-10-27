@@ -16,8 +16,10 @@
 3. plugin_source.mustache 생성 (플러그인 코드)
 
 ## 플러그인 찾기
+https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 
 ## 플러그인 공유
+https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
 
 ## Install the dependencies
 ```bash
