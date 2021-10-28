@@ -1,5 +1,5 @@
 {
-  "pluginName": "plugin_preset3",
+  "pluginName": "plugin_preset0",
   "pluginDesc": "virtual memory - swappiness",
   "pluginResultFileName":"swappiness.sh",
   "pluginKeyValue": [

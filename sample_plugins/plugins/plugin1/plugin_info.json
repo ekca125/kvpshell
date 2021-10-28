@@ -1,5 +1,5 @@
 {
-  "pluginName": "plugin_preset4",
+  "pluginName": "plugin_preset1",
   "pluginDesc": "python - print hello world",
   "pluginResultFileName":"hello.py",
   "pluginKeyValue": [
