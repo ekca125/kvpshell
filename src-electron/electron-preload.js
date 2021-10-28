@@ -48,12 +48,12 @@ contextBridge.exposeInMainWorld("apiNode", {
     if (!fs.existsSync(resultDir)) {
       fs.mkdirSync(resultDir);
     }
-    openFolder(resultDir)
+    open(resultDir)
   },
 
   openPluginFolder: () => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
-    openFolder(kvpPluginSpacePath);
+    open(kvpPluginSpacePath);
   },
 
   //File
@@ -74,15 +74,6 @@ contextBridge.exposeInMainWorld("apiNode", {
     return kvpPlugins;
   },
 });
-
-//Non API
-function openFolder(path){
-  if (platform === "win32") {
-    spawn("explorer", [path]);
-  } else if (platform === "linux") {
-    spawn("nautilus", [path]);
-  }
-}
 
 function getKvpPluginSpacePath() {
   let debug = false;
