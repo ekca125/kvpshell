@@ -1,6 +1,6 @@
 # pkvboard
 
-프리셋을 이용하여 코드를 생성하는 프로그램
+코드 프리셋을 이용하여 코드를 생성하는 프로그램
 
 ![캡처](https://user-images.githubusercontent.com/63381869/139162740-8bde8c4e-36ba-4a62-9e93-62e776282098.PNG)
 
