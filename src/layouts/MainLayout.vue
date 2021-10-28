@@ -18,20 +18,17 @@
     </q-header>
 
     <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-btn
-        class="result"
-        color="black"
-        text-color="white"
-        style="width:100%"
-        @click="openPluginFolder"
-        label="Open Plugin Folder"
-      ></q-btn>
-
       <q-list>
         <q-item-label header> Links </q-item-label>
 
         <EssentialLink
           v-for="link in essentialLinks"
+          :key="link.title"
+          v-bind="link"
+        />
+
+        <PluginFolderLink
+          v-for="link in linksPluginFolderList"
           :key="link.title"
           v-bind="link"
         />
@@ -46,6 +43,7 @@
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
+import PluginFolderLink from "src/components/PluginFolderLink.vue";
 
 const linksList = [
   {
@@ -68,6 +66,15 @@ const linksList = [
   },
 ];
 
+const linksPluginFolderList = [
+  {
+    title: "Open Plugin Folder",
+    caption: "Open Plugin Folder",
+    icon: "code",
+    link: "None"
+  },
+];
+
 import { defineComponent, ref } from "vue";
 
 export default defineComponent({
@@ -75,6 +82,7 @@ export default defineComponent({
 
   components: {
     EssentialLink,
+    PluginFolderLink,
   },
 
   setup() {
@@ -82,16 +90,12 @@ export default defineComponent({
 
     return {
       essentialLinks: linksList,
+      linksPluginFolderList:linksPluginFolderList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
     };
-  },
-  methods: {
-    openPluginFolder: function () {
-      window.apiNode.openPluginFolder("", {});
-    },
-  },
+  }
 });
 </script>
