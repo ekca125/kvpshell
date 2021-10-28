@@ -95,6 +95,9 @@ function getKvpPluginSpacePath() {
 
 function readKvpPluginSpace(kvpPluginSpacePath) {
   let kvpPlugins = [];
+  if (!fs.existsSync(kvpPluginSpacePath)) {
+    fs.mkdirSync(kvpPluginSpacePath);
+  }
   fs.readdirSync(kvpPluginSpacePath).forEach((pluginFolderName) => {
     let pluginInfoPath = path.join(
       kvpPluginSpacePath,
