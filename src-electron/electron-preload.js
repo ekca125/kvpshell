@@ -21,21 +21,21 @@ const { contextBridge, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const spawn = require("child_process").spawn;
-const open = require('open');
+const open = require("open");
 
 import { platform } from "process";
-import Mustache from 'mustache';
+import Mustache from "mustache";
 
 contextBridge.exposeInMainWorld("apiNode", {
-  renderPluginResult:(pluginJsonString) =>{
-    let pluginJson = JSON.parse(pluginJsonString)
-    let pluginSource = pluginJson["pluginSource"]
-    let pluginKeyValue = {}
-    for(let i=0;i<pluginJson.pluginKeyValue.length;i++){
-      let pkv = pluginJson.pluginKeyValue[i]
-      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"]
+  renderPluginResult: (pluginJsonString) => {
+    let pluginJson = JSON.parse(pluginJsonString);
+    let pluginSource = pluginJson["pluginSource"];
+    let pluginKeyValue = {};
+    for (let i = 0; i < pluginJson.pluginKeyValue.length; i++) {
+      let pkv = pluginJson.pluginKeyValue[i];
+      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"];
     }
-    return Mustache.render(pluginSource,pluginKeyValue)
+    return Mustache.render(pluginSource, pluginKeyValue);
   },
 
   openChildWindow: (url) => {
@@ -48,7 +48,7 @@ contextBridge.exposeInMainWorld("apiNode", {
     if (!fs.existsSync(resultDir)) {
       fs.mkdirSync(resultDir);
     }
-    open(resultDir)
+    open(resultDir);
   },
 
   openPluginFolder: () => {
@@ -71,6 +71,14 @@ contextBridge.exposeInMainWorld("apiNode", {
   getPlugins: () => {
     let kvpPluginSpacePath = getKvpPluginSpacePath();
     let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
+    if (kvpPlugins.length == 0) {
+      kvpPlugins[0] = {
+        pluginName: "No Plugin",
+        pluginDesc: "",
+        pluginResultFileName: "",
+        pluginKeyValue: [],
+      };
+    }
     return kvpPlugins;
   },
 });
