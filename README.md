@@ -1,6 +1,6 @@
 # pkvboard
 
-코드 프리셋을 기반으로 요구사항에 의해서 변경할 필요성이 있는 부분만 수정하여 필요한 코드를 생성할 수 있는 개발보드
+코드 프리셋을 기반으로 변경할 필요성이 있는 부분만 수정하여 코드를 생성하는 프로그램
 
 ![캡처](https://user-images.githubusercontent.com/63381869/139162740-8bde8c4e-36ba-4a62-9e93-62e776282098.PNG)
 
@@ -20,6 +20,7 @@ https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 
 ## 플러그인 공유
 https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
+
 
 ## Install the dependencies
 ```bash
