@@ -1,8 +1,7 @@
 # pkvboard
 
-사용자가 활용하기 위해서 변경해야 할 코드와 변경되지 않아야 할 코드가 미리 정의된 코드 프리셋을 이용하여 코드를 생성할 수 있는 프로그램
+코드에서 변경되어야 할 부분과 변경되지 않아야 하는 부분이 미리 정의된 형태의 프리셋을 이용하여 코드를 생성할 수 있는 프로그램
 
-![캡처](https://user-images.githubusercontent.com/63381869/139162740-8bde8c4e-36ba-4a62-9e93-62e776282098.PNG)
 
 # Getting Started / 어떻게 시작하나요?
 
@@ -20,6 +19,10 @@ https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 
 ## 플러그인 공유
 https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
+
+# 스크린샷
+
+![캡처](https://user-images.githubusercontent.com/63381869/139208671-120d82c1-e462-4a61-a714-ce24325f1f96.PNG)
 
 
 ## Install the dependencies
