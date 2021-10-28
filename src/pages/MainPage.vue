@@ -197,7 +197,7 @@ export default defineComponent({
         resultFileName:
           this.pluginDatas[this.currentPluginPos].pluginResultFileName,
       });
-      this.quasarFunction.notify("File Save Success. (kvpshell/result)");
+      this.quasarFunction.notify("File Save Success.");
     },
 
     openResultFolder: function () {
