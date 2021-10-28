@@ -20,7 +20,7 @@ https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 ## 플러그인 공유
 https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
 
-# 스크린샷
+## 스크린샷
 
 ![캡처](https://user-images.githubusercontent.com/63381869/139208671-120d82c1-e462-4a61-a714-ce24325f1f96.PNG)
 
