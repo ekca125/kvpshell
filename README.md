@@ -22,7 +22,7 @@ https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028
 
 ## 스크린샷
 
-![캡처](https://user-images.githubusercontent.com/63381869/139208671-120d82c1-e462-4a61-a714-ce24325f1f96.PNG)
+![캡처](https://user-images.githubusercontent.com/63381869/139259641-d24a5f54-ebda-4f94-a1b3-97d97854bdd3.PNG)
 
 
 ## Install the dependencies
