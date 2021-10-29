@@ -5,7 +5,7 @@
   <img src="https://img.shields.io/badge/npm-%3E%3D%206.13.4-blue.svg" />
 </p>
 
-> make code from preset
+> Make code from preset
 
 ### 🏠 [Homepage](https://github.com/ekca125/pkvboard)
 
