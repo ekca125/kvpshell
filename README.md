@@ -8,6 +8,7 @@
 > Make code from preset
 
 ### 🏠 [Homepage](https://github.com/ekca125/pkvboard)
+### [PluginPage](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
 
 ## Prerequisites
 
