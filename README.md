@@ -7,9 +7,12 @@
 
 > Make code from preset
 
+![캡처](https://user-images.githubusercontent.com/63381869/139259641-d24a5f54-ebda-4f94-a1b3-97d97854bdd3.PNG)
+
+
 ## Links
 
-### 🏠 [Homepage](https://github.com/ekca125/pkvboard) [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
+### 🏠 [Homepage](https://github.com/ekca125/pkvboard) 🏠 [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) 🏠 [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
 
 ## Prerequisites
 
@@ -50,10 +53,6 @@ https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028
 ```sh
 quasar dev -m electron
 ```
-
-## ScreenShots
-
-![캡처](https://user-images.githubusercontent.com/63381869/139259641-d24a5f54-ebda-4f94-a1b3-97d97854bdd3.PNG)
 
 ## Author
 
