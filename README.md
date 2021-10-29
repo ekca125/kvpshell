@@ -1,46 +1,74 @@
-# pkvboard
+<h1 align="center">Welcome to pkvboard 👋</h1>
+<p>
+  <img alt="Version" src="https://img.shields.io/badge/version-2.2.0-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/node-%3E%3D%2012.22.1-blue.svg" />
+  <img src="https://img.shields.io/badge/npm-%3E%3D%206.13.4-blue.svg" />
+</p>
 
-코드에서 변경되어야 할 부분과 변경되지 않아야 하는 부분이 미리 정의된 형태의 프리셋을 이용하여 코드를 생성할 수 있는 프로그램
+> Make code from preset
 
+## Links
 
-# Getting Started / 어떻게 시작하나요?
+### 🏠 [Homepage](https://github.com/ekca125/pkvboard) [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
 
-## 플러그인의 사용
+## Prerequisites
+
+- node >= 12.22.1
+- npm >= 6.13.4
+
+## Install
+
+```sh
+npm install
+```
+
+## Usage
+
+```sh
+quasar build -m electron
+```
+
+## Usage Plugins
+
+### 플러그인의 사용
 1. 변수의 값을 변경한다.
 2. 클립보드로 코드를 복사하거나 파일로 저장한다.
 
-## 플러그인 만들기
+### 플러그인 만들기
 1. 프로그램 내부의 /plugins 폴더에 임의의 이름으로 폴더생성
 2. plugin_info.json 생성 (플러그인 정보)
 3. plugin_source.mustache 생성 (플러그인 코드)
 
-## 플러그인 찾기
+### 플러그인 찾기
 https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 
-## 플러그인 공유
+### 플러그인 공유
 https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
 
-## 스크린샷
+## Run tests
+
+```sh
+quasar dev -m electron
+```
+
+## ScreenShots
 
 ![캡처](https://user-images.githubusercontent.com/63381869/139259641-d24a5f54-ebda-4f94-a1b3-97d97854bdd3.PNG)
 
+## Author
 
-## Install the dependencies
-```bash
-npm install
-```
+👤 **ekca125**
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
-```bash
-quasar dev
-```
+* Website: ekcapaper.net
+* Github: [@ekca125](https://github.com/ekca125)
 
-### Lint the files
-```bash
-npm run lint
-```
+## 🤝 Contributing
 
-### Build the app for production
-```bash
-quasar build
-```
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ekca125/pkvboard/issues). 
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
+
+***
+_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_

@@ -144,9 +144,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `kvpshell app`,
-        short_name: `kvpshell app`,
-        description: `kvpshell`,
+        name: `pkvboard`,
+        short_name: `pkvboard`,
+        description: `pkvboard`,
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
