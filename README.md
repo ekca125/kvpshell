@@ -23,14 +23,35 @@ npm install
 ## Usage
 
 ```sh
-quasar dev -m electron
+quasar build -m electron
 ```
+
+## Usage Plugins
+
+### 플러그인의 사용
+1. 변수의 값을 변경한다.
+2. 클립보드로 코드를 복사하거나 파일로 저장한다.
+
+### 플러그인 만들기
+1. 프로그램 내부의 /plugins 폴더에 임의의 이름으로 폴더생성
+2. plugin_info.json 생성 (플러그인 정보)
+3. plugin_source.mustache 생성 (플러그인 코드)
+
+### 플러그인 찾기
+https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
+
+### 플러그인 공유
+https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
 
 ## Run tests
 
 ```sh
 quasar dev -m electron
 ```
+
+## ScreenShots
+
+![캡처](https://user-images.githubusercontent.com/63381869/139259641-d24a5f54-ebda-4f94-a1b3-97d97854bdd3.PNG)
 
 ## Author
 
