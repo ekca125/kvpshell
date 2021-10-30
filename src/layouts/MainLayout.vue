@@ -23,7 +23,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+    <q-drawer v-model="leftDrawerOpen" bordered>
       <q-list>
         <q-item-label header> Links </q-item-label>
 
