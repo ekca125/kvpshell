@@ -211,11 +211,7 @@ export default defineComponent({
 
     openPluginFolder: function () {
       window.apiNode.openPluginFolder("", {});
-    },
-
-    refreshPlugins: function () {
-      this.$router.go();
-    },
+    }
   },
 });
 </script>

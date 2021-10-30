@@ -11,7 +11,14 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> pkvboard </q-toolbar-title>
+        <q-toolbar-title> pkvboard <q-btn
+          color="white"
+          text-color="blue"
+          label="Refresh"
+          style="margin-left:10px"
+          @click="refreshPluginPage"
+        ></q-btn></q-toolbar-title>
+        
         <div>pkvboard 2.3.0</div>
       </q-toolbar>
     </q-header>
@@ -70,7 +77,7 @@ const linksPluginFolderList = [
     title: "Open Plugin Folder",
     caption: "Open Plugin Folder",
     icon: "code",
-    link: "None"
+    link: "None",
   },
 ];
 
@@ -89,12 +96,18 @@ export default defineComponent({
 
     return {
       essentialLinks: linksList,
-      linksPluginFolderList:linksPluginFolderList,
+      linksPluginFolderList: linksPluginFolderList,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
       },
     };
-  }
+  },
+
+  methods: {
+    refreshPluginPage: function () {
+      this.$router.go();
+    },
+  },
 });
 </script>
