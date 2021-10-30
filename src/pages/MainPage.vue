@@ -14,17 +14,22 @@
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
-              <q-input
-                borderless
-                dense
-                debounce="300"
-                v-model="pluginNameFilter"
-                placeholder="Search"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+              <div class="row">
+                <div class="col">
+                  <q-input
+                    borderless
+                    dense
+                    debounce="300"
+                    v-model="pluginNameFilter"
+                    placeholder="Search"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+             
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->
@@ -159,7 +164,7 @@ export default defineComponent({
       // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos,
+      currentPluginPos
     };
   },
   computed: {
@@ -206,7 +211,7 @@ export default defineComponent({
 
     openPluginFolder: function () {
       window.apiNode.openPluginFolder("", {});
-    },
+    }
   },
 });
 </script>
