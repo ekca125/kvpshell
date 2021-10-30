@@ -29,17 +29,7 @@
                   </q-input>
                 </div>
               </div>
-              <div class="row">
-      
-                <div class="col">
-                  <q-btn
-                    color="white"
-                    text-color="black"
-                    label="Refresh"
-                    @click="refreshPlugins"
-                  ></q-btn>
-                </div>
-              </div>
+             
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->

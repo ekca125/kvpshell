@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title> pkvboard </q-toolbar-title>
-        <div>pkvboard 2.2.0</div>
+        <div>pkvboard 2.3.0</div>
       </q-toolbar>
     </q-header>
 

@@ -20,10 +20,8 @@ const { contextBridge, ipcMain } = require("electron");
 
 const fs = require("fs");
 const path = require("path");
-const spawn = require("child_process").spawn;
 const open = require("open");
 
-import { platform } from "process";
 import Mustache from "mustache";
 
 contextBridge.exposeInMainWorld("apiNode", {
