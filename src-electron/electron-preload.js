@@ -35,7 +35,13 @@ contextBridge.exposeInMainWorld("apiNode", {
       let pkv = pluginJson.pluginKeyValue[i];
       pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"];
     }
-    return Mustache.render(pluginSource, pluginKeyValue);
+
+    if(typeof(pluginSource)=="undefined"){
+      return "No Data"
+    }
+    else{
+      return Mustache.render(pluginSource, pluginKeyValue);
+    }
   },
 
   openChildWindow: (url) => {
@@ -84,7 +90,7 @@ contextBridge.exposeInMainWorld("apiNode", {
 });
 
 function getKvpPluginSpacePath() {
-  let debug = false;
+  let debug = true;
   if (debug == true) {
     return path.join("C://", "data", "plugins");
   } else if (debug == false) {

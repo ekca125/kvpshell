@@ -14,17 +14,32 @@
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
-              <q-input
-                borderless
-                dense
-                debounce="300"
-                v-model="pluginNameFilter"
-                placeholder="Search"
-              >
-                <template v-slot:append>
-                  <q-icon name="search" />
-                </template>
-              </q-input>
+              <div class="row">
+                <div class="col">
+                  <q-input
+                    borderless
+                    dense
+                    debounce="300"
+                    v-model="pluginNameFilter"
+                    placeholder="Search"
+                  >
+                    <template v-slot:append>
+                      <q-icon name="search" />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+              <div class="row">
+      
+                <div class="col">
+                  <q-btn
+                    color="white"
+                    text-color="black"
+                    label="Refresh"
+                    @click="refreshPlugins"
+                  ></q-btn>
+                </div>
+              </div>
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->
@@ -159,7 +174,7 @@ export default defineComponent({
       // data
       pluginNameFilter,
       pluginDatas,
-      currentPluginPos,
+      currentPluginPos
     };
   },
   computed: {
@@ -206,6 +221,10 @@ export default defineComponent({
 
     openPluginFolder: function () {
       window.apiNode.openPluginFolder("", {});
+    },
+
+    refreshPlugins: function () {
+      this.$router.go();
     },
   },
 });
