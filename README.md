@@ -25,7 +25,7 @@
 npm install
 ```
 
-## Usage
+## Build
 
 ```sh
 quasar build -m electron
