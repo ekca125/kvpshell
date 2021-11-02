@@ -31,6 +31,12 @@ npm install
 quasar build -m electron
 ```
 
+## Run tests
+
+```sh
+quasar dev -m electron
+```
+
 ## Usage(usecase)
 https://docs.google.com/document/d/1qSLArGGqaX6s3ewGVU8jLstJGm0-YbNek9F0eE5gaM4/edit?usp=sharing
 
@@ -40,11 +46,7 @@ https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
 ### 플러그인 공유
 https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
 
-## Run tests
 
-```sh
-quasar dev -m electron
-```
 
 ## Author
 
