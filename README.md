@@ -31,16 +31,8 @@ npm install
 quasar build -m electron
 ```
 
-## Usage Plugins
-
-### 플러그인의 사용
-1. 변수의 값을 변경한다.
-2. 클립보드로 코드를 복사하거나 파일로 저장한다.
-
-### 플러그인 만들기
-1. 프로그램 내부의 /plugins 폴더에 임의의 이름으로 폴더생성
-2. plugin_info.json 생성 (플러그인 정보)
-3. plugin_source.mustache 생성 (플러그인 코드)
+## Usage(usecase)
+https://docs.google.com/document/d/1qSLArGGqaX6s3ewGVU8jLstJGm0-YbNek9F0eE5gaM4/edit?usp=sharing
 
 ### 플러그인 찾기
 https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
