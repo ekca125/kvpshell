@@ -1,8 +1,8 @@
 {
-  "name": "pkvboard",
+  "name": "pkvcode",
   "version": "2.3.0",
-  "description": "pkvboard",
-  "productName": "pkvboard",
+  "description": "pkvcode",
+  "productName": "pkvcode",
   "author": "ekca125 <63381869+ekca125@users.noreply.github.com>",
   "private": true,
   "scripts": {
