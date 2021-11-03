@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to pkvboard 👋</h1>
+<h1 align="center">Welcome to pkvcode 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-2.2.0-blue.svg?cacheSeconds=2592000" />
   <img src="https://img.shields.io/badge/node-%3E%3D%2012.22.1-blue.svg" />
@@ -7,12 +7,11 @@
 
 > Make code from preset
 
-![캡처](https://user-images.githubusercontent.com/63381869/139526613-136d2bd8-7cf4-434b-961a-731a03e52334.PNG)
-
+![캡처](https://user-images.githubusercontent.com/63381869/140029211-7d9dd090-6d3d-41d1-9a32-2d2dc1bdaf66.PNG)
 
 ## Links
 
-### 🏠 [Homepage](https://github.com/ekca125/pkvboard) 🏠 [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) 🏠 [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
+### 🏠 [Homepage](https://github.com/ekca125/pkvcode) 🏠 [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) 🏠 [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
 
 ## Prerequisites
 
@@ -57,7 +56,7 @@ https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ekca125/pkvboard/issues). 
+Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/ekca125/pkvcode/issues). 
 
 ## Show your support
 

@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> pkvboard <q-btn
+        <q-toolbar-title> pkvcode <q-btn
           color="white"
           text-color="blue"
           label="Refresh"
@@ -19,7 +19,7 @@
           @click="refreshPluginPage"
         ></q-btn></q-toolbar-title>
         
-        <div>pkvboard 2.3.0</div>
+        <div>pkvcode 2.3.0</div>
       </q-toolbar>
     </q-header>
 
@@ -54,9 +54,9 @@ import PluginFolderLink from "src/components/PluginFolderLink.vue";
 const linksList = [
   {
     title: "Github",
-    caption: "github.com/ekca125/pkvboard",
+    caption: "github.com/ekca125/pkvcode",
     icon: "code",
-    link: "https://github.com/ekca125/pkvboard",
+    link: "https://github.com/ekca125/pkvcode",
   },
   {
     title: "Search Plugin",
