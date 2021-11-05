@@ -40,10 +40,10 @@ quasar dev -m electron
 https://docs.google.com/document/d/1qSLArGGqaX6s3ewGVU8jLstJGm0-YbNek9F0eE5gaM4/edit?usp=sharing
 
 ### Search plugin
-https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
+https://airtable.com/shrFOiIXatox1LCtJ/tblJHQ7gnsyznuhob
 
 ### Share plugin
-https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
+https://airtable.com/shrwsETCkg1uEto6W
 
 
 

@@ -19,7 +19,7 @@
           @click="refreshPluginPage"
         ></q-btn></q-toolbar-title>
         
-        <div>pkvcode 2.3.0</div>
+        <div>pkvcode 2.4.0</div>
       </q-toolbar>
     </q-header>
 
