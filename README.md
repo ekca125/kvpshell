@@ -7,11 +7,11 @@
 
 > Make code from preset
 
-![캡처](https://user-images.githubusercontent.com/63381869/140029211-7d9dd090-6d3d-41d1-9a32-2d2dc1bdaf66.PNG)
+![캡처](https://user-images.githubusercontent.com/63381869/140458071-f495db1b-f499-4bd1-a596-1f07da91deee.PNG)
 
 ## Links
 
-### 🏠 [Homepage](https://github.com/ekca125/pkvcode) 🏠 [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) 🏠 [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
+### 🏠 [Homepage](https://github.com/ekca125/pkvcode) 🏠 [PluginPage](https://airtable.com/shrFOiIXatox1LCtJ) 🏠 [PluginForm](https://airtable.com/shrwsETCkg1uEto6W)
 
 ## Prerequisites
 
@@ -40,10 +40,10 @@ quasar dev -m electron
 https://docs.google.com/document/d/1qSLArGGqaX6s3ewGVU8jLstJGm0-YbNek9F0eE5gaM4/edit?usp=sharing
 
 ### Search plugin
-https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/
+https://airtable.com/shrFOiIXatox1LCtJ/tblJHQ7gnsyznuhob
 
 ### Share plugin
-https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/
+https://airtable.com/shrwsETCkg1uEto6W
 
 
 

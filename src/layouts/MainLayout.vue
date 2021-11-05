@@ -19,7 +19,7 @@
           @click="refreshPluginPage"
         ></q-btn></q-toolbar-title>
         
-        <div>pkvcode 2.3.0</div>
+        <div>pkvcode 2.4.0</div>
       </q-toolbar>
     </q-header>
 
@@ -62,13 +62,13 @@ const linksList = [
     title: "Search Plugin",
     caption: "Search Plugin",
     icon: "code",
-    link: "https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/",
+    link: "https://airtable.com/shrFOiIXatox1LCtJ",
   },
   {
     title: "Share Plugin",
     caption: "Share Plugin",
     icon: "code",
-    link: "https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/",
+    link: "https://airtable.com/shrwsETCkg1uEto6W",
   },
 ];
 
