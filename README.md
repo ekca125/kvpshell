@@ -11,7 +11,7 @@
 
 ## Links
 
-### 🏠 [Homepage](https://github.com/ekca125/pkvcode) 🏠 [PluginPage](https://seatable.ekcapaper.net/dtable/external-links/b33649a9f340452e9470/) 🏠 [PluginForm](https://seatable.ekcapaper.net/dtable/forms/6052ec13-f691-4a6e-af1e-a680c75e7028/)
+### 🏠 [Homepage](https://github.com/ekca125/pkvcode) 🏠 [PluginPage](https://airtable.com/shrFOiIXatox1LCtJ) 🏠 [PluginForm](https://airtable.com/shrwsETCkg1uEto6W)
 
 ## Prerequisites
 
