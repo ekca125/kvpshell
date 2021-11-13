@@ -59,14 +59,14 @@ const linksList = [
     link: "https://github.com/ekca125/pkvcode",
   },
   {
-    title: "Search Plugin",
-    caption: "Search Plugin",
+    title: "Search Preset",
+    caption: "Search Preset",
     icon: "code",
     link: "https://airtable.com/shrFOiIXatox1LCtJ",
   },
   {
-    title: "Share Plugin",
-    caption: "Share Plugin",
+    title: "Share Preset",
+    caption: "Share Preset",
     icon: "code",
     link: "https://airtable.com/shrwsETCkg1uEto6W",
   },
@@ -74,8 +74,8 @@ const linksList = [
 
 const linksPluginFolderList = [
   {
-    title: "Open Plugin Folder",
-    caption: "Open Plugin Folder",
+    title: "Open Preset Folder",
+    caption: "Open Preset Folder",
     icon: "code",
     link: "None",
   },
