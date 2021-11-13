@@ -117,7 +117,6 @@ class PluginResultRenderer {
     let kv = {};
     for (let i = 0; i < this.data.presetKeyValue.length; i++) {
       let pkv = this.data.presetKeyValue[i];
-      console.log(this.data);
       kv[pkv["presetKey"]] = pkv["presetValue"];
     }
     return Mustache.render(source, kv);
