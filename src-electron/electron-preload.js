@@ -109,14 +109,23 @@ class PresetStorageExplorer extends StorageExplorer {
         //preset = info + source
         let preset = {};
         preset["presetName"] = info["name"]
-        preset["presetDesc"] = ""
+        preset["presetDesc"] = info["name"]
         preset["presetResultFileName"] = info["result"]
-        preset["presetKeyValue"] = info["kv"]
+        preset["presetKeyValue"] = []
+        for(let property in info["kvs"]){
+          let kv = {
+            presetKey:property,
+            presetKeyDesc:property,
+            presetValue:info["kvs"][property]
+          }
+          preset["presetKeyValue"].push(kv)
+        }
         preset["presetSource"] = source;
 
         //리스트 삽입
         presets[presets.length] = preset;
-      } catch (e) {}
+      } catch (e) {
+      }
     });
     return presets;
   }
@@ -124,6 +133,9 @@ class PresetStorageExplorer extends StorageExplorer {
   readPresets() {
     let presets = []
     presets = presets.concat(this.readNormalPresets());
+    console.log(presets)
+    presets = presets.concat(this.readSimplePresets());
+    console.log(presets)
     if (presets.length == 0) {
       return [
         {

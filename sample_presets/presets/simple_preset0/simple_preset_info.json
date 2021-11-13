@@ -1,0 +1,8 @@
+{
+  "name": "plugin_preset1",
+  "result":"hello.py",
+  "kvs": 
+    {
+      "string": "Hello World"
+    }
+}
