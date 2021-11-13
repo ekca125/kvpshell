@@ -68,15 +68,16 @@ class PresetStorageExplorer extends StorageExplorer {
 
         //source 읽기
         let source = fs.readFileSync(sourcePath, "utf8");
-
+ 
         //preset = info + source
         let preset = info;
         preset["presetSource"] = source;
 
         //리스트 삽입
-        preset[presets.length] = preset;
+        presets[presets.length] = preset;
       } catch (e) {
-        console.log("error load: " + pluginFolderName);
+        console.log("error load: " + infoPath);
+        console.log("error load: " + sourcePath);
       }
     });
     if (presets.length == 0) {
@@ -94,6 +95,23 @@ class PresetStorageExplorer extends StorageExplorer {
   }
 }
 
+class PluginResultRenderer{
+  constructor(dataJson){
+    this.data = JSON.parse(dataJson);
+  }
+
+  render(){
+    let source = this.data["presetSource"];
+    let kv = {};
+    for (let i = 0; i < this.data.presetKeyValue.length; i++) {
+      let pkv = this.data.presetKeyValue[i];
+      kv[pkv["pluginKey"]] = pkv["pluginValue"];
+    }
+    return Mustache.render(source, kv);
+  }
+}
+
+
 let presetStorageExplorer = new PresetStorageExplorer();
 
 contextBridge.exposeInMainWorld("apiNode", {
@@ -101,25 +119,15 @@ contextBridge.exposeInMainWorld("apiNode", {
     presetStorageExplorer.openFolder();
   },
 
-  readPresets:()=>{
+  readPresets: () => {
     return presetStorageExplorer.readPresets();
   },
 
-  renderPluginResult: (pluginJsonString) => {
-    let pluginJson = JSON.parse(pluginJsonString);
-    let pluginSource = pluginJson["pluginSource"];
-    let pluginKeyValue = {};
-    for (let i = 0; i < pluginJson.pluginKeyValue.length; i++) {
-      let pkv = pluginJson.pluginKeyValue[i];
-      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"];
-    }
-
-    if (typeof pluginSource == "undefined") {
-      return "No Data";
-    } else {
-      return Mustache.render(pluginSource, pluginKeyValue);
-    }
+  renderResult:(pluginJsonString) =>{
+    let renderer = new PluginResultRenderer(pluginJsonString);
+    return renderer.render();
   },
+
 
   openChildWindow: (url) => {
     open(url);
@@ -134,11 +142,6 @@ contextBridge.exposeInMainWorld("apiNode", {
     open(resultDir);
   },
 
-  openPluginFolder: () => {
-    let kvpPluginSpacePath = getKvpPluginSpacePath();
-    open(kvpPluginSpacePath);
-  },
-
   //File
   saveFile: (content) => {
     let currentResult = content["currentResult"];
@@ -149,5 +152,5 @@ contextBridge.exposeInMainWorld("apiNode", {
     }
     let resultFilePath = path.join(resultDir, resultFileName);
     fs.writeFileSync(resultFilePath, currentResult, "utf8");
-  }
+  },
 });

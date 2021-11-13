@@ -170,11 +170,9 @@ export default defineComponent({
   computed: {
     currentResult() {
       try {
-        //
-        let pluginJsonString = JSON.stringify(
-          this.pluginDatas[this.currentPluginPos]
-        );
-        return window.apiNode.renderPluginResult(pluginJsonString);
+        let presetCurrentData = this.presetDatas[this.presetCurrentPos];
+        let presetCurrentDataJson = JSON.stringify(presetCurrentData);
+        return window.apiNode.renderResult(presetCurrentDataJson);
       } catch (e) {
         console.log(e);
         return "none";
