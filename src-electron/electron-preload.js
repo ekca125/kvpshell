@@ -24,6 +24,15 @@ const open = require("open");
 
 import Mustache from "mustache";
 
+class RWO{
+  
+}
+
+
+
+
+
+
 contextBridge.exposeInMainWorld("apiNode", {
   renderPluginResult: (pluginJsonString) => {
     let pluginJson = JSON.parse(pluginJsonString);
@@ -88,7 +97,7 @@ contextBridge.exposeInMainWorld("apiNode", {
 });
 
 function getKvpPluginSpacePath() {
-  let debug = false;
+  let debug = true;
   if (debug == true) {
     return path.join("C://", "data", "plugins");
   } else if (debug == false) {
