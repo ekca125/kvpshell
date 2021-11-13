@@ -37,7 +37,7 @@ class StorageExplorer {
 class PresetStorageExplorer extends StorageExplorer {
   constructor() {
     super();
-    let debug = true;
+    let debug = false;
     if (debug == true) {
       this.path = path.join("C://", "data", "presets");
     } else if (debug == false) {
