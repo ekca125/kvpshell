@@ -68,7 +68,7 @@ class PresetStorageExplorer extends StorageExplorer {
 
         //source 읽기
         let source = fs.readFileSync(sourcePath, "utf8");
- 
+
         //preset = info + source
         let preset = info;
         preset["presetSource"] = source;
@@ -95,25 +95,37 @@ class PresetStorageExplorer extends StorageExplorer {
   }
 }
 
-class PluginResultRenderer{
-  constructor(dataJson){
+class ResultStorageExplorer extends StorageExplorer {
+  constructor() {
+    super();
+    this.path = path.join(".", "result");
+  }
+  openFolder(){
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    open(this.path)
+  }
+}
+class PluginResultRenderer {
+  constructor(dataJson) {
     this.data = JSON.parse(dataJson);
   }
 
-  render(){
+  render() {
     let source = this.data["presetSource"];
     let kv = {};
     for (let i = 0; i < this.data.presetKeyValue.length; i++) {
       let pkv = this.data.presetKeyValue[i];
-      console.log(this.data)
+      console.log(this.data);
       kv[pkv["presetKey"]] = pkv["presetValue"];
     }
     return Mustache.render(source, kv);
   }
 }
 
-
 let presetStorageExplorer = new PresetStorageExplorer();
+let resultStorageExplorer = new ResultStorageExplorer();
 
 contextBridge.exposeInMainWorld("apiNode", {
   openPresetFolder: () => {
@@ -124,11 +136,10 @@ contextBridge.exposeInMainWorld("apiNode", {
     return presetStorageExplorer.readPresets();
   },
 
-  renderResult:(pluginJsonString) =>{
+  renderResult: (pluginJsonString) => {
     let renderer = new PluginResultRenderer(pluginJsonString);
     return renderer.render();
   },
-
 
   openChildWindow: (url) => {
     open(url);
@@ -136,11 +147,7 @@ contextBridge.exposeInMainWorld("apiNode", {
 
   //OpenFolder
   openResultFolder: () => {
-    let resultDir = path.join(".", "result");
-    if (!fs.existsSync(resultDir)) {
-      fs.mkdirSync(resultDir);
-    }
-    open(resultDir);
+    resultStorageExplorer.openFolder();
   },
 
   //File

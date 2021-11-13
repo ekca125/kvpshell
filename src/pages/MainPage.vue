@@ -204,7 +204,7 @@ export default defineComponent({
     },
 
     openResultFolder: function () {
-      window.apiNode.openResultFolder("", {});
+      window.apiNode.openResultFolder();
     },
   },
 });
