@@ -11,15 +11,18 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title> pkvcode <q-btn
-          color="white"
-          text-color="blue"
-          label="Refresh"
-          style="margin-left:10px"
-          @click="refreshPluginPage"
-        ></q-btn></q-toolbar-title>
-        
-        <div>pkvcode 2.4.0</div>
+        <q-toolbar-title>
+          pkvcode
+          <q-btn
+            color="white"
+            text-color="blue"
+            label="Refresh"
+            style="margin-left: 10px"
+            @click="refreshPage"
+          ></q-btn
+        ></q-toolbar-title>
+
+        <div>pkvcode 2.5.0</div>
       </q-toolbar>
     </q-header>
 
@@ -33,8 +36,8 @@
           v-bind="link"
         />
 
-        <PluginFolderLink
-          v-for="link in linksPluginFolderList"
+        <PresetFolderLink
+          v-for="link in presetFolderLinks"
           :key="link.title"
           v-bind="link"
         />
@@ -49,7 +52,7 @@
 
 <script>
 import EssentialLink from "components/EssentialLink.vue";
-import PluginFolderLink from "src/components/PluginFolderLink.vue";
+import PresetFolderLink from "src/components/PresetFolderLink.vue";
 
 const linksList = [
   {
@@ -59,23 +62,23 @@ const linksList = [
     link: "https://github.com/ekca125/pkvcode",
   },
   {
-    title: "Search Plugin",
-    caption: "Search Plugin",
+    title: "Search Preset",
+    caption: "Search Preset",
     icon: "code",
     link: "https://airtable.com/shrFOiIXatox1LCtJ",
   },
   {
-    title: "Share Plugin",
-    caption: "Share Plugin",
+    title: "Share Preset",
+    caption: "Share Preset",
     icon: "code",
     link: "https://airtable.com/shrwsETCkg1uEto6W",
   },
 ];
 
-const linksPluginFolderList = [
+const presetFolderLinks = [
   {
-    title: "Open Plugin Folder",
-    caption: "Open Plugin Folder",
+    title: "Open Preset Folder",
+    caption: "Open Preset Folder",
     icon: "code",
     link: "None",
   },
@@ -88,7 +91,7 @@ export default defineComponent({
 
   components: {
     EssentialLink,
-    PluginFolderLink,
+    PresetFolderLink,
   },
 
   setup() {
@@ -96,7 +99,7 @@ export default defineComponent({
 
     return {
       essentialLinks: linksList,
-      linksPluginFolderList: linksPluginFolderList,
+      presetFolderLinks: presetFolderLinks,
       leftDrawerOpen,
       toggleLeftDrawer() {
         leftDrawerOpen.value = !leftDrawerOpen.value;
@@ -105,7 +108,7 @@ export default defineComponent({
   },
 
   methods: {
-    refreshPluginPage: function () {
+    refreshPage: function () {
       this.$router.go();
     },
   },

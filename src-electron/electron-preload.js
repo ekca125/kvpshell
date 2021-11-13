@@ -24,22 +24,176 @@ const open = require("open");
 
 import Mustache from "mustache";
 
-contextBridge.exposeInMainWorld("apiNode", {
-  renderPluginResult: (pluginJsonString) => {
-    let pluginJson = JSON.parse(pluginJsonString);
-    let pluginSource = pluginJson["pluginSource"];
-    let pluginKeyValue = {};
-    for (let i = 0; i < pluginJson.pluginKeyValue.length; i++) {
-      let pkv = pluginJson.pluginKeyValue[i];
-      pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"];
-    }
+class StorageExplorer {
+  constructor() {
+    this.path = ".";
+  }
 
-    if(typeof(pluginSource)=="undefined"){
-      return "No Data"
+  openFolder() {
+    open(this.path);
+  }
+}
+
+class PresetStorageExplorer extends StorageExplorer {
+  constructor() {
+    super();
+    let debug = false;
+    if (debug == true) {
+      this.path = path.join("C://", "data", "presets");
+    } else if (debug == false) {
+      this.path = path.join(".", "presets");
     }
-    else{
-      return Mustache.render(pluginSource, pluginKeyValue);
+  }
+
+  readNormalPresets(){
+    let presets = [];
+    // 폴더 확인
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
     }
+    // 폴더 불러오기
+    fs.readdirSync(this.path).forEach((folderName) => {
+      // info 위치
+      let infoPath = path.join(this.path, folderName, "preset_info.json");
+      // source 위치
+      let sourcePath = path.join(
+        this.path,
+        folderName,
+        "preset_source.mustache"
+      );
+
+      // 파일들 불러오기
+      try {
+        //info 읽기
+        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
+
+        //source 읽기
+        let source = fs.readFileSync(sourcePath, "utf8");
+
+        //preset = info + source
+        let preset = info;
+        preset["presetSource"] = source;
+
+        //리스트 삽입
+        presets[presets.length] = preset;
+      } catch (e) {}
+    });
+    return presets;
+  }
+
+  readSimplePresets(){
+    let presets = [];
+    // 폴더 확인
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    // 폴더 불러오기
+    fs.readdirSync(this.path).forEach((folderName) => {
+      // info 위치
+      let infoPath = path.join(this.path, folderName, "simple_preset_info.json");
+      // source 위치
+      let sourcePath = path.join(
+        this.path,
+        folderName,
+        "simple_preset_source.mustache"
+      );
+
+      // 파일들 불러오기
+      try {
+        //info 읽기
+        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
+
+        //source 읽기
+        let source = fs.readFileSync(sourcePath, "utf8");
+
+        //preset = info + source
+        let preset = {};
+        preset["presetName"] = info["name"]
+        preset["presetDesc"] = info["name"]
+        preset["presetResultFileName"] = info["result"]
+        preset["presetKeyValue"] = []
+        for(let property in info["kvs"]){
+          let kv = {
+            presetKey:property,
+            presetKeyDesc:property,
+            presetValue:info["kvs"][property]
+          }
+          preset["presetKeyValue"].push(kv)
+        }
+        preset["presetSource"] = source;
+
+        //리스트 삽입
+        presets[presets.length] = preset;
+      } catch (e) {
+      }
+    });
+    return presets;
+  }
+
+  readPresets() {
+    let presets = []
+    presets = presets.concat(this.readNormalPresets());
+    console.log(presets)
+    presets = presets.concat(this.readSimplePresets());
+    console.log(presets)
+    if (presets.length == 0) {
+      return [
+        {
+          presetName: "No Plugin",
+          presetDesc: "",
+          presetResultFileName: "",
+          presetKeyValue: [],
+        },
+      ];
+    } else {
+      return presets;
+    }
+  }
+}
+
+class ResultStorageExplorer extends StorageExplorer {
+  constructor() {
+    super();
+    this.path = path.join(".", "result");
+  }
+  openFolder() {
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    open(this.path);
+  }
+}
+class PluginResultRenderer {
+  constructor(dataJson) {
+    this.data = JSON.parse(dataJson);
+  }
+
+  render() {
+    let source = this.data["presetSource"];
+    let kv = {};
+    for (let i = 0; i < this.data.presetKeyValue.length; i++) {
+      let pkv = this.data.presetKeyValue[i];
+      kv[pkv["presetKey"]] = pkv["presetValue"];
+    }
+    return Mustache.render(source, kv);
+  }
+}
+
+let presetStorageExplorer = new PresetStorageExplorer();
+let resultStorageExplorer = new ResultStorageExplorer();
+
+contextBridge.exposeInMainWorld("apiNode", {
+  openPresetFolder: () => {
+    presetStorageExplorer.openFolder();
+  },
+
+  readPresets: () => {
+    return presetStorageExplorer.readPresets();
+  },
+
+  renderResult: (pluginJsonString) => {
+    let renderer = new PluginResultRenderer(pluginJsonString);
+    return renderer.render();
   },
 
   openChildWindow: (url) => {
@@ -48,16 +202,7 @@ contextBridge.exposeInMainWorld("apiNode", {
 
   //OpenFolder
   openResultFolder: () => {
-    let resultDir = path.join(".", "result");
-    if (!fs.existsSync(resultDir)) {
-      fs.mkdirSync(resultDir);
-    }
-    open(resultDir);
-  },
-
-  openPluginFolder: () => {
-    let kvpPluginSpacePath = getKvpPluginSpacePath();
-    open(kvpPluginSpacePath);
+    resultStorageExplorer.openFolder();
   },
 
   //File
@@ -71,63 +216,4 @@ contextBridge.exposeInMainWorld("apiNode", {
     let resultFilePath = path.join(resultDir, resultFileName);
     fs.writeFileSync(resultFilePath, currentResult, "utf8");
   },
-
-  getPlugins: () => {
-    let kvpPluginSpacePath = getKvpPluginSpacePath();
-    let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
-    if (kvpPlugins.length == 0) {
-      kvpPlugins[0] = {
-        pluginName: "No Plugin",
-        pluginDesc: "",
-        pluginResultFileName: "",
-        pluginKeyValue: [],
-      };
-    }
-    return kvpPlugins;
-  },
 });
-
-function getKvpPluginSpacePath() {
-  let debug = false;
-  if (debug == true) {
-    return path.join("C://", "data", "plugins");
-  } else if (debug == false) {
-    return path.join(".", "plugins");
-  }
-}
-
-function readKvpPluginSpace(kvpPluginSpacePath) {
-  let kvpPlugins = [];
-  if (!fs.existsSync(kvpPluginSpacePath)) {
-    fs.mkdirSync(kvpPluginSpacePath);
-  }
-  fs.readdirSync(kvpPluginSpacePath).forEach((pluginFolderName) => {
-    let pluginInfoPath = path.join(
-      kvpPluginSpacePath,
-      pluginFolderName,
-      "plugin_info.json"
-    );
-    let pluginSourcePath = path.join(
-      kvpPluginSpacePath,
-      pluginFolderName,
-      "plugin_source.mustache"
-    );
-    try {
-      //info 읽기
-      let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
-
-      //source 읽기
-      let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
-
-      //kvpPlugin = info + source
-      let kvpPlugin = pluginInfo;
-      kvpPlugin["pluginSource"] = pluginSource;
-
-      //리스트 삽입
-      kvpPlugins[kvpPlugins.length] = kvpPlugin;
-    } catch (e) {
-      console.log("error load: " + pluginFolderName);
-    }
-  });
-  return kvpPlugins;
-}

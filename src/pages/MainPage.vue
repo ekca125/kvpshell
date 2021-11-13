@@ -5,12 +5,12 @@
         <div class="col">
           <!-- 플러그인 테이블 시작 -->
           <q-table
-            id="plugin"
-            title="Plugins"
-            :rows="pluginDatas"
-            :columns="pluginDataTableColumns"
-            :filter="pluginNameFilter"
-            row-key="pluginName"
+            id="presets"
+            title="Presets"
+            :rows="presetDatas"
+            :columns="presetTableColumns"
+            :filter="presetFilter"
+            row-key="presetName"
             @row-click="onRowClickPluginTable"
           >
             <template v-slot:top-right>
@@ -20,7 +20,7 @@
                     borderless
                     dense
                     debounce="300"
-                    v-model="pluginNameFilter"
+                    v-model="presetFilter"
                     placeholder="Search"
                   >
                     <template v-slot:append>
@@ -38,23 +38,23 @@
           <!-- 키 값 테이블 시작 -->
           <q-table
             id="pkv"
-            title="Plugin Key Value"
-            :rows="pluginDatas[currentPluginPos].pluginKeyValue"
-            :columns="pluginKeyValueTableColumns"
+            title="Preset Key Value"
+            :rows="presetDatas[presetCurrentPos].presetKeyValue"
+            :columns="presetKeyValueTableColumns"
             row-key="name"
           >
             <template v-slot:body="props">
               <q-tr :props="props">
-                <q-td key="pluginKey" :props="props">
-                  {{ props.row.pluginKey }}
+                <q-td key="presetKey" :props="props">
+                  {{ props.row.presetKey }}
                 </q-td>
-                <q-td key="pluginKeyDesc" :props="props">
-                  {{ props.row.pluginKeyDesc }}
+                <q-td key="presetKeyDesc" :props="props">
+                  {{ props.row.presetKeyDesc }}
                 </q-td>
-                <q-td key="pluginValue" :props="props">
+                <q-td key="presetValue" :props="props">
                   <q-input
                     type="text"
-                    v-model="props.row.pluginValue"
+                    v-model="props.row.presetValue"
                     dense
                     autofocus
                   />
@@ -87,7 +87,7 @@
 
           <q-input
             outlined
-            v-model="pluginDatas[currentPluginPos].pluginResultFileName"
+            v-model="presetDatas[presetCurrentPos].presetResultFileName"
             label="resultFileName"
           ></q-input>
           <!--<q-btn class = "result" color="primary" label="Run"></q-btn>-->
@@ -114,67 +114,65 @@ export default defineComponent({
     const quasarFunction = useQuasar();
 
     // Table Columns
-    const pluginDataTableColumns = [
+    const presetTableColumns = [
       {
-        name: "pluginName",
+        name: "presetName",
         align: "left",
-        label: "pluginName",
-        field: "pluginName",
+        label: "presetName",
+        field: "presetName",
       },
       {
-        name: "pluginDesc",
+        name: "presetDesc",
         align: "left",
-        label: "pluginDesc",
-        field: "pluginDesc",
+        label: "presetDesc",
+        field: "presetDesc",
       },
     ];
 
-    const pluginKeyValueTableColumns = [
+    const presetKeyValueTableColumns = [
       {
-        name: "pluginKey",
+        name: "presetKey",
         align: "left",
-        label: "pluginKey",
-        field: "pluginKey",
+        label: "presetKey",
+        field: "presetKey",
       },
       {
-        name: "pluginKeyDesc",
+        name: "presetKeyDesc",
         align: "left",
-        label: "pluginKeyDesc",
-        field: "pluginKeyDesc",
+        label: "presetKeyDesc",
+        field: "presetKeyDesc",
       },
       {
-        name: "pluginValue",
+        name: "presetValue",
         align: "left",
-        label: "pluginValue",
-        field: "pluginValue",
+        label: "presetValue",
+        field: "presetValue",
       },
     ];
 
     // 데이터
-    let pluginDatas = reactive(window.apiNode.getPlugins("", {}));
-    let pluginNameFilter = ref("");
-    let currentPluginPos = ref(0);
+    let presetDatas = reactive(window.apiNode.readPresets());
+    let presetFilter = ref("");
+    let presetCurrentPos = ref(0);
 
     return {
       //quasar
       quasarFunction,
       // ui
-      pluginDataTableColumns,
-      pluginKeyValueTableColumns,
+      presetTableColumns,
+      presetKeyValueTableColumns,
       // data
-      pluginNameFilter,
-      pluginDatas,
-      currentPluginPos
+      presetFilter,
+      presetDatas,
+      presetCurrentPos
     };
   },
   computed: {
     currentResult() {
       try {
-        //
-        let pluginJsonString = JSON.stringify(
-          this.pluginDatas[this.currentPluginPos]
-        );
-        return window.apiNode.renderPluginResult(pluginJsonString);
+        let presetCurrentData = this.presetDatas[this.presetCurrentPos];
+        let presetCurrentDataJson = JSON.stringify(presetCurrentData);
+        return window.apiNode.renderResult(presetCurrentDataJson);
       } catch (e) {
         console.log(e);
         return "none";
@@ -183,7 +181,7 @@ export default defineComponent({
   },
   methods: {
     onRowClickPluginTable: function (evt, row, index) {
-      this.currentPluginPos = index;
+      this.presetCurrentPos = index;
     },
 
     copyClipResult: function () {
@@ -200,18 +198,14 @@ export default defineComponent({
       window.apiNode.saveFile({
         currentResult: this.currentResult,
         resultFileName:
-          this.pluginDatas[this.currentPluginPos].pluginResultFileName,
+          this.presetDatas[this.presetCurrentPos].presetResultFileName,
       });
       this.quasarFunction.notify("File Save Success.");
     },
 
     openResultFolder: function () {
-      window.apiNode.openResultFolder("", {});
+      window.apiNode.openResultFolder();
     },
-
-    openPluginFolder: function () {
-      window.apiNode.openPluginFolder("", {});
-    }
   },
 });
 </script>

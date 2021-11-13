@@ -1,0 +1,12 @@
+{
+  "presetName": "preset0",
+  "presetDesc": "virtual memory - swappiness",
+  "presetResultFileName":"swappiness.sh",
+  "presetKeyValue": [
+    {
+      "presetKey": "percent",
+      "presetKeyDesc":"swappiness percent",
+      "presetValue": "100"
+    }
+  ]
+}
