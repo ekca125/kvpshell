@@ -39,7 +39,7 @@
           <q-table
             id="pkv"
             title="Preset Key Value"
-            :rows="presetDatas[presetCurrentPos].pluginKeyValue"
+            :rows="presetDatas[presetCurrentPos].presetKeyValue"
             :columns="presetKeyValueTableColumns"
             row-key="name"
           >
