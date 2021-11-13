@@ -198,7 +198,7 @@ export default defineComponent({
       window.apiNode.saveFile({
         currentResult: this.currentResult,
         resultFileName:
-          this.pluginDatas[this.currentPluginPos].pluginResultFileName,
+          this.presetDatas[this.presetCurrentPos].presetResultFileName,
       });
       this.quasarFunction.notify("File Save Success.");
     },

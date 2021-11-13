@@ -45,7 +45,7 @@ class PresetStorageExplorer extends StorageExplorer {
     }
   }
 
-  readPresets() {
+  readNormalPresets(){
     let presets = [];
     // 폴더 확인
     if (!fs.existsSync(this.path)) {
@@ -61,6 +61,7 @@ class PresetStorageExplorer extends StorageExplorer {
         folderName,
         "preset_source.mustache"
       );
+
       // 파일들 불러오기
       try {
         //info 읽기
@@ -75,11 +76,54 @@ class PresetStorageExplorer extends StorageExplorer {
 
         //리스트 삽입
         presets[presets.length] = preset;
-      } catch (e) {
-        console.log("error load: " + infoPath);
-        console.log("error load: " + sourcePath);
-      }
+      } catch (e) {}
     });
+    return presets;
+  }
+
+  readSimplePresets(){
+    let presets = [];
+    // 폴더 확인
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    // 폴더 불러오기
+    fs.readdirSync(this.path).forEach((folderName) => {
+      // info 위치
+      let infoPath = path.join(this.path, folderName, "simple_preset_info.json");
+      // source 위치
+      let sourcePath = path.join(
+        this.path,
+        folderName,
+        "simple_preset_source.mustache"
+      );
+
+      // 파일들 불러오기
+      try {
+        //info 읽기
+        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
+
+        //source 읽기
+        let source = fs.readFileSync(sourcePath, "utf8");
+
+        //preset = info + source
+        let preset = {};
+        preset["presetName"] = info["name"]
+        preset["presetDesc"] = ""
+        preset["presetResultFileName"] = info["result"]
+        preset["presetKeyValue"] = info["kv"]
+        preset["presetSource"] = source;
+
+        //리스트 삽입
+        presets[presets.length] = preset;
+      } catch (e) {}
+    });
+    return presets;
+  }
+
+  readPresets() {
+    let presets = []
+    presets = presets.concat(this.readNormalPresets());
     if (presets.length == 0) {
       return [
         {
@@ -100,11 +144,11 @@ class ResultStorageExplorer extends StorageExplorer {
     super();
     this.path = path.join(".", "result");
   }
-  openFolder(){
+  openFolder() {
     if (!fs.existsSync(this.path)) {
       fs.mkdirSync(this.path);
     }
-    open(this.path)
+    open(this.path);
   }
 }
 class PluginResultRenderer {
