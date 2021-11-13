@@ -41,7 +41,7 @@ export default defineComponent({
   },
   methods: {
     openPresetFolder: function () {
-      window.apiNode.openPresetFolder("", {});
+      window.apiNode.openPresetFolder();
     },
   },
 });

@@ -24,16 +24,80 @@ const open = require("open");
 
 import Mustache from "mustache";
 
-class RWO{
-  
+class StorageExplorer {
+  constructor() {
+    this.path = ".";
+  }
+
+  openFolder() {
+    open(this.path);
+  }
 }
 
+class PresetStorageExplorer extends StorageExplorer {
+  constructor() {
+    super();
+    let debug = true;
+    if (debug == true) {
+      this.path = path.join("C://", "data", "presets");
+    } else if (debug == false) {
+      this.path = path.join(".", "presets");
+    }
+  }
 
+  readPresets() {
+    let presets = [];
+    // 폴더 확인
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    // 폴더 불러오기
+    fs.readdirSync(this.path).forEach((folderName) => {
+      // info 위치
+      let infoPath = path.join(
+        this.path,
+        folderName,
+        "preset_info.json"
+      );
+      // source 위치
+      let sourcePath = path.join(
+        this.path,
+        folderName,
+        "preset_source.mustache"
+      );
+      // 파일들 불러오기
+      try {
+        //info 읽기
+        let pluginInfo = JSON.parse(fs.readFileSync(infoPath, "utf8"));
 
+        //source 읽기
+        let pluginSource = fs.readFileSync(sourcePath, "utf8");
 
+        //preset = info + source
+        let preset = pluginInfo
+        preset["presetSource"] = pluginSource;
 
+        //리스트 삽입
+        preset[presets.length] = preset;
+      } catch (e) {
+        console.log("error load: " + pluginFolderName);
+      }
+    });
+    return presets;
+  }
+}
+
+let presetStorageExplorer = new PresetStorageExplorer();
 
 contextBridge.exposeInMainWorld("apiNode", {
+  openPresetFolder: () => {
+    presetStorageExplorer.openFolder();
+  },
+
+
+
+
+
   renderPluginResult: (pluginJsonString) => {
     let pluginJson = JSON.parse(pluginJsonString);
     let pluginSource = pluginJson["pluginSource"];
@@ -43,10 +107,9 @@ contextBridge.exposeInMainWorld("apiNode", {
       pluginKeyValue[pkv["pluginKey"]] = pkv["pluginValue"];
     }
 
-    if(typeof(pluginSource)=="undefined"){
-      return "No Data"
-    }
-    else{
+    if (typeof pluginSource == "undefined") {
+      return "No Data";
+    } else {
       return Mustache.render(pluginSource, pluginKeyValue);
     }
   },
@@ -95,48 +158,3 @@ contextBridge.exposeInMainWorld("apiNode", {
     return kvpPlugins;
   },
 });
-
-function getKvpPluginSpacePath() {
-  let debug = true;
-  if (debug == true) {
-    return path.join("C://", "data", "plugins");
-  } else if (debug == false) {
-    return path.join(".", "plugins");
-  }
-}
-
-function readKvpPluginSpace(kvpPluginSpacePath) {
-  let kvpPlugins = [];
-  if (!fs.existsSync(kvpPluginSpacePath)) {
-    fs.mkdirSync(kvpPluginSpacePath);
-  }
-  fs.readdirSync(kvpPluginSpacePath).forEach((pluginFolderName) => {
-    let pluginInfoPath = path.join(
-      kvpPluginSpacePath,
-      pluginFolderName,
-      "plugin_info.json"
-    );
-    let pluginSourcePath = path.join(
-      kvpPluginSpacePath,
-      pluginFolderName,
-      "plugin_source.mustache"
-    );
-    try {
-      //info 읽기
-      let pluginInfo = JSON.parse(fs.readFileSync(pluginInfoPath, "utf8"));
-
-      //source 읽기
-      let pluginSource = fs.readFileSync(pluginSourcePath, "utf8");
-
-      //kvpPlugin = info + source
-      let kvpPlugin = pluginInfo;
-      kvpPlugin["pluginSource"] = pluginSource;
-
-      //리스트 삽입
-      kvpPlugins[kvpPlugins.length] = kvpPlugin;
-    } catch (e) {
-      console.log("error load: " + pluginFolderName);
-    }
-  });
-  return kvpPlugins;
-}
