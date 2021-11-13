@@ -54,11 +54,7 @@ class PresetStorageExplorer extends StorageExplorer {
     // 폴더 불러오기
     fs.readdirSync(this.path).forEach((folderName) => {
       // info 위치
-      let infoPath = path.join(
-        this.path,
-        folderName,
-        "preset_info.json"
-      );
+      let infoPath = path.join(this.path, folderName, "preset_info.json");
       // source 위치
       let sourcePath = path.join(
         this.path,
@@ -68,14 +64,14 @@ class PresetStorageExplorer extends StorageExplorer {
       // 파일들 불러오기
       try {
         //info 읽기
-        let pluginInfo = JSON.parse(fs.readFileSync(infoPath, "utf8"));
+        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
 
         //source 읽기
-        let pluginSource = fs.readFileSync(sourcePath, "utf8");
+        let source = fs.readFileSync(sourcePath, "utf8");
 
         //preset = info + source
-        let preset = pluginInfo
-        preset["presetSource"] = pluginSource;
+        let preset = info;
+        preset["presetSource"] = source;
 
         //리스트 삽입
         preset[presets.length] = preset;
@@ -83,7 +79,18 @@ class PresetStorageExplorer extends StorageExplorer {
         console.log("error load: " + pluginFolderName);
       }
     });
-    return presets;
+    if (presets.length == 0) {
+      return [
+        {
+          presetName: "No Plugin",
+          presetDesc: "",
+          presetResultFileName: "",
+          presetKeyValue: [],
+        },
+      ];
+    } else {
+      return presets;
+    }
   }
 }
 
@@ -94,9 +101,9 @@ contextBridge.exposeInMainWorld("apiNode", {
     presetStorageExplorer.openFolder();
   },
 
-
-
-
+  readPresets:()=>{
+    return presetStorageExplorer.readPresets();
+  },
 
   renderPluginResult: (pluginJsonString) => {
     let pluginJson = JSON.parse(pluginJsonString);
@@ -142,19 +149,5 @@ contextBridge.exposeInMainWorld("apiNode", {
     }
     let resultFilePath = path.join(resultDir, resultFileName);
     fs.writeFileSync(resultFilePath, currentResult, "utf8");
-  },
-
-  getPlugins: () => {
-    let kvpPluginSpacePath = getKvpPluginSpacePath();
-    let kvpPlugins = readKvpPluginSpace(kvpPluginSpacePath);
-    if (kvpPlugins.length == 0) {
-      kvpPlugins[0] = {
-        pluginName: "No Plugin",
-        pluginDesc: "",
-        pluginResultFileName: "",
-        pluginKeyValue: [],
-      };
-    }
-    return kvpPlugins;
-  },
+  }
 });
