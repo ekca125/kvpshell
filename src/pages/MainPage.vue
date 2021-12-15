@@ -187,7 +187,7 @@ export default defineComponent({
     copyClipResult: function () {
       copyToClipboard(this.currentResult)
         .then(() => {
-          this.quasarFunction.notify("Success");
+          this.quasarFunction.notify("Clipboard Copy Success");
         })
         .catch(() => {
           this.quasarFunction.notify("Fail");
