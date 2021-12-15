@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to pkvcode 👋</h1>
 <p>
-  <img alt="Version" src="https://img.shields.io/badge/version-2.2.0-blue.svg?cacheSeconds=2592000" />
+  <img alt="Version" src="https://img.shields.io/badge/version-2.5.0-blue.svg?cacheSeconds=2592000" />
   <img src="https://img.shields.io/badge/node-%3E%3D%2012.22.1-blue.svg" />
   <img src="https://img.shields.io/badge/npm-%3E%3D%206.13.4-blue.svg" />
 </p>
@@ -46,7 +46,9 @@ https://airtable.com/shrFOiIXatox1LCtJ/tblJHQ7gnsyznuhob
 ### Share plugin
 https://airtable.com/shrwsETCkg1uEto6W
 
+## License
 
+AGPL
 
 ## Author
 
