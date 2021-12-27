@@ -130,6 +130,54 @@ class PresetStorageExplorer extends StorageExplorer {
     return presets;
   }
 
+  readSimplePresets(){
+    let presets = [];
+    // 폴더 확인
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+    // 폴더 불러오기
+    fs.readdirSync(this.path).forEach((folderName) => {
+      // source 위치
+      let sourcePath = path.join(
+        this.path,
+        folderName,
+        "source.mustache"
+      );
+
+      // 파일들 불러오기
+      try {
+        //source 읽기
+        let source = fs.readFileSync(sourcePath, "utf8");
+
+        //preset = info + source
+        let preset = {};
+        preset["presetName"] = folderName
+        preset["presetDesc"] = folderName
+        preset["presetResultFileName"] = folderName+".txt"
+        preset["presetKeyValue"] = []
+        preset["presetSource"] = source;
+
+        // key-value
+        keys_data = source.matchAll("[{{].*[}}]")
+
+        for(let property in keys_data){
+          let kv = {
+            presetKey:property,
+            presetKeyDesc:property,
+            presetValue:""
+          }
+          preset["presetKeyValue"].push(kv)
+        }
+        
+        //리스트 삽입
+        presets[presets.length] = preset;
+      } catch (e) {
+      }
+    });
+    return presets;
+  }
+
   readPresets() {
     let presets = []
     presets = presets.concat(this.readNormalPresets());
