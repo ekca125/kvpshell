@@ -130,7 +130,7 @@ class PresetStorageExplorer extends StorageExplorer {
     return presets;
   }
 
-  readSimplePresets(){
+  readSourcePresets(){
     let presets = [];
     // 폴더 확인
     if (!fs.existsSync(this.path)) {
@@ -181,9 +181,10 @@ class PresetStorageExplorer extends StorageExplorer {
   readPresets() {
     let presets = []
     presets = presets.concat(this.readNormalPresets());
-    console.log(presets)
+    //console.log(presets)
     presets = presets.concat(this.readSimplePresets());
-    console.log(presets)
+    //console.log(presets)
+    presets = presets.concat(this.readSourcePresets());
     if (presets.length == 0) {
       return [
         {
