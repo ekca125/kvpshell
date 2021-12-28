@@ -29,7 +29,6 @@
                   </q-input>
                 </div>
               </div>
-             
             </template>
           </q-table>
           <!-- 플러그인 테이블 끝 -->
@@ -164,7 +163,7 @@ export default defineComponent({
       // data
       presetFilter,
       presetDatas,
-      presetCurrentPos
+      presetCurrentPos,
     };
   },
   computed: {
