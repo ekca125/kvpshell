@@ -37,9 +37,6 @@ quasar build -m electron
 quasar dev -m electron
 ```
 
-## Usage(usecase)
-https://docs.google.com/document/d/1qSLArGGqaX6s3ewGVU8jLstJGm0-YbNek9F0eE5gaM4/edit?usp=sharing
-
 ### Search plugin
 https://airtable.com/shrFOiIXatox1LCtJ/tblJHQ7gnsyznuhob
 
