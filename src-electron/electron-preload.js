@@ -186,7 +186,7 @@ class PresetStorageExplorer extends StorageExplorer {
           let kv = {
             presetKey: result[i].replaceAll("{", "").replaceAll("}", ""),
             presetKeyDesc: result[i].replaceAll("{", "").replaceAll("}", ""),
-            presetValue: "",
+            presetValue: result[i].replaceAll("{", "").replaceAll("}", ""),
           };
           preset["presetKeyValue"].push(kv);
         }
