@@ -159,20 +159,23 @@ class PresetStorageExplorer extends StorageExplorer {
         preset["presetSource"] = source;
 
         // key-value
-        keys_data = source.matchAll("[{{].*[}}]")
-
-        for(let property in keys_data){
+        let regexp = /{{.*}}/g
+        var result =Array.from(source.matchAll(regexp), match => `${match[0]}`);
+        console.log(result);
+        for(let i=0;i<result.length;i++){
           let kv = {
-            presetKey:property,
-            presetKeyDesc:property,
+            presetKey:result[i].replaceAll("{","").replaceAll("}",""),
+            presetKeyDesc:result[i].replaceAll("{","").replaceAll("}",""),
             presetValue:""
           }
           preset["presetKeyValue"].push(kv)
         }
+
         
         //리스트 삽입
         presets[presets.length] = preset;
       } catch (e) {
+        console.log(e)
       }
     });
     return presets;
@@ -181,10 +184,11 @@ class PresetStorageExplorer extends StorageExplorer {
   readPresets() {
     let presets = []
     presets = presets.concat(this.readNormalPresets());
-    //console.log(presets)
+    console.log(presets)
     presets = presets.concat(this.readSimplePresets());
-    //console.log(presets)
+    console.log(presets)
     presets = presets.concat(this.readSourcePresets());
+    console.log(presets)
     if (presets.length == 0) {
       return [
         {
