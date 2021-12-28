@@ -54,8 +54,10 @@ class PresetStorageExplorer extends StorageExplorer {
     // 폴더 불러오기
     fs.readdirSync(this.path).forEach((folderName) => {
       // info 위치
+      
       let infoPath = path.join(this.path, folderName, "preset_info.json");
       // source 위치
+      
       let sourcePath = path.join(
         this.path,
         folderName,
@@ -65,8 +67,14 @@ class PresetStorageExplorer extends StorageExplorer {
       // 파일들 불러오기
       try {
         //info 읽기
+        if(!fs.existsSync(infoPath)){
+          return;
+        }
         let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
 
+        if(!fs.existsSync(sourcePath)){
+          return;
+        }
         //source 읽기
         let source = fs.readFileSync(sourcePath, "utf8");
 
@@ -101,9 +109,15 @@ class PresetStorageExplorer extends StorageExplorer {
       // 파일들 불러오기
       try {
         //info 읽기
+        if(!fs.existsSync(infoPath)){
+          return;
+        }
         let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
 
         //source 읽기
+        if(!fs.existsSync(sourcePath)){
+          return;
+        }
         let source = fs.readFileSync(sourcePath, "utf8");
 
         //preset = info + source
@@ -148,6 +162,10 @@ class PresetStorageExplorer extends StorageExplorer {
       // 파일들 불러오기
       try {
         //source 읽기
+        if(!fs.existsSync(sourcePath)){
+          return;
+        }
+
         let source = fs.readFileSync(sourcePath, "utf8");
 
         //preset = info + source
