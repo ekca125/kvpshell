@@ -22,7 +22,7 @@
           ></q-btn
         ></q-toolbar-title>
 
-        <div>pkvcode 2.6.0</div>
+        <div>pkvcode 2.6.1</div>
       </q-toolbar>
     </q-header>
 
