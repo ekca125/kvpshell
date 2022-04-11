@@ -21,25 +21,58 @@ const { contextBridge, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const open = require("open");
-const ejs = require('ejs');
+const ejs = require("ejs");
 
-class FolderOpener{
+const RESULT_FOLDER_PATH = path.join(".","results")
+if (!fs.existsSync(RESULT_FOLDER_PATH)) {
+  fs.mkdirSync(RESULT_FOLDER_PATH);
+}
+
+const PRESET_FOLDER_PATH = path.join(".","presets") 
+if (!fs.existsSync(PRESET_FOLDER_PATH)) {
+  fs.mkdirSync(PRESET_FOLDER_PATH);
+}
+
+class FolderOpener {
   constructor(path) {
     this.path = path;
   }
-  openFolder(){
+  openFolder() {
     open(this.path);
   }
 }
 
 class ResultFolderOpener extends FolderOpener {
-  constructor(path) {
-    super(path);
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path);
-    }
+  constructor() {
+    super(RESULT_FOLDER_PATH);
   }
 }
+
+class PresetFolderOpener extends FolderOpener {
+  constructor() {
+    super(PRESET_FOLDER_PATH);
+  }
+}
+
+class PresetLoader{
+  constructor(){
+    this.path = PRESET_FOLDER_PATH
+  }
+  readPresets(){
+    return undefined
+  }
+}
+
+class NormalPresetLoader{
+  constructor(){
+    this.path = PRESET_FOLDER_PATH
+  }
+  readPresets(){
+    let presets = [];
+
+  }
+}
+
 
 
 class PresetStorageExplorer extends StorageExplorer {
@@ -119,7 +152,6 @@ class PresetStorageExplorer extends StorageExplorer {
     }
   }
 }
-
 
 class PluginResultRenderer {
   constructor(dataJson) {
