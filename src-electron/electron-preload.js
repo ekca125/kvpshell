@@ -81,7 +81,7 @@ class NormalPresetLoader {
         presetInfoFileName
       );
       if (!fs.existsSync(infoPath)) {
-        console.log("InfoFile NotFound")
+        console.log("InfoFile NotFound");
         return;
       }
 
@@ -91,7 +91,7 @@ class NormalPresetLoader {
         presetSourceFileName
       );
       if (!fs.existsSync(sourcePath)) {
-        console.log("SourceFile NotFound")
+        console.log("SourceFile NotFound");
         return;
       }
       try {
@@ -110,7 +110,7 @@ class NormalPresetLoader {
   }
 }
 class ResultRenderer {
-  render(jsonText){
+  render(jsonText) {
     let dataDict = JSON.parse(jsonText);
     let source = dataDict["presetSource"];
     let kv = {};
@@ -131,7 +131,7 @@ contextBridge.exposeInMainWorld("apiNode", {
   readPresets: () => {
     let normalPresetLoader = new NormalPresetLoader();
     let presets = normalPresetLoader.readPresets();
-    console.log(presets)
+    console.log(presets);
     if (presets.length == 0) {
       return [
         {
@@ -149,7 +149,6 @@ contextBridge.exposeInMainWorld("apiNode", {
   renderResult: (pluginJsonString) => {
     let renderer = new ResultRenderer();
     return renderer.render(pluginJsonString);
-    
   },
 
   openChildWindow: (url) => {
@@ -158,7 +157,7 @@ contextBridge.exposeInMainWorld("apiNode", {
 
   //OpenFolder
   openResultFolder: () => {
-    let resultFolderOpener = new ResultFolderOpener()
+    let resultFolderOpener = new ResultFolderOpener();
     resultFolderOpener.openFolder();
   },
 
