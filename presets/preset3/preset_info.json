@@ -1,0 +1,12 @@
+{
+  "presetName": "preset2",
+  "presetDesc": "hello",
+  "presetResultFileName":"hello.txt",
+  "presetKeyValue": [
+    {
+      "presetKey": "hello_text",
+      "presetKeyDesc":"hello text",
+      "presetValue": "a"
+    }
+  ]
+}

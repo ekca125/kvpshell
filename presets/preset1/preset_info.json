@@ -1,12 +1,12 @@
 {
-  "presetName": "plugin_preset1",
-  "presetDesc": "python - print hello world",
-  "presetResultFileName":"hello.py",
+  "presetName": "preset1",
+  "presetDesc": "base64 encode",
+  "presetResultFileName":"base64.txt",
   "presetKeyValue": [
     {
-      "presetKey": "string",
-      "presetKeyDesc":"Hello Python",
-      "presetValue": "Hello World"
+      "presetKey": "original_text",
+      "presetKeyDesc":"original text",
+      "presetValue": "a"
     }
   ]
 }

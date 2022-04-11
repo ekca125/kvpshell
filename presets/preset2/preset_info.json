@@ -1,0 +1,12 @@
+{
+  "presetName": "preset2",
+  "presetDesc": "base64 decode",
+  "presetResultFileName":"base64_decode.txt",
+  "presetKeyValue": [
+    {
+      "presetKey": "base64_text",
+      "presetKeyDesc":"base64 text",
+      "presetValue": "YQ=="
+    }
+  ]
+}
