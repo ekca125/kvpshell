@@ -1,0 +1,12 @@
+{
+  "presetName": "preset1",
+  "presetDesc": "base64 encode",
+  "presetResultFileName":"base64.txt",
+  "presetKeyValue": [
+    {
+      "presetKey": "original_text",
+      "presetKeyDesc":"original text",
+      "presetValue": "a"
+    }
+  ]
+}
