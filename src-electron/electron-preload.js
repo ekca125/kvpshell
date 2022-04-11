@@ -22,7 +22,7 @@ const fs = require("fs");
 const path = require("path");
 const open = require("open");
 
-import Mustache from "mustache";
+const ejs = require('ejs');
 
 class StorageExplorer {
   constructor() {
@@ -247,7 +247,7 @@ class PluginResultRenderer {
       let pkv = this.data.presetKeyValue[i];
       kv[pkv["presetKey"]] = pkv["presetValue"];
     }
-    return Mustache.render(source, kv);
+    return ejs.render(source, kv);
   }
 }
 
