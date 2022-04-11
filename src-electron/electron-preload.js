@@ -23,12 +23,12 @@ const path = require("path");
 const open = require("open");
 const ejs = require("ejs");
 
-const RESULT_FOLDER_PATH = path.join(".","results")
+const RESULT_FOLDER_PATH = path.join(".", "results");
 if (!fs.existsSync(RESULT_FOLDER_PATH)) {
   fs.mkdirSync(RESULT_FOLDER_PATH);
 }
 
-const PRESET_FOLDER_PATH = path.join(".","presets") 
+const PRESET_FOLDER_PATH = path.join(".", "presets");
 if (!fs.existsSync(PRESET_FOLDER_PATH)) {
   fs.mkdirSync(PRESET_FOLDER_PATH);
 }
@@ -54,38 +54,61 @@ class PresetFolderOpener extends FolderOpener {
   }
 }
 
-class PresetLoader{
-  constructor(){
-    this.path = PRESET_FOLDER_PATH
+class PresetLoader {
+  constructor() {
+    this.path = PRESET_FOLDER_PATH;
   }
-  readPresets(){
-    return undefined
+  readPresets() {
+    return undefined;
   }
 }
 
-class NormalPresetLoader{
-  constructor(){
-    this.path = PRESET_FOLDER_PATH
+class NormalPresetLoader {
+  constructor() {
+    this.path = PRESET_FOLDER_PATH;
+    this.presetInfoFileName = "preset_info.json";
+    this.presetSourceFileName = "preset_source.ejs";
   }
-  readPresets(){
+  readPresets() {
     let presets = [];
+    let presetFolderPath = this.path;
+    let presetInfoFileName = this.presetInfoFileName;
+    let presetSourceFileName = this.presetSourceFileName;
+    fs.readdirSync(presetFolderPath).forEach((folderName) => {
+      let infoPath = path.join(
+        presetFolderPath,
+        folderName,
+        presetInfoFileName
+      );
+      if (!fs.existsSync(infoPath)) {
+        return;
+      }
 
+      let sourcePath = path.join(
+        presetFolderPath,
+        folderName,
+        presetSourceFileName
+      );
+      if (!fs.existsSync(sourcePath)) {
+        return;
+      }
+      try {
+        let presetInfoText = fs.readFileSync(infoPath, "utf8");
+        let presetInfo = JSON.parse(presetInfoText);
+        let presetSourceText = fs.readFileSync(sourcePath, "utf8");
+
+        let preset = presetInfo;
+        preset["presetSource"] = source;
+        presets[presets.length] = preset;
+      } catch (e) {
+        console.log(e);
+      }
+      return presets;
+    });
   }
 }
-
-
 
 class PresetStorageExplorer extends StorageExplorer {
-  constructor() {
-    super();
-    let debug = false;
-    if (debug == true) {
-      this.path = path.join("C://", "data", "presets");
-    } else if (debug == false) {
-      this.path = path.join(".", "presets");
-    }
-  }
-
   readNormalPresets() {
     let presets = [];
     // 폴더 확인
