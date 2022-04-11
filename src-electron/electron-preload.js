@@ -166,11 +166,7 @@ contextBridge.exposeInMainWorld("apiNode", {
   saveFile: (content) => {
     let currentResult = content["currentResult"];
     let resultFileName = content["resultFileName"];
-    let resultDir = path.join(".", "result");
-    if (!fs.existsSync(resultDir)) {
-      fs.mkdirSync(resultDir);
-    }
-    let resultFilePath = path.join(resultDir, resultFileName);
+    let resultFilePath = path.join(RESULT_FOLDER_PATH, resultFileName);
     fs.writeFileSync(resultFilePath, currentResult, "utf8");
   },
 });
