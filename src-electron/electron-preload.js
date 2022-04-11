@@ -81,6 +81,7 @@ class NormalPresetLoader {
         presetInfoFileName
       );
       if (!fs.existsSync(infoPath)) {
+        console.log("InfoFile NotFound")
         return;
       }
 
@@ -90,6 +91,7 @@ class NormalPresetLoader {
         presetSourceFileName
       );
       if (!fs.existsSync(sourcePath)) {
+        console.log("SourceFile NotFound")
         return;
       }
       try {
@@ -104,18 +106,7 @@ class NormalPresetLoader {
         console.log(e);
       }
     });
-    if (presets.length == 0) {
-      return [
-        {
-          presetName: "No Plugin",
-          presetDesc: "",
-          presetResultFileName: "",
-          presetKeyValue: [],
-        },
-      ];
-    } else {
-      return presets;
-    }
+    return presets;
   }
 }
 class ResultRenderer {
@@ -131,8 +122,6 @@ class ResultRenderer {
   }
 }
 
-let resultStorageExplorer = new ResultStorageExplorer();
-
 contextBridge.exposeInMainWorld("apiNode", {
   openPresetFolder: () => {
     let PresetFolderOpener = new PresetFolderOpener();
@@ -140,12 +129,27 @@ contextBridge.exposeInMainWorld("apiNode", {
   },
 
   readPresets: () => {
-    return presetStorageExplorer.readPresets();
+    let normalPresetLoader = new NormalPresetLoader();
+    let presets = normalPresetLoader.readPresets();
+    console.log(presets)
+    if (presets.length == 0) {
+      return [
+        {
+          presetName: "No Plugin",
+          presetDesc: "",
+          presetResultFileName: "",
+          presetKeyValue: [],
+        },
+      ];
+    } else {
+      return presets;
+    }
   },
 
   renderResult: (pluginJsonString) => {
-    let renderer = new PluginResultRenderer(pluginJsonString);
-    return renderer.render();
+    let renderer = new ResultRenderer();
+    return renderer.render(pluginJsonString);
+    
   },
 
   openChildWindow: (url) => {
@@ -154,7 +158,8 @@ contextBridge.exposeInMainWorld("apiNode", {
 
   //OpenFolder
   openResultFolder: () => {
-    resultStorageExplorer.openFolder();
+    let resultFolderOpener = new ResultFolderOpener()
+    resultFolderOpener.openFolder();
   },
 
   //File
