@@ -21,18 +21,26 @@ const { contextBridge, ipcMain } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const open = require("open");
-
 const ejs = require('ejs');
 
-class StorageExplorer {
-  constructor() {
-    this.path = ".";
+class FolderOpener{
+  constructor(path) {
+    this.path = path;
   }
-
-  openFolder() {
+  openFolder(){
     open(this.path);
   }
 }
+
+class ResultFolderOpener extends FolderOpener {
+  constructor(path) {
+    super(path);
+    if (!fs.existsSync(this.path)) {
+      fs.mkdirSync(this.path);
+    }
+  }
+}
+
 
 class PresetStorageExplorer extends StorageExplorer {
   constructor() {
@@ -89,117 +97,6 @@ class PresetStorageExplorer extends StorageExplorer {
     return presets;
   }
 
-  readSimplePresets() {
-    let presets = [];
-    // 폴더 확인
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path);
-    }
-    // 폴더 불러오기
-    fs.readdirSync(this.path).forEach((folderName) => {
-      // info 위치
-      let infoPath = path.join(
-        this.path,
-        folderName,
-        "simple_preset_info.json"
-      );
-      // source 위치
-      let sourcePath = path.join(
-        this.path,
-        folderName,
-        "simple_preset_source.mustache"
-      );
-
-      // 파일들 불러오기
-      try {
-        //info 읽기
-        if (!fs.existsSync(infoPath)) {
-          return;
-        }
-        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
-
-        //source 읽기
-        if (!fs.existsSync(sourcePath)) {
-          return;
-        }
-        let source = fs.readFileSync(sourcePath, "utf8");
-
-        //preset = info + source
-        let preset = {};
-        preset["presetName"] = info["name"];
-        preset["presetDesc"] = info["name"];
-        preset["presetResultFileName"] = info["result"];
-        preset["presetKeyValue"] = [];
-        for (let property in info["kvs"]) {
-          let kv = {
-            presetKey: property,
-            presetKeyDesc: property,
-            presetValue: info["kvs"][property],
-          };
-          preset["presetKeyValue"].push(kv);
-        }
-        preset["presetSource"] = source;
-
-        //리스트 삽입
-        presets[presets.length] = preset;
-      } catch (e) {}
-    });
-    return presets;
-  }
-
-  readSourcePresets() {
-    let presets = [];
-    // 폴더 확인
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path);
-    }
-    // 폴더 불러오기
-    fs.readdirSync(this.path).forEach((folderName) => {
-      // source 위치
-      let sourcePath = path.join(this.path, folderName, "source.mustache");
-
-      // 파일들 불러오기
-      try {
-        //source 읽기
-        if (!fs.existsSync(sourcePath)) {
-          return;
-        }
-
-        let source = fs.readFileSync(sourcePath, "utf8");
-
-        //preset = info + source
-        let preset = {};
-        preset["presetName"] = folderName;
-        preset["presetDesc"] = folderName;
-        preset["presetResultFileName"] = folderName + ".txt";
-        preset["presetKeyValue"] = [];
-        preset["presetSource"] = source;
-
-        // key-value
-        let regexp = /{{.*}}/g;
-        var result = Array.from(
-          source.matchAll(regexp),
-          (match) => `${match[0]}`
-        );
-        console.log(result);
-        for (let i = 0; i < result.length; i++) {
-          let kv = {
-            presetKey: result[i].replaceAll("{", "").replaceAll("}", ""),
-            presetKeyDesc: result[i].replaceAll("{", "").replaceAll("}", ""),
-            presetValue: result[i].replaceAll("{", "").replaceAll("}", ""),
-          };
-          preset["presetKeyValue"].push(kv);
-        }
-
-        //리스트 삽입
-        presets[presets.length] = preset;
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    return presets;
-  }
-
   readPresets() {
     let presets = [];
     presets = presets.concat(this.readNormalPresets());
@@ -223,18 +120,7 @@ class PresetStorageExplorer extends StorageExplorer {
   }
 }
 
-class ResultStorageExplorer extends StorageExplorer {
-  constructor() {
-    super();
-    this.path = path.join(".", "result");
-  }
-  openFolder() {
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path);
-    }
-    open(this.path);
-  }
-}
+
 class PluginResultRenderer {
   constructor(dataJson) {
     this.data = JSON.parse(dataJson);
