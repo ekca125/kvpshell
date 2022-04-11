@@ -1,0 +1,12 @@
+{
+  "presetName": "preset4",
+  "presetDesc": "chrome_run",
+  "presetResultFileName":"chrome_run.txt",
+  "presetKeyValue": [
+    {
+      "presetKey": "chrome_task_folder",
+      "presetKeyDesc":"chrome_task_folder",
+      "presetValue": "C:\\ChromeTemp"
+    }
+  ]
+}
