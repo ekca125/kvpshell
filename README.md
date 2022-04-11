@@ -7,8 +7,7 @@
 
 > Make code from preset
 
-![화면 캡처](https://user-images.githubusercontent.com/63381869/162741084-d85d025e-b650-4e9f-9c60-6b658eb46080.png)
-
+![화면 캡처](https://user-images.githubusercontent.com/63381869/162741426-408c27d4-2c31-4f69-b77a-d5c5b2565069.png)
 
 ## Links
 
