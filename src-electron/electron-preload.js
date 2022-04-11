@@ -98,69 +98,12 @@ class NormalPresetLoader {
         let presetSourceText = fs.readFileSync(sourcePath, "utf8");
 
         let preset = presetInfo;
-        preset["presetSource"] = source;
+        preset["presetSource"] = presetSourceText;
         presets[presets.length] = preset;
       } catch (e) {
         console.log(e);
       }
-      return presets;
     });
-  }
-}
-
-class PresetStorageExplorer extends StorageExplorer {
-  readNormalPresets() {
-    let presets = [];
-    // 폴더 확인
-    if (!fs.existsSync(this.path)) {
-      fs.mkdirSync(this.path);
-    }
-    // 폴더 불러오기
-    fs.readdirSync(this.path).forEach((folderName) => {
-      // info 위치
-
-      let infoPath = path.join(this.path, folderName, "preset_info.json");
-      // source 위치
-
-      let sourcePath = path.join(
-        this.path,
-        folderName,
-        "preset_source.mustache"
-      );
-
-      // 파일들 불러오기
-      try {
-        //info 읽기
-        if (!fs.existsSync(infoPath)) {
-          return;
-        }
-        let info = JSON.parse(fs.readFileSync(infoPath, "utf8"));
-
-        if (!fs.existsSync(sourcePath)) {
-          return;
-        }
-        //source 읽기
-        let source = fs.readFileSync(sourcePath, "utf8");
-
-        //preset = info + source
-        let preset = info;
-        preset["presetSource"] = source;
-
-        //리스트 삽입
-        presets[presets.length] = preset;
-      } catch (e) {}
-    });
-    return presets;
-  }
-
-  readPresets() {
-    let presets = [];
-    presets = presets.concat(this.readNormalPresets());
-    console.log(presets);
-    presets = presets.concat(this.readSimplePresets());
-    console.log(presets);
-    presets = presets.concat(this.readSourcePresets());
-    console.log(presets);
     if (presets.length == 0) {
       return [
         {
@@ -175,29 +118,25 @@ class PresetStorageExplorer extends StorageExplorer {
     }
   }
 }
-
-class PluginResultRenderer {
-  constructor(dataJson) {
-    this.data = JSON.parse(dataJson);
-  }
-
-  render() {
-    let source = this.data["presetSource"];
+class ResultRenderer {
+  render(jsonText){
+    let dataDict = JSON.parse(jsonText);
+    let source = dataDict["presetSource"];
     let kv = {};
-    for (let i = 0; i < this.data.presetKeyValue.length; i++) {
-      let pkv = this.data.presetKeyValue[i];
+    for (let i = 0; i < dataDict.presetKeyValue.length; i++) {
+      let pkv = dataDict.presetKeyValue[i];
       kv[pkv["presetKey"]] = pkv["presetValue"];
     }
     return ejs.render(source, kv);
   }
 }
 
-let presetStorageExplorer = new PresetStorageExplorer();
 let resultStorageExplorer = new ResultStorageExplorer();
 
 contextBridge.exposeInMainWorld("apiNode", {
   openPresetFolder: () => {
-    presetStorageExplorer.openFolder();
+    let PresetFolderOpener = new PresetFolderOpener();
+    PresetFolderOpener.openFolder();
   },
 
   readPresets: () => {
